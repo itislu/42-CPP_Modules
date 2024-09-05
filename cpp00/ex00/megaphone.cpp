@@ -1,18 +1,20 @@
+#include <cwctype>
 #include <iostream>
-#include <locale>
 #include <string>
 
-int main()
+void toUpper(std::wstring &str)
 {
-    std::locale::global(std::locale(""));
-    std::wcout.imbue(std::locale());
-    const std::ctype<wchar_t>& facet = std::use_facet<std::ctype<wchar_t> >(std::locale());
+    for (std::wstring::iterator it = str.begin(); it != str.end(); ++it)
+        *it = std::towupper(*it);
+}
 
-    std::wstring str = L"äëñaóűßδ*.";
+int main(int argc, char *argv[])
+{
+    std::setlocale(LC_CTYPE, "");
 
-    facet.toupper(&str[0], &str[0] + str.size());
+    std::wstring str = L"äëñaóűßδ*¤£¥.";
+    toUpper(str);
 
     std::wcout << str << std::endl;
-
     return 0;
 }
