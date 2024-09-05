@@ -2,31 +2,37 @@
 #include <iostream>
 #include <string>
 
-class Megaphone {
- private:
-  std::wstring _str;
+class Megaphone
+{
+  private:
+    std::wstring _str;
 
- public:
-  Megaphone(const std::wstring &s) : _str(s) {}
+  public:
+    Megaphone() : _str(L"* LOUD AND UNBEARABLE FEEDBACK NOISE *") {}
 
-  void toUpper() {
-    for (std::wstring::iterator it = this->_str.begin(); it != this->_str.end();
-         ++it)
-      *it = std::towupper(*it);
-  }
+    Megaphone(const std::wstring &s) : _str(s) {}
 
-  const std::wstring &get() const { return _str; }
+    void toUpper()
+    {
+        for (std::wstring::iterator it = this->_str.begin();
+             it != this->_str.end(); ++it)
+            *it = std::towupper(*it);
+    }
 
-  void print() const { std::wcout << _str << std::endl; }
+    void print() const { std::wcout << _str << std::endl; }
 };
 
-int main(int argc, char *argv[]) {
-  std::setlocale(LC_CTYPE, "");
+int main(int argc, char *argv[])
+{
+    std::setlocale(LC_CTYPE, "");
 
-  Megaphone megaphone(L"äëñaóűßδ*¤£¥.");
+    Megaphone megaphone;
 
-  megaphone.toUpper();
-  megaphone.print();
+    if (argc > 1)
+        megaphone = Megaphone(L"äëñaóűßδ*¤£¥.");
 
-  return 0;
+    megaphone.toUpper();
+    megaphone.print();
+
+    return 0;
 }
