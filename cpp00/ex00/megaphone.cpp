@@ -2,19 +2,31 @@
 #include <iostream>
 #include <string>
 
-void toUpper(std::wstring &str)
-{
-    for (std::wstring::iterator it = str.begin(); it != str.end(); ++it)
-        *it = std::towupper(*it);
-}
+class Megaphone {
+ private:
+  std::wstring _str;
 
-int main(int argc, char *argv[])
-{
-    std::setlocale(LC_CTYPE, "");
+ public:
+  Megaphone(const std::wstring &s) : _str(s) {}
 
-    std::wstring str = L"äëñaóűßδ*¤£¥.";
-    toUpper(str);
+  void toUpper() {
+    for (std::wstring::iterator it = this->_str.begin(); it != this->_str.end();
+         ++it)
+      *it = std::towupper(*it);
+  }
 
-    std::wcout << str << std::endl;
-    return 0;
+  const std::wstring &get() const { return _str; }
+
+  void print() const { std::wcout << _str << std::endl; }
+};
+
+int main(int argc, char *argv[]) {
+  std::setlocale(LC_CTYPE, "");
+
+  Megaphone megaphone(L"äëñaóűßδ*¤£¥.");
+
+  megaphone.toUpper();
+  megaphone.print();
+
+  return 0;
 }
