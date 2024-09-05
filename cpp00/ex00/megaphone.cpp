@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <cwctype>
 #include <iostream>
 #include <string>
@@ -12,6 +13,12 @@ class Megaphone
 
     Megaphone(const std::wstring &s) : _str(s) {}
 
+    Megaphone(char *array[])
+    {
+        for (int i = 0; array[i]; i++)
+            this->_str.append(_convertToWstring(array[i]));
+    }
+
     void toUpper()
     {
         for (std::wstring::iterator it = this->_str.begin();
@@ -20,6 +27,15 @@ class Megaphone
     }
 
     void print() const { std::wcout << _str << std::endl; }
+
+  private:
+    std::wstring _convertToWstring(const char *str)
+    {
+        size_t len = std::mbstowcs(NULL, str, 0);
+        std::wstring wstr(len, L'\0');
+        std::mbstowcs(&wstr[0], str, len);
+        return wstr;
+    }
 };
 
 int main(int argc, char *argv[])
@@ -29,7 +45,7 @@ int main(int argc, char *argv[])
     Megaphone megaphone;
 
     if (argc > 1)
-        megaphone = Megaphone(L"äëñaóűßδ*¤£¥.");
+        megaphone = Megaphone(&argv[1]);
 
     megaphone.toUpper();
     megaphone.print();
