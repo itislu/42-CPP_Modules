@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+megaphone
+
+# VSCode
+settings.json
