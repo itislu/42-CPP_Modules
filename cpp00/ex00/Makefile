@@ -16,7 +16,6 @@ DEP_DIR			:=	$(BUILD_DIR)/_dep
 
 #	Dependencies
 
-LIBRARIES		:=
 BUILDFILES		:=	Makefile \
 					$(BUILD_DIR)/source_files.mk
 
@@ -32,8 +31,6 @@ CXXFLAGS_OPT	:=	-O3
 CXXFLAGS 		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG)
 CPPFLAGS 		:=	$(addprefix -I,$(INC_DIR))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
-LDFLAGS			:=	$(addprefix -L,$(LIBRARIES))
-LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(LIBRARIES))))
 MAKEFLAGS		:=	-j -s
 
 
@@ -86,7 +83,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 PHONY_TARGETS	:=	all run nocolor opt san val valfd term clear modes re \
-					lib waitforlib clean fclean ffclean
+					clean fclean ffclean
 ENV_VARIABLES	:=	MODE
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
@@ -207,8 +204,8 @@ endif
 
 #	Executable linkage
 
-$(NAME)			:	$(LIBRARIES) $(OBJ)
-					$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
+$(NAME)			:	$(OBJ)
+					$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
 
 #	Source file compilation
@@ -403,7 +400,7 @@ else
 MSG_START		:=	$(STY_ITA)"Building $(NAME) ... "$(STY_RES)
 endif
 
-MSG_SUCCESS		?=	$(STY_BOL)$(STY_ITA)$(STY_CYA)"DONE!"$(STY_RES)"\n"
+MSG_SUCCESS		?=	$(STY_BOL)$(STY_ITA)$(STY_WHI)"DONE!"$(STY_RES)"\n"
 
 MSG_NO_CHANGE	:=	$(STY_ITA)$(STY_WHI)"Everything up-to-date!"$(STY_RES)"\n"
 
