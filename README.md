@@ -1,3 +1,10 @@
+# Table of Contents
+
+- [Resources](#resources)
+- [Automatic labels of your commits for CPP modules monorepo](#automatic-labels-of-your-commits-for-cpp-modules-monorepo)
+
+---
+
 # Resources
 
 | Description                                                                                                                                                                            | Type                          | Link                                                                                                                                   |
