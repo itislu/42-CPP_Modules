@@ -15,3 +15,89 @@
 | **C++ Primer (5th Edition) - Book** <br> In-depth tutorial and reference book.                                                                                                         | Book <br> (~900 pages)        | [PDF](https://github.com/yanshengjia/cpp-playground/blob/master/cpp-primer/resource/C%2B%2B%20Primer%20(5th%20Edition).pdf)            |
 | **The C++ Programming Language - Book** <br> Hardcore reference book written by Bjarne Stroustrup.																					 | Book <br> (~1300 pages)       | [PDF](https://chenweixiang.github.io/docs/The_C++_Programming_Language_4th_Edition_Bjarne_Stroustrup.pdf)				              |
 | **C++ Weekly With Jason Turner** <br> Weekly videos about C++ (and Computer Science in general).                                                                                       | 400+ short-form Videos        | [youtube.com](https://www.youtube.com/@cppweekly)                                                                                      |
+
+# Git commit alias for CPP module monorepo
+
+This alias is useful to conveniently format your commit messages according to the [Conventional Commits](https://www.conventionalcommits.org/) - first a keyword, then the message.<br>
+This alias automatically puts the numbers of the current CPP module and the current exercise at the very front as the scope of the commit. The numbers are extracted from the current directory. For example, if you are in the directory `cpp00/ex00`, the scope would be `00/00`.<br>
+The alias puts the first argument as the type of the commit, everything else as the message. The type is usually one of the following: `feat`, `fix`, `refactor`, `style`, `test`, `docs`, `chore`. The message is a short description of the commit.
+
+This is how you can use the alias:
+```bash
+git cmm feat Convert program arguments to uppercase
+```
+Result:
+```
+[00/00] feat: Convert program arguments to uppercase
+```
+
+To set this alias up just for your CPP repository (so not globally across all repositories), run the following command:
+```bash
+git config alias.cmm '!f() {
+    local exercise_path=$(echo "$GIT_PREFIX" | sed '"'"'s/^..\///'"'"' | grep -oE '"'"'.*(/|^)ex[0-9]{2}(/|$)'"'"');
+    local module=$(dirname "$exercise_path" | xargs basename | sed '"'"'s/^\.$//'"'"');
+    local exercise=$(basename "$exercise_path");
+    if [ -z "$module" ] && [ -z "$exercise" ]; then
+        module=$(basename "$GIT_PREFIX");
+    fi;
+    local module_num=$(echo "$module" | grep -oE '"'"'[0-9]+'"'"');
+    local exercise_num=$(echo "$exercise" | grep -oE '"'"'[0-9]{2}'"'"');
+    local type=$1;
+    shift;
+    local message="$@";
+    local scope="";
+    if [ -n "$module_num" ] && [ -n "$exercise_num" ]; then
+        scope="[$module_num/$exercise_num] ";
+    elif [ -n "$module" ]; then
+        scope="[$module] ";
+    elif [ -n "$exercise" ]; then
+        scope="[$exercise] ";
+    fi;
+    git commit -m "$scope$type: $message";
+}; f'
+```
+
+### Pre-populate the scope in the commit message file
+
+If you prefer to use `git commit` to edit your commit messages in your editor, you can use the following hook to **automatically prepend the scope** to the commit message file.
+This hook should be placed in a file called `prepare-commit-msg` in the `.git/hooks` directory of your repository.
+
+To add it with one command, make sure you are in the root of your repository and run the following command:
+```bash
+cat << 'EOF' >> .git/hooks/prepare-commit-msg
+#!/bin/sh
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+
+# Remove the "# Please enter the commit message..." help message.
+/usr/bin/perl -i.bak -ne 'print unless(m/^. Please enter the commit message/..m/^#$/)' "$COMMIT_MSG_FILE"
+
+# Only use if it's a regular commit without -m or -F
+case "$2,$3" in
+	,|template,)
+		# Prepend the scope to the commit message file
+		exercise_path=$(echo "$GIT_PREFIX" | sed 's/^..\///' | grep -oE '.*(/|^)ex[0-9]{2}(/|$)')
+		module=$(dirname "$exercise_path" | xargs basename | sed 's/^\.$//')
+		exercise=$(basename "$exercise_path")
+		if [ -z "$module" ] && [ -z "$exercise" ]; then
+			module=$(basename "$GIT_PREFIX")
+		fi
+		module_num=$(echo "$module" | grep -oE '[0-9]+')
+		exercise_num=$(echo "$exercise" | grep -oE '[0-9]{2}')
+		scope=""
+		if [ -n "$module_num" ] && [ -n "$exercise_num" ]; then
+			scope="[$module_num/$exercise_num] "
+		elif [ -n "$module" ]; then
+			scope="[$module] "
+		elif [ -n "$exercise" ]; then
+			scope="[$exercise] "
+		fi
+		sed -i "1i$scope" "$COMMIT_MSG_FILE"
+		;;
+	*) ;;
+esac
+EOF
+chmod +x .git/hooks/prepare-commit-msg
+```
