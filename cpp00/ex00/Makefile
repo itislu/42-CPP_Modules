@@ -7,7 +7,7 @@ NAME 			:=	megaphone
 
 #	Directories
 
-SRC_DIR			:=	.
+SRC_DIR			:=	src
 INC_DIR			:=	.
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
@@ -16,8 +16,7 @@ DEP_DIR			:=	$(BUILD_DIR)/_dep
 
 #	Dependencies
 
-BUILDFILES		:=	Makefile \
-					$(BUILD_DIR)/source_files.mk
+BUILDFILES		:=	Makefile
 
 
 #	Flags
@@ -66,8 +65,8 @@ TERMINALFLAGS	:=	--title="$(TERMINALTITLE)" -- /bin/sh -c
 
 #	Files
 
-include				$(BUILD_DIR)/source_files.mk
 SRC_EXTENSION	:=	.cpp
+SRC				:=	$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)" -printf "%P\n")
 OBJ 			:=	$(SRC:%$(SRC_EXTENSION)=$(OBJ_DIR)/%.o)
 DEP				:=	$(SRC:%$(SRC_EXTENSION)=$(DEP_DIR)/%.d)
 
