@@ -2,6 +2,11 @@
 #include <iostream>
 #include <string>
 
+/**
+ * mbs = multi byte string
+ * wcs = wide char string
+ */
+
 static std::wstring concatStrArr(char *arr[]);
 static std::wstring convertToWstring(const char *str);
 static size_t mbslen(const char *str);
