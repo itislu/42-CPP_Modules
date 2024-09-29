@@ -82,8 +82,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
-PHONY_TARGETS	:=	all run nocolor opt san val valfd term clear modes re \
-					clean fclean ffclean
+PHONY_TARGETS	:=	all run opt san val valfd term clear modes re clean fclean ffclean
 ENV_VARIABLES	:=	MODE
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
@@ -91,7 +90,7 @@ HELP_TARGETS	:=	help help-print \
 PHONY_TARGETS	+=	$(HELP_TARGETS)
 export .PHONY	:	$(PHONY_TARGETS)
 
-REBUILD_TARGETS	:=	nocolor opt san re
+REBUILD_TARGETS	:=	opt san re
 CLEAN_TARGETS	:=	clean fclean ffclean
 
 .DEFAULT		:
@@ -104,11 +103,6 @@ CLEAN_TARGETS	:=	clean fclean ffclean
 
 ifeq (run,$(filter run,$(MAKECMDGOALS) $(MODE)))
 RUN				:=	true
-endif
-
-ifeq (nocolor,$(filter nocolor,$(MAKECMDGOALS) $(MODE)))
-CPPFLAGS		+=	-D NO_COLOR=1
-RECOMPILE		:=	true
 endif
 
 ifeq (opt,$(filter opt,$(MAKECMDGOALS) $(MODE)))
@@ -165,7 +159,7 @@ all				:
 						fi; \
 					fi
 
-run nocolor opt san val valfd term clear: modes
+run opt san val valfd term clear: modes
 
 modes			:
 					if [ "$(RECOMPILE)" = "true" ]; then \
@@ -262,7 +256,6 @@ help			:
 					echo "Targets:"
 					echo "  all              Build the project (default target)"
 					echo "  run              Build and run the project"
-					echo "  nocolor          Rebuild the project without colors in the prompt and printouts"
 					echo "  opt              Rebuild the project with optimizations"
 					echo "  san              Rebuild the project with sanitizers"
 					echo "  val              Build and run the project with valgrind"
@@ -287,10 +280,6 @@ help-all		:
 
 help-run		:
 					echo "Build the project and run the executable."
-
-help-nocolor	:
-					echo "Rebuild the project without colors in the prompt and printouts."
-					echo "Avoids issues when moving the cursor in the input line."
 
 help-opt		:
 					echo "Rebuild the project with the following compiler optimization flags:"
@@ -412,11 +401,6 @@ MSG_FAILURE		:=	$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)"\n"
 MSG_RUN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~~~~~ RUN MODE ~~~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (,$(filter run,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(MSG_RUN)
-endif
-
-MSG_NOCOLOR		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_WHI_BRI)"~~~~~~~~~~~~~~~~~~~~~ NO COLOR MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
-ifneq (,$(filter nocolor,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_NOCOLOR)
 endif
 
 MSG_OPT			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRE)"~~~~~~~~~~~~~~~~~~~ OPTIMIZATION MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
