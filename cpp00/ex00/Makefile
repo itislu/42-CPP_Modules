@@ -82,7 +82,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 PHONY_TARGETS	:=	all run opt san val valfd term clear modes re clean fclean ffclean
-ENV_VARIABLES	:=	MODE
+ENV_VARIABLES	:=	MODE ARGS
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
@@ -99,6 +99,8 @@ CLEAN_TARGETS	:=	clean fclean ffclean
 
 
 # ********************************* MODES ************************************ #
+
+ENV				:=
 
 ifeq (run,$(filter run,$(MAKECMDGOALS) $(MODE)))
 RUN				:=	true
@@ -134,6 +136,10 @@ endif
 
 ifeq (clear,$(filter clear,$(MAKECMDGOALS) $(MODE)))
 CLEAR			:=	true
+endif
+
+ifdef ARGS
+RUN				:=	true
 endif
 
 
@@ -173,10 +179,10 @@ modes			:
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
 						$(TERMINAL) $(TERMINALFLAGS) \
 							"bash --posix -c 'trap \"\" SIGINT; \
-							$(ENV) ./$(NAME); \
+							$(ENV) ./$(NAME) $(ARGS); \
 							exec bash --posix'"; \
 					elif [ "$(RUN)" = "true" ]; then \
-						$(ENV) "./$(NAME)"; \
+						$(ENV) "./$(NAME)" $(ARGS); \
 					fi
 
 re				:
@@ -250,8 +256,6 @@ ffclean			:
 # ****************************** HELP TARGETS ******************************** #
 
 help			:
-					echo "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\"]"
-					echo
 					echo "Targets:"
 					echo "  all              Build the project (default target)"
 					echo "  run              Build and run the project"
@@ -271,7 +275,9 @@ help			:
 					echo
 					echo "Environment Variables:"
 					echo "  MODE             Build mode to combine multiple targets"
+					echo "  ARGS             If specified, the program will run with those arguments after compilation."
 					echo
+					echo "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\"] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-all		:
 					echo "Build the project."
@@ -279,6 +285,9 @@ help-all		:
 
 help-run		:
 					echo "Build the project and run the executable."
+					echo "Arguments to the program can be passed via the ARGS variable."
+					echo
+					echo "Usage: make run ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"" #Maybe omit the usage
 
 help-opt		:
 					echo "Rebuild the project with the following compiler optimization flags:"
@@ -290,19 +299,30 @@ help-san		:
 
 help-val		:
 					echo "Build the project and run the executable with valgrind."
+					echo "Arguments to the program can be passed via the ARGS variable."
+					echo
 					echo "The following valgrind flags are used:"
 					echo "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
+					echo
+					echo "Usage: make val ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
 
 help-valfd		:
 					echo "Build the project and run the executable with valgrind and file descriptor tracking."
 					echo "A new terminal window is opened to avoid inheriting open file descriptors."
+					echo "Arguments to the program can be passed via the ARGS variable."
+					echo
 					echo "The following valgrind flags are used:"
 					echo "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo "File descriptor specific flags:"
 					echo "$(VALGRINDFDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
+					echo
+					echo "Usage: make valfd ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
 
 help-term		:
 					echo "Build the project and run the executable in a new terminal window."
+					echo "Arguments to the program can be passed via the ARGS variable."
+					echo
+					echo "Usage: make term ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
 
 help-clear		:
 					echo "Build the project and clear the terminal."
@@ -320,21 +340,26 @@ help-ffclean	:
 					echo "Remove build artifacts and the executable without checking for unknown files."
 
 help-print		:
-					echo "Usage: make print-<\\$(STY_UND)variable name\\$(STY_RES)>"
-					echo
 					echo "Print the value of a Makefile variable by appending the variable name to print-..."
 					echo "Useful for Makefile debugging."
+					echo
+					echo "Usage: make print-<\\$(STY_UND)variable name\\$(STY_RES)>"
 
 help-help		:
-					echo "Usage: make help-<\\$(STY_UND)target\\$(STY_RES)> | make <\\$(STY_UND)target\\$(STY_RES)>-help"
-					echo
 					echo "Display more information for a specific target by appending or prepending help."
+					echo
+					echo "Usage: make help-<\\$(STY_UND)target\\$(STY_RES)> | make <\\$(STY_UND)target\\$(STY_RES)>-help"
 
 help-MODE MODE-help:
-					echo "Usage: make <\\$(STY_UND)target\\$(STY_RES)> MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\""
-					echo
 					echo "Build mode to combine with other targets."
 					echo "Multiple modes can be combined by separating them with a space."
+					echo
+					echo "Usage: make <\\$(STY_UND)target\\$(STY_RES)> MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\""
+
+help-ARGS ARGS-help:
+					echo "If specified, the program will run with those arguments after compilation."
+					echo
+					echo "Usage: make <\\$(STY_UND)target\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
 
 %-help:
 					$(MAKE) help-$(subst -help,,$@)
