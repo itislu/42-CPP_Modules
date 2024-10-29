@@ -17,8 +17,7 @@ int main(int argc, char *argv[])
 	std::wstring str = L"* LOUD AND UNBEARABLE FEEDBACK NOISE *";
 
 	std::setlocale(LC_CTYPE, "");
-	if (argc > 1)
-	{
+	if (argc > 1) {
 		str = concatStrArr(&argv[1]);
 		strToUpper(str);
 	}
@@ -30,8 +29,7 @@ static std::wstring concatStrArr(char *arr[])
 {
 	std::wstring str;
 
-	for (int i = 0; arr[i]; ++i)
-	{
+	for (int i = 0; arr[i]; ++i) {
 		str.append(convertToWstring(arr[i]));
 	}
 	return str;
@@ -55,8 +53,7 @@ static size_t mbslen(const char *str)
 
 static void strToUpper(std::wstring &str)
 {
-	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it)
-	{
+	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it) {
 		*it = std::towupper(*it);
 	}
 }
