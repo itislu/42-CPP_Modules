@@ -9,7 +9,7 @@
 
 static std::wstring concatStrArr(char *arr[]);
 static std::wstring convertToWstring(const char *str);
-static size_t mbslen(const char *str);
+static size_t wcslen(const char *str);
 static void strToUpper(std::wstring &str);
 
 int main(int argc, char *argv[])
@@ -42,7 +42,7 @@ static std::wstring convertToWstring(const char *str)
 	size_t len;
 	std::wstring wstr;
 
-	len = mbslen(str);
+	len = wcslen(str);
 	if (len) {
 		wstr.resize(len);
 		std::mbstowcs(&wstr.at(0), str, len);
@@ -50,7 +50,7 @@ static std::wstring convertToWstring(const char *str)
 	return wstr;
 }
 
-static size_t mbslen(const char *str)
+static size_t wcslen(const char *str)
 {
 	return std::mbstowcs(NULL, str, 0);
 }
