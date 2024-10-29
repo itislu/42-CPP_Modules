@@ -8,56 +8,56 @@
  */
 
 static std::wstring concatStrArr(char *arr[]);
-static std::wstring convertToWstring(const char *str);
-static size_t wcslen(const char *str);
-static void strToUpper(std::wstring &str);
+static std::wstring convertToWstring(const char *mbs);
+static size_t wcslen(const char *mbs);
+static void strToUpper(std::wstring &wcs);
 
 int main(int argc, char *argv[])
 {
-	std::wstring str = L"* LOUD AND UNBEARABLE FEEDBACK NOISE *";
+	std::wstring wcs = L"* LOUD AND UNBEARABLE FEEDBACK NOISE *";
 
 	std::setlocale(LC_CTYPE, "");
 	if (argc > 1) {
-		str = concatStrArr(&argv[1]);
-		strToUpper(str);
+		wcs = concatStrArr(&argv[1]);
+		strToUpper(wcs);
 	}
-	if (str.length()) {
-		std::wcout << str << std::endl;
+	if (wcs.length()) {
+		std::wcout << wcs << std::endl;
 	}
 	return 0;
 }
 
 static std::wstring concatStrArr(char *arr[])
 {
-	std::wstring str;
+	std::wstring wcs;
 
 	for (int i = 0; arr[i]; ++i) {
-		str.append(convertToWstring(arr[i]));
+		wcs.append(convertToWstring(arr[i]));
 	}
-	return str;
+	return wcs;
 }
 
-static std::wstring convertToWstring(const char *str)
+static std::wstring convertToWstring(const char *mbs)
 {
 	size_t len;
-	std::wstring wstr;
+	std::wstring wcs;
 
-	len = wcslen(str);
+	len = wcslen(mbs);
 	if (len) {
-		wstr.resize(len);
-		std::mbstowcs(&wstr.at(0), str, len);
+		wcs.resize(len);
+		std::mbstowcs(&wcs.at(0), mbs, len);
 	}
-	return wstr;
+	return wcs;
 }
 
-static size_t wcslen(const char *str)
+static size_t wcslen(const char *mbs)
 {
-	return std::mbstowcs(NULL, str, 0);
+	return std::mbstowcs(NULL, mbs, 0);
 }
 
-static void strToUpper(std::wstring &str)
+static void strToUpper(std::wstring &wcs)
 {
-	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it) {
+	for (std::wstring::iterator it = wcs.begin(); it != wcs.end(); ++it) {
 		*it = std::towupper(*it);
 	}
 }
