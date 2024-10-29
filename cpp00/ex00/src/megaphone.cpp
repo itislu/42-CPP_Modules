@@ -21,7 +21,9 @@ int main(int argc, char *argv[])
 		str = concatStrArr(&argv[1]);
 		strToUpper(str);
 	}
-	std::wcout << str << std::endl;
+	if (str.length()) {
+		std::wcout << str << std::endl;
+	}
 	return 0;
 }
 
@@ -41,8 +43,10 @@ static std::wstring convertToWstring(const char *str)
 	std::wstring wstr;
 
 	len = mbslen(str);
-	wstr.resize(len);
-	std::mbstowcs(&wstr.at(0), str, len);
+	if (len) {
+		wstr.resize(len);
+		std::mbstowcs(&wstr.at(0), str, len);
+	}
 	return wstr;
 }
 
