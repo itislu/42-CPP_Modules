@@ -1,4 +1,7 @@
+#include <clocale>
 #include <cstdlib>
+#include <cwchar>
+#include <cwctype>
 #include <iostream>
 #include <string>
 
