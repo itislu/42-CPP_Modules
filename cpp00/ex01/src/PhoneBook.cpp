@@ -71,8 +71,14 @@ bool PhoneBook::_prompt_index(int &index)
 			std::cout << "Please enter a number.\n";
 		}
 		else if (index >= this->_contact_count) {
-			std::cout << "Index out of range. There are only "
-					  << this->_contact_count << " contacts so far!\n";
+			if (this->_contact_count == 1) {
+				std::cout << "Index out of range. There is only "
+						  << this->_contact_count << " contact so far!\n";
+			}
+			else {
+				std::cout << "Index out of range. There are only "
+						  << this->_contact_count << " contacts so far!\n";
+			}
 		}
 		else {
 			return true;
