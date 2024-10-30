@@ -6,15 +6,9 @@
 
 const int PhoneBook::MAX_CONTACTS;
 
-PhoneBook::PhoneBook() : _contact_count(0), _index_new_contact(0)
-{
-	std::cout << "constructor\n";
-}
+PhoneBook::PhoneBook(void) : _contact_count(0), _index_new_contact(0) {}
 
-PhoneBook::~PhoneBook()
-{
-	std::cout << "destructor\n";
-}
+PhoneBook::~PhoneBook(void) {}
 
 void PhoneBook::add(void)
 {
