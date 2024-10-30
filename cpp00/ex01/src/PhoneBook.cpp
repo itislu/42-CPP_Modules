@@ -37,24 +37,9 @@ void PhoneBook::search(void)
 	}
 	this->_print_contacts();
 
-	std::string input;
 	int index;
-	while (true) {
-		if (!prompt("Index of contact", input)) {
-			std::cout << "Aborting this search." << std::endl;
-			return;
-		}
-		std::istringstream iss(input);
-		if (!str_isdigit(input) || !(iss >> index)) {
-			std::cout << "Please enter a number.\n";
-		}
-		else if (index >= this->_contact_count) {
-			std::cout << "Index out of range. There are only "
-					  << this->_contact_count << " contacts so far!\n";
-		}
-		else {
-			break;
-		}
+	if (!this->_prompt_index(index)) {
+		return;
 	}
 	this->_index(index).print_full();
 }
@@ -66,6 +51,29 @@ void PhoneBook::_print_contacts(void)
 	for (int i = 0; i < this->_contact_count; ++i) {
 		this->_index(i).print(i);
 		Contact::print_delim();
+	}
+}
+
+bool PhoneBook::_prompt_index(int &index)
+{
+	std::string input;
+
+	while (true) {
+		if (!prompt("Index of contact", input)) {
+			std::cout << "Aborting this search." << std::endl;
+			return false;
+		}
+		std::istringstream iss(input);
+		if (!str_isdigit(input) || !(iss >> index)) {
+			std::cout << "Please enter a number.\n";
+		}
+		else if (index >= this->_contact_count) {
+			std::cout << "Index out of range. There are only "
+					  << this->_contact_count << " contacts so far!\n";
+		}
+		else {
+			return true;
+		}
 	}
 }
 

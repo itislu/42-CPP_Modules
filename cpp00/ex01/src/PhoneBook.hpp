@@ -19,6 +19,7 @@ class PhoneBook {
 	int _contact_count;
 	int _index_new_contact;
 
+	bool _prompt_index(int &index);
 	void _print_contacts(void);
 	Contact &_index(int i);
 };
