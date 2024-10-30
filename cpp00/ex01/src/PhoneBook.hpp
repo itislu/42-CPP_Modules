@@ -4,10 +4,10 @@
 #include "Contact.hpp"
 #include <string>
 
-#define MAX_CONTACTS 8
-
 class PhoneBook {
   public:
+	static const int MAX_CONTACTS = 8;
+
 	void add(void);
 	void search(void);
 
@@ -15,7 +15,7 @@ class PhoneBook {
 	~PhoneBook(void);
 
   private:
-	Contact _contacts[8];
+	Contact _contacts[PhoneBook::MAX_CONTACTS];
 	int _contact_count;
 	int _index_new_contact;
 
