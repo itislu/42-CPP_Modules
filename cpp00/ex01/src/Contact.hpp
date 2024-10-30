@@ -5,6 +5,8 @@
 
 class Contact {
   public:
+	static const int DISPLAY_WIDTH = 10;
+
 	std::string first_name;
 	std::string last_name;
 	std::string nickname;
