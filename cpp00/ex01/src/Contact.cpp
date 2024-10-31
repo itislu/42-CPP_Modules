@@ -26,11 +26,13 @@ void Contact::print(int index)
 
 void Contact::print_full(void)
 {
-	std::wcout << L"First name: " << this->first_name << L"\n";
-	std::wcout << L"Last name: " << this->last_name << L"\n";
-	std::wcout << L"Nickname: " << this->nickname << L"\n";
-	std::wcout << L"Phone number: " << this->phone_number << L"\n";
-	std::wcout << L"Darkest secret: " << this->darkest_secret << L"\n";
+	std::wcout << std::setw(18) << L"First name: " << this->first_name << L"\n";
+	std::wcout << std::setw(18) << L"Last name: " << this->last_name << L"\n";
+	std::wcout << std::setw(18) << L"Nickname: " << this->nickname << L"\n";
+	std::wcout << std::setw(18) << L"Phone number: " << this->phone_number
+			   << L"\n";
+	std::wcout << std::setw(18) << L"Darkest secret: " << this->darkest_secret
+			   << L"\n";
 }
 
 void Contact::print_header(void)
