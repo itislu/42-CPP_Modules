@@ -1,4 +1,4 @@
 #include <string>
 
-bool prompt(const char *prompt, std::string &dest);
-bool str_isdigit(std::string &str);
+bool prompt(const char *p, std::wstring &dest);
+bool str_isdigit(std::wstring &str);

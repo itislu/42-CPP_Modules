@@ -53,14 +53,14 @@ void PhoneBook::_print_contacts(void)
 
 bool PhoneBook::_prompt_index(int &index)
 {
-	std::string input;
+	std::wstring input;
 
 	while (true) {
 		if (!prompt("Index of contact", input)) {
 			std::cout << "Aborting this search." << std::endl;
 			return false;
 		}
-		std::istringstream iss(input);
+		std::wistringstream iss(input);
 		if (!str_isdigit(input) || !(iss >> index)) {
 			std::cout << "Please enter a number.\n";
 		}

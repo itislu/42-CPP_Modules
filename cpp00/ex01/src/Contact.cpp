@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-static std::string get_printable_str(std::string &str);
+static std::wstring get_printable_str(std::wstring &str);
 
 bool Contact::prompt_to_fill(void)
 {
@@ -20,7 +20,7 @@ bool Contact::prompt_to_fill(void)
 
 void Contact::print(int index)
 {
-	std::cout << "|" << std::setw(DISPLAY_WIDTH) << index << "|"
+	std::wcout << "|" << std::setw(DISPLAY_WIDTH) << index << "|"
 			  << std::setw(DISPLAY_WIDTH) << get_printable_str(this->first_name)
 			  << "|" << std::setw(DISPLAY_WIDTH)
 			  << get_printable_str(this->last_name) << "|"
@@ -28,10 +28,10 @@ void Contact::print(int index)
 			  << "|\n";
 }
 
-static std::string get_printable_str(std::string &str)
+static std::wstring get_printable_str(std::wstring &str)
 {
 	if (str.length() > Contact::DISPLAY_WIDTH) {
-		return str.substr(0, Contact::DISPLAY_WIDTH - 1) + ".";
+		return str.substr(0, Contact::DISPLAY_WIDTH - 1) + L".";
 	}
 	else {
 		return str;
@@ -40,11 +40,11 @@ static std::string get_printable_str(std::string &str)
 
 void Contact::print_full(void)
 {
-	std::cout << "First name: " << this->first_name << "\n";
-	std::cout << "Last name: " << this->last_name << "\n";
-	std::cout << "Nickname: " << this->nickname << "\n";
-	std::cout << "Phone number: " << this->phone_number << "\n";
-	std::cout << "Darkest secret: " << this->darkest_secret << "\n";
+	std::wcout << "First name: " << this->first_name << "\n";
+	std::wcout << "Last name: " << this->last_name << "\n";
+	std::wcout << "Nickname: " << this->nickname << "\n";
+	std::wcout << "Phone number: " << this->phone_number << "\n";
+	std::wcout << "Darkest secret: " << this->darkest_secret << "\n";
 }
 
 void Contact::print_header(void)
