@@ -24,7 +24,7 @@ int main(void)
 			break;
 		}
 		else {
-			std::wcout << L"Unknown command." << L"\n";
+			std::wcout << L"Unknown command.\n";
 		}
 		std::wcout << std::endl;
 	}

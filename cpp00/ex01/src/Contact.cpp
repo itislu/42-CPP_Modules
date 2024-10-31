@@ -81,7 +81,7 @@ std::wstring Contact::_get_printable_str(std::wstring &str)
 		}
 		if (width + w > Contact::DISPLAY_WIDTH
 			|| (width + w == Contact::DISPLAY_WIDTH && it + 1 != str.end())) {
-			result.push_back('.');
+			result.push_back(L'.');
 			width++;
 			break;
 		}

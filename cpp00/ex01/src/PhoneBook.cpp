@@ -15,14 +15,14 @@ void PhoneBook::add(void)
 	Contact &contact = this->_contacts[this->_index_new_contact];
 
 	if (!contact.prompt_to_fill()) {
-		std::wcout << L"Aborting adding this contact." << std::endl;
+		std::wcout << L"Aborting adding this contact.\n";
 	}
 	else {
 		this->_contact_count =
 			std::min(this->_contact_count + 1, PhoneBook::MAX_CONTACTS);
 		this->_index_new_contact =
 			(this->_index_new_contact + 1) % PhoneBook::MAX_CONTACTS;
-		std::wcout << L"Successfully added a new contact." << std::endl;
+		std::wcout << L"Successfully added a new contact.\n";
 	}
 }
 
@@ -58,21 +58,23 @@ bool PhoneBook::_prompt_index(int &index)
 
 	while (true) {
 		if (!prompt(L"Index of contact", input)) {
-			std::wcout << L"Aborting this search." << std::endl;
+			std::wcout << L"Aborting this search.\n";
 			return false;
 		}
 		std::wistringstream iss(input);
 		if (!str_isdigit(input) || !(iss >> index)) {
-			std::wcout << L"Please enter a number.\n";
+			std::wcout << L"Please enter a number." << std::endl;
 		}
 		else if (index >= this->_contact_count) {
 			if (this->_contact_count == 1) {
 				std::wcout << L"Index out of range. There is only "
-						   << this->_contact_count << L" contact so far!\n";
+						   << this->_contact_count << L" contact so far!"
+						   << std::endl;
 			}
 			else {
 				std::wcout << L"Index out of range. There are only "
-						   << this->_contact_count << L" contacts so far!\n";
+						   << this->_contact_count << L" contacts so far!"
+						   << std::endl;
 			}
 		}
 		else {
