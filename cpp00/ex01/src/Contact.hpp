@@ -20,6 +20,7 @@ class Contact {
 	static void print_delim(void);
 
   private:
+	static std::wstring _get_printable_str(std::wstring &str);
 };
 
 #endif

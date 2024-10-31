@@ -4,8 +4,6 @@
 #include <iomanip>
 #include <iostream>
 
-static std::wstring get_printable_str(std::wstring &str);
-
 bool Contact::prompt_to_fill(void)
 {
 	if (!prompt("First name", this->first_name)
@@ -21,21 +19,9 @@ bool Contact::prompt_to_fill(void)
 void Contact::print(int index)
 {
 	std::wcout << "|" << std::setw(DISPLAY_WIDTH) << index << "|"
-			   << std::setw(DISPLAY_WIDTH)
-			   << get_printable_str(this->first_name) << "|"
-			   << std::setw(DISPLAY_WIDTH) << get_printable_str(this->last_name)
-			   << "|" << std::setw(DISPLAY_WIDTH)
-			   << get_printable_str(this->nickname) << "|\n";
-}
-
-static std::wstring get_printable_str(std::wstring &str)
-{
-	if (str.length() > Contact::DISPLAY_WIDTH) {
-		return str.substr(0, Contact::DISPLAY_WIDTH - 1) + L".";
-	}
-	else {
-		return str;
-	}
+			   << Contact::_get_printable_str(this->first_name) << "|"
+			   << Contact::_get_printable_str(this->last_name) << "|"
+			   << Contact::_get_printable_str(this->nickname) << "|\n";
 }
 
 void Contact::print_full(void)
@@ -65,4 +51,31 @@ void Contact::print_delim(void)
 			   << std::setw(DISPLAY_WIDTH + 1) << "+"
 			   << std::setw(DISPLAY_WIDTH + 1) << "+" << "\n"
 			   << std::setfill(L' ');
+}
+
+std::wstring Contact::_get_printable_str(std::wstring &str)
+{
+	std::wstring result;
+	int width = 0;
+
+	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it) {
+		int w = wcwidth(*it);
+		if (w < 0) {
+			continue;
+		}
+		if (width + w > Contact::DISPLAY_WIDTH
+			|| (width + w == Contact::DISPLAY_WIDTH && it + 1 != str.end())) {
+			result.push_back('.');
+			width++;
+			break;
+		}
+		result.push_back(*it);
+		width += w;
+	}
+
+	while (width < Contact::DISPLAY_WIDTH) {
+		result.insert(0, L" ");
+		width++;
+	}
+	return result;
 }
