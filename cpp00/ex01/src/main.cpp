@@ -9,7 +9,7 @@ int main(void)
 
 	setlocale(LC_CTYPE, "");
 	while (true) {
-		std::wcout << "Input a command [ADD, SEARCH, EXIT]: ";
+		std::wcout << L"Input a command [ADD, SEARCH, EXIT]: ";
 		if (!std::getline(std::wcin, input)) {
 			std::wcout << std::endl;
 			break;
@@ -24,7 +24,7 @@ int main(void)
 			break;
 		}
 		else {
-			std::wcout << "Unknown command." << "\n";
+			std::wcout << L"Unknown command." << L"\n";
 		}
 		std::wcout << std::endl;
 	}

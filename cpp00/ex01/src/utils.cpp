@@ -1,16 +1,16 @@
 #include <cstdio>
 #include <iostream>
 
-bool prompt(const char *p, std::wstring &dest)
+bool prompt(const wchar_t *p, std::wstring &dest)
 {
 	while (std::wcin.good()) {
-		std::wcout << p << ": ";
+		std::wcout << p << L": ";
 		if (!std::getline(std::wcin, dest)) {
 			std::wcout << std::endl;
 			break;
 		}
 		else if (dest.length() == 0) {
-			std::wcout << p << " cannot be empty!" << std::endl;
+			std::wcout << p << L" cannot be empty!" << std::endl;
 		}
 		else {
 			return true;

@@ -15,21 +15,21 @@ void PhoneBook::add(void)
 	Contact &contact = this->_contacts[this->_index_new_contact];
 
 	if (!contact.prompt_to_fill()) {
-		std::wcout << "Aborting adding this contact." << std::endl;
+		std::wcout << L"Aborting adding this contact." << std::endl;
 	}
 	else {
 		this->_contact_count =
 			std::min(this->_contact_count + 1, PhoneBook::MAX_CONTACTS);
 		this->_index_new_contact =
 			(this->_index_new_contact + 1) % PhoneBook::MAX_CONTACTS;
-		std::wcout << "Successfully added a new contact." << std::endl;
+		std::wcout << L"Successfully added a new contact." << std::endl;
 	}
 }
 
 void PhoneBook::search(void)
 {
 	if (this->_contact_count == 0) {
-		std::wcout << "The phonebook does not have any contacts yet.\n";
+		std::wcout << L"The phonebook does not have any contacts yet.\n";
 		return;
 	}
 	this->_print_contacts();
@@ -46,9 +46,10 @@ void PhoneBook::_print_contacts(void)
 	Contact::print_header();
 
 	for (int i = 0; i < this->_contact_count; ++i) {
+		Contact::print_delim_middle();
 		this->_index(i).print(i);
-		Contact::print_delim();
 	}
+	Contact::print_delim_bottom();
 }
 
 bool PhoneBook::_prompt_index(int &index)
@@ -56,22 +57,22 @@ bool PhoneBook::_prompt_index(int &index)
 	std::wstring input;
 
 	while (true) {
-		if (!prompt("Index of contact", input)) {
-			std::wcout << "Aborting this search." << std::endl;
+		if (!prompt(L"Index of contact", input)) {
+			std::wcout << L"Aborting this search." << std::endl;
 			return false;
 		}
 		std::wistringstream iss(input);
 		if (!str_isdigit(input) || !(iss >> index)) {
-			std::wcout << "Please enter a number.\n";
+			std::wcout << L"Please enter a number.\n";
 		}
 		else if (index >= this->_contact_count) {
 			if (this->_contact_count == 1) {
-				std::wcout << "Index out of range. There is only "
-						   << this->_contact_count << " contact so far!\n";
+				std::wcout << L"Index out of range. There is only "
+						   << this->_contact_count << L" contact so far!\n";
 			}
 			else {
-				std::wcout << "Index out of range. There are only "
-						   << this->_contact_count << " contacts so far!\n";
+				std::wcout << L"Index out of range. There are only "
+						   << this->_contact_count << L" contacts so far!\n";
 			}
 		}
 		else {

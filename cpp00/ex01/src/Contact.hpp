@@ -17,7 +17,9 @@ class Contact {
 	void print(int index);
 	void print_full(void);
 	static void print_header(void);
-	static void print_delim(void);
+	static void print_delim_top(void);
+	static void print_delim_middle(void);
+	static void print_delim_bottom(void);
 
   private:
 	static std::wstring _get_printable_str(std::wstring &str);

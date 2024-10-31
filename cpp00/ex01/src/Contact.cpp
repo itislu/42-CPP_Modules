@@ -6,11 +6,11 @@
 
 bool Contact::prompt_to_fill(void)
 {
-	if (!prompt("First name", this->first_name)
-		|| !prompt("Last name", this->last_name)
-		|| !prompt("Nickname", this->nickname)
-		|| !prompt("Phone number", this->phone_number)
-		|| !prompt("Darkest secret", this->darkest_secret)) {
+	if (!prompt(L"First name", this->first_name)
+		|| !prompt(L"Last name", this->last_name)
+		|| !prompt(L"Nickname", this->nickname)
+		|| !prompt(L"Phone number", this->phone_number)
+		|| !prompt(L"Darkest secret", this->darkest_secret)) {
 		return false;
 	}
 	return true;
@@ -18,38 +18,54 @@ bool Contact::prompt_to_fill(void)
 
 void Contact::print(int index)
 {
-	std::wcout << "|" << std::setw(DISPLAY_WIDTH) << index << "|"
-			   << Contact::_get_printable_str(this->first_name) << "|"
-			   << Contact::_get_printable_str(this->last_name) << "|"
-			   << Contact::_get_printable_str(this->nickname) << "|\n";
+	std::wcout << L"┝" << std::setw(DISPLAY_WIDTH) << index << L"│"
+			   << Contact::_get_printable_str(this->first_name) << L"│"
+			   << Contact::_get_printable_str(this->last_name) << L"│"
+			   << Contact::_get_printable_str(this->nickname) << L"│\n";
 }
 
 void Contact::print_full(void)
 {
-	std::wcout << "First name: " << this->first_name << "\n";
-	std::wcout << "Last name: " << this->last_name << "\n";
-	std::wcout << "Nickname: " << this->nickname << "\n";
-	std::wcout << "Phone number: " << this->phone_number << "\n";
-	std::wcout << "Darkest secret: " << this->darkest_secret << "\n";
+	std::wcout << L"First name: " << this->first_name << L"\n";
+	std::wcout << L"Last name: " << this->last_name << L"\n";
+	std::wcout << L"Nickname: " << this->nickname << L"\n";
+	std::wcout << L"Phone number: " << this->phone_number << L"\n";
+	std::wcout << L"Darkest secret: " << this->darkest_secret << L"\n";
 }
 
 void Contact::print_header(void)
 {
-	Contact::print_delim();
-	std::wcout << "|" << std::setw(DISPLAY_WIDTH) << "INDEX"
-			   << "|" << std::setw(DISPLAY_WIDTH) << "FIRST NAME"
-			   << "|" << std::setw(DISPLAY_WIDTH) << "LAST NAME"
-			   << "|" << std::setw(DISPLAY_WIDTH) << "NICKNAME"
-			   << "|\n";
-	Contact::print_delim();
+	Contact::print_delim_top();
+	std::wcout << L"┝" << std::setw(DISPLAY_WIDTH) << L"INDEX" << L"│"
+			   << std::setw(DISPLAY_WIDTH) << L"FIRST NAME" << L"│"
+			   << std::setw(DISPLAY_WIDTH) << L"LAST NAME" << L"│"
+			   << std::setw(DISPLAY_WIDTH) << L"NICKNAME" << L"│\n";
 }
 
-void Contact::print_delim(void)
+void Contact::print_delim_top(void)
 {
-	std::wcout << "+" << std::setfill(L'-') << std::setw(DISPLAY_WIDTH + 1)
-			   << "+" << std::setw(DISPLAY_WIDTH + 1) << "+"
-			   << std::setw(DISPLAY_WIDTH + 1) << "+"
-			   << std::setw(DISPLAY_WIDTH + 1) << "+" << "\n"
+	std::wcout << L"╭" << std::setfill(L'─') << std::setw(DISPLAY_WIDTH + 1)
+			   << L"┬" << std::setw(DISPLAY_WIDTH + 1) << L"┬"
+			   << std::setw(DISPLAY_WIDTH + 1) << L"┬"
+			   << std::setw(DISPLAY_WIDTH + 1) << L"╮" << L"\n"
+			   << std::setfill(L' ');
+}
+
+void Contact::print_delim_middle(void)
+{
+	std::wcout << L"├" << std::setfill(L'─') << std::setw(DISPLAY_WIDTH + 1)
+			   << L"┼" << std::setw(DISPLAY_WIDTH + 1) << L"┼"
+			   << std::setw(DISPLAY_WIDTH + 1) << L"┼"
+			   << std::setw(DISPLAY_WIDTH + 1) << L"┤" << L"\n"
+			   << std::setfill(L' ');
+}
+
+void Contact::print_delim_bottom(void)
+{
+	std::wcout << L"╰" << std::setfill(L'─') << std::setw(DISPLAY_WIDTH + 1)
+			   << L"┴" << std::setw(DISPLAY_WIDTH + 1) << L"┴"
+			   << std::setw(DISPLAY_WIDTH + 1) << L"┴"
+			   << std::setw(DISPLAY_WIDTH + 1) << L"╯" << L"\n"
 			   << std::setfill(L' ');
 }
 
