@@ -14,7 +14,7 @@ class Contact {
 	std::wstring darkest_secret;
 
 	bool prompt_to_fill(void);
-	void print(int index);
+	void print_preview(int index);
 	void print_full(void);
 	static void print_header(void);
 	static void print_delim_top(void);

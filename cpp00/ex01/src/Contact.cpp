@@ -16,7 +16,7 @@ bool Contact::prompt_to_fill(void)
 	return true;
 }
 
-void Contact::print(int index)
+void Contact::print_preview(int index)
 {
 	std::wcout << L"┝" << std::setw(DISPLAY_WIDTH) << index << L"│"
 			   << Contact::_get_printable_str(this->first_name) << L"│"

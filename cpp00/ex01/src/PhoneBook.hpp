@@ -8,19 +8,19 @@ class PhoneBook {
   public:
 	static const int MAX_CONTACTS = 8;
 
-	void add(void);
-	void search(void);
-
 	PhoneBook(void);
 	~PhoneBook(void);
+
+	void add(void);
+	void search(void);
 
   private:
 	Contact _contacts[PhoneBook::MAX_CONTACTS];
 	int _contact_count;
 	int _index_new_contact;
 
-	bool _prompt_index(int &index);
 	void _print_contacts(void);
+	bool _prompt_index(int &index);
 	Contact &_index(int i);
 };
 

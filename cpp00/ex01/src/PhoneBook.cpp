@@ -47,7 +47,7 @@ void PhoneBook::_print_contacts(void)
 
 	for (int i = 0; i < this->_contact_count; ++i) {
 		Contact::print_delim_middle();
-		this->_index(i).print(i);
+		this->_index(i).print_preview(i);
 	}
 	Contact::print_delim_bottom();
 }
