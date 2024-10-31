@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 {
 	std::wstring wcs = L"* LOUD AND UNBEARABLE FEEDBACK NOISE *";
 
-	std::setlocale(LC_CTYPE, "");
+	setlocale(LC_CTYPE, "");
 	if (argc > 1) {
 		wcs = concat_str_arr(&argv[1]);
 		str_toupper(wcs);
@@ -48,19 +48,19 @@ static std::wstring convert_to_wstring(const char *mbs)
 	len = wcslen(mbs);
 	if (len) {
 		wcs.resize(len);
-		std::mbstowcs(&wcs.at(0), mbs, len);
+		mbstowcs(&wcs.at(0), mbs, len);
 	}
 	return wcs;
 }
 
 static size_t wcslen(const char *mbs)
 {
-	return std::mbstowcs(NULL, mbs, 0);
+	return mbstowcs(NULL, mbs, 0);
 }
 
 static void str_toupper(std::wstring &wcs)
 {
 	for (std::wstring::iterator it = wcs.begin(); it != wcs.end(); ++it) {
-		*it = std::towupper(*it);
+		*it = towupper(*it);
 	}
 }
