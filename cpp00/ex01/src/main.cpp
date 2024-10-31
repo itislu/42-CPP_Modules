@@ -5,20 +5,20 @@
 int main(void)
 {
 	PhoneBook phonebook;
-	std::string input;
+	std::wstring input;
 
 	while (true) {
 		std::cout << "Input a command [ADD, SEARCH, EXIT]: ";
-		if (!std::getline(std::cin, input)) {
+		if (!std::getline(std::wcin, input)) {
 			break;
 		}
-		if (input == "ADD") {
+		if (input == L"ADD") {
 			phonebook.add();
 		}
-		else if (input == "SEARCH") {
+		else if (input == L"SEARCH") {
 			phonebook.search();
 		}
-		else if (input == "EXIT") {
+		else if (input == L"EXIT") {
 			break;
 		}
 		else {
