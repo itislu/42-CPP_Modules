@@ -21,11 +21,11 @@ bool Contact::prompt_to_fill(void)
 void Contact::print(int index)
 {
 	std::wcout << "|" << std::setw(DISPLAY_WIDTH) << index << "|"
-			  << std::setw(DISPLAY_WIDTH) << get_printable_str(this->first_name)
-			  << "|" << std::setw(DISPLAY_WIDTH)
-			  << get_printable_str(this->last_name) << "|"
-			  << std::setw(DISPLAY_WIDTH) << get_printable_str(this->nickname)
-			  << "|\n";
+			   << std::setw(DISPLAY_WIDTH)
+			   << get_printable_str(this->first_name) << "|"
+			   << std::setw(DISPLAY_WIDTH) << get_printable_str(this->last_name)
+			   << "|" << std::setw(DISPLAY_WIDTH)
+			   << get_printable_str(this->nickname) << "|\n";
 }
 
 static std::wstring get_printable_str(std::wstring &str)
@@ -50,19 +50,19 @@ void Contact::print_full(void)
 void Contact::print_header(void)
 {
 	Contact::print_delim();
-	std::cout << "|" << std::setw(DISPLAY_WIDTH) << "INDEX"
-			  << "|" << std::setw(DISPLAY_WIDTH) << "FIRST NAME"
-			  << "|" << std::setw(DISPLAY_WIDTH) << "LAST NAME"
-			  << "|" << std::setw(DISPLAY_WIDTH) << "NICKNAME"
-			  << "|\n";
+	std::wcout << "|" << std::setw(DISPLAY_WIDTH) << "INDEX"
+			   << "|" << std::setw(DISPLAY_WIDTH) << "FIRST NAME"
+			   << "|" << std::setw(DISPLAY_WIDTH) << "LAST NAME"
+			   << "|" << std::setw(DISPLAY_WIDTH) << "NICKNAME"
+			   << "|\n";
 	Contact::print_delim();
 }
 
 void Contact::print_delim(void)
 {
-	std::cout << "+" << std::setfill('-') << std::setw(DISPLAY_WIDTH + 1) << "+"
-			  << std::setw(DISPLAY_WIDTH + 1) << "+"
-			  << std::setw(DISPLAY_WIDTH + 1) << "+"
-			  << std::setw(DISPLAY_WIDTH + 1) << "+" << "\n"
-			  << std::setfill(' ');
+	std::wcout << "+" << std::setfill(L'-') << std::setw(DISPLAY_WIDTH + 1)
+			   << "+" << std::setw(DISPLAY_WIDTH + 1) << "+"
+			   << std::setw(DISPLAY_WIDTH + 1) << "+"
+			   << std::setw(DISPLAY_WIDTH + 1) << "+" << "\n"
+			   << std::setfill(L' ');
 }

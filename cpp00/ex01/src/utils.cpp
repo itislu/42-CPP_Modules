@@ -4,13 +4,13 @@
 bool prompt(const char *p, std::wstring &dest)
 {
 	while (std::wcin.good()) {
-		std::cout << p << ": ";
+		std::wcout << p << ": ";
 		if (!std::getline(std::wcin, dest)) {
-			std::cout << std::endl;
+			std::wcout << std::endl;
 			break;
 		}
 		else if (dest.length() == 0) {
-			std::cout << p << " cannot be empty!" << std::endl;
+			std::wcout << p << " cannot be empty!" << std::endl;
 		}
 		else {
 			return true;

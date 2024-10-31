@@ -7,8 +7,9 @@ int main(void)
 	PhoneBook phonebook;
 	std::wstring input;
 
+	setlocale(LC_CTYPE, "");
 	while (true) {
-		std::cout << "Input a command [ADD, SEARCH, EXIT]: ";
+		std::wcout << "Input a command [ADD, SEARCH, EXIT]: ";
 		if (!std::getline(std::wcin, input)) {
 			break;
 		}
@@ -22,8 +23,8 @@ int main(void)
 			break;
 		}
 		else {
-			std::cout << "Unknown command." << "\n";
+			std::wcout << "Unknown command." << "\n";
 		}
-		std::cout << std::endl;
+		std::wcout << std::endl;
 	}
 }
