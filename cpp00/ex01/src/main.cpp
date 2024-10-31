@@ -11,6 +11,7 @@ int main(void)
 	while (true) {
 		std::wcout << "Input a command [ADD, SEARCH, EXIT]: ";
 		if (!std::getline(std::wcin, input)) {
+			std::wcout << std::endl;
 			break;
 		}
 		if (input == L"ADD") {
