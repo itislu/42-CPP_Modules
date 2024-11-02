@@ -18,7 +18,7 @@ bool prompt(const wchar_t *p, std::wstring &dest)
 	}
 	std::wcin.ignore();
 	std::wcin.clear();
-	std::freopen("/dev/tty", "r", stdin);
+	freopen("/dev/tty", "r", stdin);
 	return false;
 }
 
