@@ -16,14 +16,13 @@ void PhoneBook::add(void)
 
 	if (!contact.prompt_to_fill()) {
 		std::wcout << L"Aborting adding this contact.\n";
+		return;
 	}
-	else {
-		this->_contact_count =
-			std::min(this->_contact_count + 1, PhoneBook::MAX_CONTACTS);
-		this->_index_new_contact =
-			(this->_index_new_contact + 1) % PhoneBook::MAX_CONTACTS;
-		std::wcout << L"Successfully added a new contact.\n";
-	}
+	this->_contact_count =
+		std::min(this->_contact_count + 1, PhoneBook::MAX_CONTACTS);
+	this->_index_new_contact =
+		(this->_index_new_contact + 1) % PhoneBook::MAX_CONTACTS;
+	std::wcout << L"Successfully added a new contact.\n";
 }
 
 void PhoneBook::search(void)
@@ -36,6 +35,7 @@ void PhoneBook::search(void)
 
 	int index;
 	if (!this->_prompt_index(index)) {
+		std::wcout << L"Aborting this search.\n";
 		return;
 	}
 	this->_index(index).print_full();
@@ -58,7 +58,6 @@ bool PhoneBook::_prompt_index(int &index) const
 
 	while (true) {
 		if (!prompt(L"Index of contact", input)) {
-			std::wcout << L"Aborting this search.\n";
 			return false;
 		}
 		std::wistringstream iss(input);
