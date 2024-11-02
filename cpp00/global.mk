@@ -171,16 +171,18 @@ all				:
 							echo -n $(MSG_FAILURE); \
 							exit 42; \
 						fi; \
-					fi
+					fi; \
+					echo -n $(MSG_USAGE)
+
 
 run opt san val valfd term clear: modes
 
 modes			:
 					if [ "$(RECOMPILE)" = "true" ]; then \
-						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) MSG_SUCCESS="" $(MAKE) re; \
+						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) MSG_SUCCESS="" MSG_USAGE="" $(MAKE) re; \
 						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) $(MAKE) clean; \
 					else \
-						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) $(MAKE) all; \
+						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) MSG_USAGE="" $(MAKE) all; \
 					fi
 					if [ "$(CLEAR)" = "true" ]; then \
 						clear; \
@@ -192,6 +194,8 @@ modes			:
 							exec bash --posix'"; \
 					elif [ "$(RUN)" = "true" ]; then \
 						$(ENV) "./$(NAME)" $(ARGS); \
+					else \
+						echo -n $(MSG_USAGE); \
 					fi
 
 re				:
