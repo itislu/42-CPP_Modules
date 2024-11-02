@@ -52,7 +52,7 @@ void PhoneBook::_print_contacts(void)
 	Contact::print_delim_bottom();
 }
 
-bool PhoneBook::_prompt_index(int &index)
+bool PhoneBook::_prompt_index(int &index) const
 {
 	std::wstring input;
 
@@ -83,8 +83,8 @@ bool PhoneBook::_prompt_index(int &index)
 	}
 }
 
-Contact &PhoneBook::_index(int i)
+Contact &PhoneBook::_index(const int i)
 {
-	int index = (i + this->_index_new_contact) % this->_contact_count;
+	const int index = (i + this->_index_new_contact) % this->_contact_count;
 	return this->_contacts[index];
 }

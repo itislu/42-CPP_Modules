@@ -16,7 +16,7 @@ bool Contact::prompt_to_fill(void)
 	return true;
 }
 
-void Contact::print_preview(int index)
+void Contact::print_preview(const int index) const
 {
 	std::wcout << L"┝" << std::setw(Contact::DISPLAY_WIDTH) << index << L"│"
 			   << Contact::_get_printable_str(this->first_name) << L"│"
@@ -24,7 +24,7 @@ void Contact::print_preview(int index)
 			   << Contact::_get_printable_str(this->nickname) << L"│\n";
 }
 
-void Contact::print_full(void)
+void Contact::print_full(void) const
 {
 	std::wcout << std::setw(18) << L"First name: " << this->first_name << L"\n";
 	std::wcout << std::setw(18) << L"Last name: " << this->last_name << L"\n";
@@ -74,12 +74,12 @@ void Contact::print_delim_bottom(void)
 			   << std::setfill(L' ');
 }
 
-std::wstring Contact::_get_printable_str(std::wstring &str)
+std::wstring Contact::_get_printable_str(const std::wstring &str)
 {
 	std::wstring result;
 	int width = 0;
 
-	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it) {
+	for (std::wstring::const_iterator it = str.begin(); it != str.end(); ++it) {
 		int w = wcwidth(*it);
 		if (w < 0) {
 			continue;

@@ -20,8 +20,8 @@ class PhoneBook {
 	int _index_new_contact;
 
 	void _print_contacts(void);
-	bool _prompt_index(int &index);
-	Contact &_index(int i);
+	bool _prompt_index(int &index) const;
+	Contact &_index(const int i);
 };
 
 #endif
