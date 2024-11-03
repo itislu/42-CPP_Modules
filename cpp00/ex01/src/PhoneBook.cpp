@@ -12,7 +12,7 @@ PhoneBook::~PhoneBook(void) {}
 
 void PhoneBook::add(void)
 {
-	Contact &contact = this->_contacts[this->_index_new_contact];
+	Contact& contact = this->_contacts[this->_index_new_contact];
 
 	if (!contact.prompt_to_fill()) {
 		std::wcout << L"Aborting adding this contact.\n";
@@ -52,7 +52,7 @@ void PhoneBook::_print_contacts(void)
 	Contact::print_delim_bottom();
 }
 
-bool PhoneBook::_prompt_index(int &index) const
+bool PhoneBook::_prompt_index(int& index) const
 {
 	std::wstring input;
 
@@ -82,7 +82,7 @@ bool PhoneBook::_prompt_index(int &index) const
 	}
 }
 
-Contact &PhoneBook::_index(const int i)
+Contact& PhoneBook::_index(const int i)
 {
 	const int index = (i + this->_index_new_contact) % this->_contact_count;
 	return this->_contacts[index];

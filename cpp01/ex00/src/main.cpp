@@ -1,11 +1,11 @@
 #include "Zombie.hpp"
 
-Zombie *newZombie(std::string name);
+Zombie* newZombie(std::string name);
 void randomChump(std::string name);
 
 int main(void)
 {
-	Zombie *zombie;
+	Zombie* zombie;
 
 	randomChump("Stack");
 

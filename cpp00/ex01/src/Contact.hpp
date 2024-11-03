@@ -17,7 +17,7 @@ public:
 	static const int display_width = 10;
 
 private:
-	static std::wstring _get_printable_str(const std::wstring &str);
+	static std::wstring _get_printable_str(const std::wstring& str);
 
 	std::wstring _first_name;
 	std::wstring _last_name;

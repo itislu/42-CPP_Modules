@@ -75,7 +75,7 @@ void Contact::print_delim_bottom(void)
 			   << std::setfill(L' ');
 }
 
-std::wstring Contact::_get_printable_str(const std::wstring &str)
+std::wstring Contact::_get_printable_str(const std::wstring& str)
 {
 	std::wstring result;
 	int width = 0;

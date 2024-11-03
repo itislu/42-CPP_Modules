@@ -72,8 +72,9 @@ void Account::makeDeposit(int deposit)
 	Account::_displayTimestamp();
 	std::cout << " "
 			  << "index:" << this->_accountIndex << DELIM
-			  << "p_amount:" << p_amount << DELIM << "deposit:" << deposit
-			  << DELIM << "amount:" << this->_amount << DELIM
+			  << "p_amount:" << p_amount << DELIM
+			  << "deposit:" << deposit << DELIM
+			  << "amount:" << this->_amount << DELIM
 			  << "nb_deposits:" << this->_nbDeposits << std::endl;
 }
 
@@ -84,7 +85,8 @@ bool Account::makeWithdrawal(int withdrawal)
 	Account::_displayTimestamp();
 	std::cout << " "
 			  << "index:" << this->_accountIndex << DELIM
-			  << "p_amount:" << p_amount << DELIM << "withdrawal:";
+			  << "p_amount:" << p_amount << DELIM
+			  << "withdrawal:";
 	if (withdrawal <= this->_amount) {
 		this->_amount -= withdrawal;
 		this->_nbWithdrawals++;
@@ -118,7 +120,7 @@ void Account::displayStatus(void) const
 void Account::_displayTimestamp(void)
 {
 	time_t timestamp = time(NULL);
-	struct tm *datetime = localtime(&timestamp);
+	struct tm* datetime = localtime(&timestamp);
 	if (!datetime) {
 		return;
 	}

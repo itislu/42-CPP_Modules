@@ -1,10 +1,10 @@
 #include "Zombie.hpp"
 #include <sstream>
 
-Zombie *zombieHorde(int N, std::string name);
-static int to_int(char *str);
+Zombie* zombieHorde(int N, std::string name);
+static int to_int(char* str);
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	int n = 10;
 	std::string name("Frank");
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		name = argv[2];
 	}
 
-	Zombie *horde = zombieHorde(n, name);
+	Zombie* horde = zombieHorde(n, name);
 
 	for (int i = 0; i < n; ++i) {
 		horde[i].announce();
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	delete[] horde;
 }
 
-static int to_int(char *str)
+static int to_int(char* str)
 {
 	int res = 0;
 	std::istringstream iss(str);

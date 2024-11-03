@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 
-bool prompt(const wchar_t *p, std::wstring &dest)
+bool prompt(const wchar_t* p, std::wstring& dest)
 {
 	while (std::wcin.good()) {
 		std::wcout << p << L": ";
@@ -22,7 +22,7 @@ bool prompt(const wchar_t *p, std::wstring &dest)
 	return false;
 }
 
-bool str_isdigit(std::wstring &str)
+bool str_isdigit(std::wstring& str)
 {
 	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it) {
 		if (!std::isdigit(*it)) {

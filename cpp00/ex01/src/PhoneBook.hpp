@@ -15,8 +15,8 @@ public:
 
 private:
 	void _print_contacts(void);
-	bool _prompt_index(int &index) const;
-	Contact &_index(const int i);
+	bool _prompt_index(int& index) const;
+	Contact& _index(const int i);
 
 	Contact _contacts[PhoneBook::max_contacts];
 	int _contact_count;
