@@ -5,7 +5,8 @@
 int main(void)
 {
 	PhoneBook phonebook;
-	std::wstring input;
+	// Valgrind bug: https://bugs.kde.org/show_bug.cgi?id=397083
+	std::wstring input(L"Reserving some space for you, Valgrind");
 
 	setlocale(LC_CTYPE, "");
 	while (true) {
