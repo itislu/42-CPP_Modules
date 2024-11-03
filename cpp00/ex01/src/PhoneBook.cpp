@@ -18,8 +18,9 @@ void PhoneBook::add()
 		std::wcout << L"Aborting adding this contact.\n";
 		return;
 	}
-	this->_contact_count =
-		std::min(this->_contact_count + 1, PhoneBook::max_contacts);
+	this->_contact_count = this->_contact_count + 1 < PhoneBook::max_contacts
+							   ? this->_contact_count + 1
+							   : PhoneBook::max_contacts;
 	this->_index_new_contact =
 		(this->_index_new_contact + 1) % PhoneBook::max_contacts;
 	std::wcout << L"Successfully added a new contact.\n";
