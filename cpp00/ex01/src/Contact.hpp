@@ -4,7 +4,7 @@
 #include <string>
 
 class Contact {
-  public:
+public:
 	static const int display_width = 10;
 
 	static void print_header(void);
@@ -16,7 +16,7 @@ class Contact {
 	void print_preview(const int index) const;
 	void print_full(void) const;
 
-  private:
+private:
 	std::wstring _first_name;
 	std::wstring _last_name;
 	std::wstring _nickname;

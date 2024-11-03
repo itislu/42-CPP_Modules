@@ -4,7 +4,7 @@
 #include <string>
 
 class Zombie {
-  public:
+public:
 	Zombie(void);
 	Zombie(std::string name);
 	~Zombie(void);
@@ -12,7 +12,7 @@ class Zombie {
 	void announce(void);
 	void set_name(std::string name);
 
-  private:
+private:
 	std::string _name;
 };
 
