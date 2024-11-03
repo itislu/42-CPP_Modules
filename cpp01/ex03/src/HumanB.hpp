@@ -9,6 +9,7 @@ public:
 	HumanB(const std::string& name);
 
 	void setWeapon(Weapon& weapon);
+	void dropWeapon();
 	void attack() const;
 
 private:
