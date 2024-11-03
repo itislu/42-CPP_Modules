@@ -6,7 +6,6 @@
 class PhoneBook {
 public:
 	PhoneBook();
-	~PhoneBook();
 
 	void add();
 	void search();
@@ -16,7 +15,7 @@ public:
 private:
 	void _print_contacts();
 	bool _prompt_index(int& index) const;
-	Contact& _index(const int i);
+	Contact& _index(int i);
 
 	Contact _contacts[PhoneBook::max_contacts];
 	int _contact_count;

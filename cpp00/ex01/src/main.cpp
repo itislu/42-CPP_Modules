@@ -1,4 +1,5 @@
 #include "PhoneBook.hpp"
+#include <clocale>
 #include <iostream>
 #include <string>
 
@@ -12,7 +13,7 @@ int main()
 	while (true) {
 		std::wcout << L"Input a command [ADD, SEARCH, EXIT]: ";
 		if (!std::getline(std::wcin, input)) {
-			std::wcout << std::endl;
+			std::wcout << '\n';
 			break;
 		}
 		if (input == L"ADD") {
@@ -27,6 +28,6 @@ int main()
 		else {
 			std::wcout << L"Unknown command.\n";
 		}
-		std::wcout << std::endl;
+		std::wcout << '\n';
 	}
 }

@@ -1,4 +1,7 @@
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+
 #include "PhoneBook.hpp"
+#include "Contact.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <sstream>
@@ -7,8 +10,6 @@
 const int PhoneBook::max_contacts;
 
 PhoneBook::PhoneBook() : _contact_count(0), _index_new_contact(0) {}
-
-PhoneBook::~PhoneBook() {}
 
 void PhoneBook::add()
 {
@@ -34,7 +35,7 @@ void PhoneBook::search()
 	}
 	this->_print_contacts();
 
-	int index;
+	int index = 0;
 	if (!this->_prompt_index(index)) {
 		std::wcout << L"Aborting this search.\n";
 		return;
@@ -63,18 +64,18 @@ bool PhoneBook::_prompt_index(int& index) const
 		}
 		std::wistringstream iss(input);
 		if (!str_isdigit(input) || !(iss >> index)) {
-			std::wcout << L"Please enter a number." << std::endl;
+			std::wcout << L"Please enter a number." << '\n';
 		}
 		else if (index >= this->_contact_count) {
 			if (this->_contact_count == 1) {
 				std::wcout << L"Index out of range. There is only "
 						   << this->_contact_count << L" contact so far!"
-						   << std::endl;
+						   << '\n';
 			}
 			else {
 				std::wcout << L"Index out of range. There are only "
 						   << this->_contact_count << L" contacts so far!"
-						   << std::endl;
+						   << '\n';
 			}
 		}
 		else {
@@ -83,8 +84,10 @@ bool PhoneBook::_prompt_index(int& index) const
 	}
 }
 
-Contact& PhoneBook::_index(const int i)
+Contact& PhoneBook::_index(int i)
 {
 	const int index = (i + this->_index_new_contact) % this->_contact_count;
 	return this->_contacts[index];
 }
+
+// NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)

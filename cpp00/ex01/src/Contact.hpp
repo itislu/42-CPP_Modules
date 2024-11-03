@@ -11,7 +11,7 @@ public:
 	static void print_delim_bottom();
 
 	bool prompt_to_fill();
-	void print_preview(const int index) const;
+	void print_preview(int index) const;
 	void print_full() const;
 
 	static const int display_width = 10;

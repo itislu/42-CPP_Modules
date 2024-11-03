@@ -1,16 +1,18 @@
+#include <cctype>
 #include <cstdio>
 #include <iostream>
+#include <string>
 
 bool prompt(const wchar_t* p, std::wstring& dest)
 {
 	while (std::wcin.good()) {
 		std::wcout << p << L": ";
 		if (!std::getline(std::wcin, dest)) {
-			std::wcout << std::endl;
+			std::wcout << '\n';
 			break;
 		}
-		else if (dest.length() == 0) {
-			std::wcout << p << L" cannot be empty!" << std::endl;
+		if (dest.empty()) {
+			std::wcout << p << L" cannot be empty!" << '\n';
 		}
 		else {
 			return true;
@@ -25,7 +27,7 @@ bool prompt(const wchar_t* p, std::wstring& dest)
 bool str_isdigit(std::wstring& str)
 {
 	for (std::wstring::iterator it = str.begin(); it != str.end(); ++it) {
-		if (!std::isdigit(*it)) {
+		if (!(bool)std::isdigit(*it)) {
 			return false;
 		}
 	}

@@ -3,20 +3,19 @@
 #include <cstdio>
 #include <iomanip>
 #include <iostream>
+#include <string>
+#include <wchar.h>
 
 bool Contact::prompt_to_fill()
 {
-	if (!prompt(L"First name", this->_first_name)
-		|| !prompt(L"Last name", this->_last_name)
-		|| !prompt(L"Nickname", this->_nickname)
-		|| !prompt(L"Phone number", this->_phone_number)
-		|| !prompt(L"Darkest secret", this->_darkest_secret)) {
-		return false;
-	}
-	return true;
+	return prompt(L"First name", this->_first_name)
+		   && prompt(L"Last name", this->_last_name)
+		   && prompt(L"Nickname", this->_nickname)
+		   && prompt(L"Phone number", this->_phone_number)
+		   && prompt(L"Darkest secret", this->_darkest_secret);
 }
 
-void Contact::print_preview(const int index) const
+void Contact::print_preview(int index) const
 {
 	std::wcout << L"┝" << std::setw(Contact::display_width) << index << L"│"
 			   << Contact::_get_printable_str(this->_first_name) << L"│"
@@ -26,14 +25,18 @@ void Contact::print_preview(const int index) const
 
 void Contact::print_full() const
 {
-	std::wcout << std::setw(18) << L"First name: " << this->_first_name
-			   << L"\n";
-	std::wcout << std::setw(18) << L"Last name: " << this->_last_name << L"\n";
-	std::wcout << std::setw(18) << L"Nickname: " << this->_nickname << L"\n";
-	std::wcout << std::setw(18) << L"Phone number: " << this->_phone_number
-			   << L"\n";
-	std::wcout << std::setw(18) << L"Darkest secret: " << this->_darkest_secret
-			   << L"\n";
+	static const int max_key_width = 18;
+
+	std::wcout << std::setw(max_key_width) << L"First name: "
+			   << this->_first_name << L'\n';
+	std::wcout << std::setw(max_key_width) << L"Last name: " << this->_last_name
+			   << L'\n';
+	std::wcout << std::setw(max_key_width) << L"Nickname: " << this->_nickname
+			   << L'\n';
+	std::wcout << std::setw(max_key_width) << L"Phone number: "
+			   << this->_phone_number << L'\n';
+	std::wcout << std::setw(max_key_width) << L"Darkest secret: "
+			   << this->_darkest_secret << L'\n';
 }
 
 void Contact::print_header()
@@ -51,7 +54,7 @@ void Contact::print_delim_top()
 			   << std::setw(Contact::display_width + 1) << L"┬"
 			   << std::setw(Contact::display_width + 1) << L"┬"
 			   << std::setw(Contact::display_width + 1) << L"┬"
-			   << std::setw(Contact::display_width + 1) << L"╮" << L"\n"
+			   << std::setw(Contact::display_width + 1) << L"╮" << L'\n'
 			   << std::setfill(L' ');
 }
 
@@ -61,7 +64,7 @@ void Contact::print_delim_middle()
 			   << std::setw(Contact::display_width + 1) << L"┼"
 			   << std::setw(Contact::display_width + 1) << L"┼"
 			   << std::setw(Contact::display_width + 1) << L"┼"
-			   << std::setw(Contact::display_width + 1) << L"┤" << L"\n"
+			   << std::setw(Contact::display_width + 1) << L"┤" << L'\n'
 			   << std::setfill(L' ');
 }
 
@@ -71,7 +74,7 @@ void Contact::print_delim_bottom()
 			   << std::setw(Contact::display_width + 1) << L"┴"
 			   << std::setw(Contact::display_width + 1) << L"┴"
 			   << std::setw(Contact::display_width + 1) << L"┴"
-			   << std::setw(Contact::display_width + 1) << L"╯" << L"\n"
+			   << std::setw(Contact::display_width + 1) << L"╯" << L'\n'
 			   << std::setfill(L' ');
 }
 
