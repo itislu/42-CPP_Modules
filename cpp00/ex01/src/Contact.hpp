@@ -5,14 +5,14 @@
 
 class Contact {
 public:
-	static void print_header(void);
-	static void print_delim_top(void);
-	static void print_delim_middle(void);
-	static void print_delim_bottom(void);
+	static void print_header();
+	static void print_delim_top();
+	static void print_delim_middle();
+	static void print_delim_bottom();
 
-	bool prompt_to_fill(void);
+	bool prompt_to_fill();
 	void print_preview(const int index) const;
-	void print_full(void) const;
+	void print_full() const;
 
 	static const int display_width = 10;
 

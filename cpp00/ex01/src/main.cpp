@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-int main(void)
+int main()
 {
 	PhoneBook phonebook;
 	// Valgrind bug: https://bugs.kde.org/show_bug.cgi?id=397083

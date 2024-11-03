@@ -6,11 +6,11 @@
 
 const int PhoneBook::max_contacts;
 
-PhoneBook::PhoneBook(void) : _contact_count(0), _index_new_contact(0) {}
+PhoneBook::PhoneBook() : _contact_count(0), _index_new_contact(0) {}
 
-PhoneBook::~PhoneBook(void) {}
+PhoneBook::~PhoneBook() {}
 
-void PhoneBook::add(void)
+void PhoneBook::add()
 {
 	Contact& contact = this->_contacts[this->_index_new_contact];
 
@@ -25,7 +25,7 @@ void PhoneBook::add(void)
 	std::wcout << L"Successfully added a new contact.\n";
 }
 
-void PhoneBook::search(void)
+void PhoneBook::search()
 {
 	if (this->_contact_count == 0) {
 		std::wcout << L"The phonebook does not have any contacts yet.\n";
@@ -41,7 +41,7 @@ void PhoneBook::search(void)
 	this->_index(index).print_full();
 }
 
-void PhoneBook::_print_contacts(void)
+void PhoneBook::_print_contacts()
 {
 	Contact::print_header();
 

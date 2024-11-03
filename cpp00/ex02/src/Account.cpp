@@ -9,27 +9,27 @@ int Account::_totalNbWithdrawals;
 
 static const char DELIM = ';';
 
-int Account::getNbAccounts(void)
+int Account::getNbAccounts()
 {
 	return Account::_nbAccounts;
 }
 
-int Account::getTotalAmount(void)
+int Account::getTotalAmount()
 {
 	return Account::_totalAmount;
 }
 
-int Account::getNbDeposits(void)
+int Account::getNbDeposits()
 {
 	return Account::_totalNbDeposits;
 }
 
-int Account::getNbWithdrawals(void)
+int Account::getNbWithdrawals()
 {
 	return Account::_totalNbWithdrawals;
 }
 
-void Account::displayAccountsInfos(void)
+void Account::displayAccountsInfos()
 {
 	Account::_displayTimestamp();
 	std::cout << " "
@@ -53,7 +53,7 @@ Account::Account(int initial_deposit) :
 	Account::_totalAmount += this->_amount;
 }
 
-Account::~Account(void)
+Account::~Account()
 {
 	Account::_displayTimestamp();
 	std::cout << " "
@@ -102,12 +102,12 @@ bool Account::makeWithdrawal(int withdrawal)
 	}
 }
 
-int Account::checkAmount(void) const
+int Account::checkAmount() const
 {
 	return this->_amount;
 }
 
-void Account::displayStatus(void) const
+void Account::displayStatus() const
 {
 	Account::_displayTimestamp();
 	std::cout << " "
@@ -117,7 +117,7 @@ void Account::displayStatus(void) const
 			  << "withdrawals:" << this->_nbWithdrawals << std::endl;
 }
 
-void Account::_displayTimestamp(void)
+void Account::_displayTimestamp()
 {
 	time_t timestamp = time(NULL);
 	struct tm* datetime = localtime(&timestamp);

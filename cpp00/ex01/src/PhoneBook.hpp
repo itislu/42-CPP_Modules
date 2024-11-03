@@ -5,16 +5,16 @@
 
 class PhoneBook {
 public:
-	PhoneBook(void);
-	~PhoneBook(void);
+	PhoneBook();
+	~PhoneBook();
 
-	void add(void);
-	void search(void);
+	void add();
+	void search();
 
 	static const int max_contacts = 8;
 
 private:
-	void _print_contacts(void);
+	void _print_contacts();
 	bool _prompt_index(int& index) const;
 	Contact& _index(const int i);
 

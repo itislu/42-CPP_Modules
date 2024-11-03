@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-bool Contact::prompt_to_fill(void)
+bool Contact::prompt_to_fill()
 {
 	if (!prompt(L"First name", this->_first_name)
 		|| !prompt(L"Last name", this->_last_name)
@@ -24,7 +24,7 @@ void Contact::print_preview(const int index) const
 			   << Contact::_get_printable_str(this->_nickname) << L"│\n";
 }
 
-void Contact::print_full(void) const
+void Contact::print_full() const
 {
 	std::wcout << std::setw(18) << L"First name: " << this->_first_name
 			   << L"\n";
@@ -36,7 +36,7 @@ void Contact::print_full(void) const
 			   << L"\n";
 }
 
-void Contact::print_header(void)
+void Contact::print_header()
 {
 	Contact::print_delim_top();
 	std::wcout << L"┝" << std::setw(Contact::display_width) << L"INDEX" << L"│"
@@ -45,7 +45,7 @@ void Contact::print_header(void)
 			   << std::setw(Contact::display_width) << L"NICKNAME" << L"│\n";
 }
 
-void Contact::print_delim_top(void)
+void Contact::print_delim_top()
 {
 	std::wcout << L"╭" << std::setfill(L'─')
 			   << std::setw(Contact::display_width + 1) << L"┬"
@@ -55,7 +55,7 @@ void Contact::print_delim_top(void)
 			   << std::setfill(L' ');
 }
 
-void Contact::print_delim_middle(void)
+void Contact::print_delim_middle()
 {
 	std::wcout << L"├" << std::setfill(L'─')
 			   << std::setw(Contact::display_width + 1) << L"┼"
@@ -65,7 +65,7 @@ void Contact::print_delim_middle(void)
 			   << std::setfill(L' ');
 }
 
-void Contact::print_delim_bottom(void)
+void Contact::print_delim_bottom()
 {
 	std::wcout << L"╰" << std::setfill(L'─')
 			   << std::setw(Contact::display_width + 1) << L"┴"
