@@ -11,9 +11,9 @@ public:
 	void announce(void);
 
 private:
-	std::string _name;
-
 	Zombie(void);
+
+	std::string _name;
 };
 
 #endif
