@@ -6,11 +6,11 @@
 
 bool Contact::prompt_to_fill(void)
 {
-	if (!prompt(L"First name", this->first_name)
-		|| !prompt(L"Last name", this->last_name)
-		|| !prompt(L"Nickname", this->nickname)
-		|| !prompt(L"Phone number", this->phone_number)
-		|| !prompt(L"Darkest secret", this->darkest_secret)) {
+	if (!prompt(L"First name", this->_first_name)
+		|| !prompt(L"Last name", this->_last_name)
+		|| !prompt(L"Nickname", this->_nickname)
+		|| !prompt(L"Phone number", this->_phone_number)
+		|| !prompt(L"Darkest secret", this->_darkest_secret)) {
 		return false;
 	}
 	return true;
@@ -19,19 +19,20 @@ bool Contact::prompt_to_fill(void)
 void Contact::print_preview(const int index) const
 {
 	std::wcout << L"┝" << std::setw(Contact::DISPLAY_WIDTH) << index << L"│"
-			   << Contact::_get_printable_str(this->first_name) << L"│"
-			   << Contact::_get_printable_str(this->last_name) << L"│"
-			   << Contact::_get_printable_str(this->nickname) << L"│\n";
+			   << Contact::_get_printable_str(this->_first_name) << L"│"
+			   << Contact::_get_printable_str(this->_last_name) << L"│"
+			   << Contact::_get_printable_str(this->_nickname) << L"│\n";
 }
 
 void Contact::print_full(void) const
 {
-	std::wcout << std::setw(18) << L"First name: " << this->first_name << L"\n";
-	std::wcout << std::setw(18) << L"Last name: " << this->last_name << L"\n";
-	std::wcout << std::setw(18) << L"Nickname: " << this->nickname << L"\n";
-	std::wcout << std::setw(18) << L"Phone number: " << this->phone_number
+	std::wcout << std::setw(18) << L"First name: " << this->_first_name
 			   << L"\n";
-	std::wcout << std::setw(18) << L"Darkest secret: " << this->darkest_secret
+	std::wcout << std::setw(18) << L"Last name: " << this->_last_name << L"\n";
+	std::wcout << std::setw(18) << L"Nickname: " << this->_nickname << L"\n";
+	std::wcout << std::setw(18) << L"Phone number: " << this->_phone_number
+			   << L"\n";
+	std::wcout << std::setw(18) << L"Darkest secret: " << this->_darkest_secret
 			   << L"\n";
 }
 
