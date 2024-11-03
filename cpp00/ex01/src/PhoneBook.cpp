@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-const int PhoneBook::MAX_CONTACTS;
+const int PhoneBook::max_contacts;
 
 PhoneBook::PhoneBook(void) : _contact_count(0), _index_new_contact(0) {}
 
@@ -19,9 +19,9 @@ void PhoneBook::add(void)
 		return;
 	}
 	this->_contact_count =
-		std::min(this->_contact_count + 1, PhoneBook::MAX_CONTACTS);
+		std::min(this->_contact_count + 1, PhoneBook::max_contacts);
 	this->_index_new_contact =
-		(this->_index_new_contact + 1) % PhoneBook::MAX_CONTACTS;
+		(this->_index_new_contact + 1) % PhoneBook::max_contacts;
 	std::wcout << L"Successfully added a new contact.\n";
 }
 

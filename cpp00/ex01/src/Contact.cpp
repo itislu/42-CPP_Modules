@@ -18,7 +18,7 @@ bool Contact::prompt_to_fill(void)
 
 void Contact::print_preview(const int index) const
 {
-	std::wcout << L"┝" << std::setw(Contact::DISPLAY_WIDTH) << index << L"│"
+	std::wcout << L"┝" << std::setw(Contact::display_width) << index << L"│"
 			   << Contact::_get_printable_str(this->_first_name) << L"│"
 			   << Contact::_get_printable_str(this->_last_name) << L"│"
 			   << Contact::_get_printable_str(this->_nickname) << L"│\n";
@@ -39,39 +39,39 @@ void Contact::print_full(void) const
 void Contact::print_header(void)
 {
 	Contact::print_delim_top();
-	std::wcout << L"┝" << std::setw(Contact::DISPLAY_WIDTH) << L"INDEX" << L"│"
-			   << std::setw(Contact::DISPLAY_WIDTH) << L"FIRST NAME" << L"│"
-			   << std::setw(Contact::DISPLAY_WIDTH) << L"LAST NAME" << L"│"
-			   << std::setw(Contact::DISPLAY_WIDTH) << L"NICKNAME" << L"│\n";
+	std::wcout << L"┝" << std::setw(Contact::display_width) << L"INDEX" << L"│"
+			   << std::setw(Contact::display_width) << L"FIRST NAME" << L"│"
+			   << std::setw(Contact::display_width) << L"LAST NAME" << L"│"
+			   << std::setw(Contact::display_width) << L"NICKNAME" << L"│\n";
 }
 
 void Contact::print_delim_top(void)
 {
 	std::wcout << L"╭" << std::setfill(L'─')
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┬"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┬"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┬"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"╮" << L"\n"
+			   << std::setw(Contact::display_width + 1) << L"┬"
+			   << std::setw(Contact::display_width + 1) << L"┬"
+			   << std::setw(Contact::display_width + 1) << L"┬"
+			   << std::setw(Contact::display_width + 1) << L"╮" << L"\n"
 			   << std::setfill(L' ');
 }
 
 void Contact::print_delim_middle(void)
 {
 	std::wcout << L"├" << std::setfill(L'─')
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┼"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┼"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┼"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┤" << L"\n"
+			   << std::setw(Contact::display_width + 1) << L"┼"
+			   << std::setw(Contact::display_width + 1) << L"┼"
+			   << std::setw(Contact::display_width + 1) << L"┼"
+			   << std::setw(Contact::display_width + 1) << L"┤" << L"\n"
 			   << std::setfill(L' ');
 }
 
 void Contact::print_delim_bottom(void)
 {
 	std::wcout << L"╰" << std::setfill(L'─')
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┴"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┴"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"┴"
-			   << std::setw(Contact::DISPLAY_WIDTH + 1) << L"╯" << L"\n"
+			   << std::setw(Contact::display_width + 1) << L"┴"
+			   << std::setw(Contact::display_width + 1) << L"┴"
+			   << std::setw(Contact::display_width + 1) << L"┴"
+			   << std::setw(Contact::display_width + 1) << L"╯" << L"\n"
 			   << std::setfill(L' ');
 }
 
@@ -85,8 +85,8 @@ std::wstring Contact::_get_printable_str(const std::wstring &str)
 		if (w < 0) {
 			continue;
 		}
-		if (width + w > Contact::DISPLAY_WIDTH
-			|| (width + w == Contact::DISPLAY_WIDTH && it + 1 != str.end())) {
+		if (width + w > Contact::display_width
+			|| (width + w == Contact::display_width && it + 1 != str.end())) {
 			result.push_back(L'.');
 			width++;
 			break;
@@ -95,7 +95,7 @@ std::wstring Contact::_get_printable_str(const std::wstring &str)
 		width += w;
 	}
 
-	while (width < Contact::DISPLAY_WIDTH) {
+	while (width < Contact::display_width) {
 		result.insert(0, L" ");
 		width++;
 	}

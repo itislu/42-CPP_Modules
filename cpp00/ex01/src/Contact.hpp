@@ -5,7 +5,7 @@
 
 class Contact {
   public:
-	static const int DISPLAY_WIDTH = 10;
+	static const int display_width = 10;
 
 	static void print_header(void);
 	static void print_delim_top(void);

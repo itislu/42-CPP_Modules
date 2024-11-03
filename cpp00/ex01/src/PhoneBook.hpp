@@ -5,7 +5,7 @@
 
 class PhoneBook {
   public:
-	static const int MAX_CONTACTS = 8;
+	static const int max_contacts = 8;
 
 	PhoneBook(void);
 	~PhoneBook(void);
@@ -14,7 +14,7 @@ class PhoneBook {
 	void search(void);
 
   private:
-	Contact _contacts[PhoneBook::MAX_CONTACTS];
+	Contact _contacts[PhoneBook::max_contacts];
 	int _contact_count;
 	int _index_new_contact;
 
