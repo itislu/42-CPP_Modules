@@ -125,7 +125,7 @@ void Account::_displayTimestamp()
 	}
 
 	const int timestamp_len = 18;
-	std::string output(timestamp_len, '\0');
-	strftime(&output.at(0), timestamp_len, "[%Y%m%d_%H%M%S]", datetime);
-	std::cout << output;
+	char output[timestamp_len];
+	strftime((char *)output, timestamp_len, "[%Y%m%d_%H%M%S]", datetime);
+	std::cout << (char *)output;
 }
