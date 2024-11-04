@@ -1,6 +1,7 @@
 #include "Account.hpp"
 #include <ctime>
 #include <iostream>
+#include <string>
 
 int Account::_nbAccounts;
 int Account::_totalAmount;
@@ -36,7 +37,7 @@ void Account::displayAccountsInfos()
 			  << "accounts:" << Account::getNbAccounts() << DELIM
 			  << "total:" << Account::getTotalAmount() << DELIM
 			  << "deposits:" << Account::getNbDeposits() << DELIM
-			  << "withdrawals:" << Account::getNbWithdrawals() << std::endl;
+			  << "withdrawals:" << Account::getNbWithdrawals() << '\n';
 }
 
 Account::Account(int initial_deposit) :
@@ -48,7 +49,7 @@ Account::Account(int initial_deposit) :
 	Account::_displayTimestamp();
 	std::cout << " "
 			  << "index:" << this->_accountIndex << DELIM
-			  << "amount:" << this->_amount << DELIM << "created" << std::endl;
+			  << "amount:" << this->_amount << DELIM << "created" << '\n';
 	Account::_nbAccounts++;
 	Account::_totalAmount += this->_amount;
 }
@@ -58,7 +59,7 @@ Account::~Account()
 	Account::_displayTimestamp();
 	std::cout << " "
 			  << "index:" << this->_accountIndex << DELIM
-			  << "amount:" << this->_amount << DELIM << "closed" << std::endl;
+			  << "amount:" << this->_amount << DELIM << "closed" << '\n';
 }
 
 void Account::makeDeposit(int deposit)
@@ -75,7 +76,7 @@ void Account::makeDeposit(int deposit)
 			  << "p_amount:" << p_amount << DELIM
 			  << "deposit:" << deposit << DELIM
 			  << "amount:" << this->_amount << DELIM
-			  << "nb_deposits:" << this->_nbDeposits << std::endl;
+			  << "nb_deposits:" << this->_nbDeposits << '\n';
 }
 
 bool Account::makeWithdrawal(int withdrawal)
@@ -93,13 +94,11 @@ bool Account::makeWithdrawal(int withdrawal)
 		Account::_totalAmount -= withdrawal;
 		Account::_totalNbWithdrawals++;
 		std::cout << withdrawal << DELIM << "amount:" << this->_amount << DELIM
-				  << "nb_withdrawals:" << this->_nbWithdrawals << std::endl;
+				  << "nb_withdrawals:" << this->_nbWithdrawals << '\n';
 		return true;
 	}
-	else {
-		std::cout << "refused" << std::endl;
-		return false;
-	}
+	std::cout << "refused" << '\n';
+	return false;
 }
 
 int Account::checkAmount() const
@@ -114,18 +113,19 @@ void Account::displayStatus() const
 			  << "index:" << this->_accountIndex << DELIM
 			  << "amount:" << this->_amount << DELIM
 			  << "deposits:" << this->_nbDeposits << DELIM
-			  << "withdrawals:" << this->_nbWithdrawals << std::endl;
+			  << "withdrawals:" << this->_nbWithdrawals << '\n';
 }
 
 void Account::_displayTimestamp()
 {
 	time_t timestamp = time(NULL);
 	struct tm* datetime = localtime(&timestamp);
-	if (!datetime) {
+	if (datetime == NULL) {
 		return;
 	}
 
-	char output[18];
-	strftime(output, 18, "[%Y%m%d_%H%M%S]", datetime);
+	const int timestamp_len = 18;
+	std::string output(timestamp_len, '\0');
+	strftime(&output.at(0), timestamp_len, "[%Y%m%d_%H%M%S]", datetime);
 	std::cout << output;
 }
