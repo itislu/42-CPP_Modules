@@ -3,14 +3,14 @@
 
 #include <string>
 
-class Zombie {
+class Zombie { // NOLINT
 public:
 	Zombie();
-	Zombie(std::string name);
+	Zombie(const std::string& name);
 	~Zombie();
 
 	void announce();
-	void set_name(std::string name);
+	void set_name(const std::string& name);
 
 private:
 	std::string _name;

@@ -1,8 +1,11 @@
+// NOLINTBEGIN
+
 #include "Zombie.hpp"
 #include <sstream>
+#include <string>
 
 Zombie* zombieHorde(int N, std::string name);
-static int to_int(char* str);
+static int to_int(const char* str);
 
 int main(int argc, char* argv[])
 {
@@ -25,7 +28,7 @@ int main(int argc, char* argv[])
 	delete[] horde;
 }
 
-static int to_int(char* str)
+static int to_int(const char* str)
 {
 	int res = 0;
 	std::istringstream iss(str);
@@ -33,3 +36,5 @@ static int to_int(char* str)
 	iss >> res;
 	return res;
 }
+
+// NOLINTEND
