@@ -1,6 +1,7 @@
 #include "Zombie.hpp"
+#include <string>
 
-void randomChump(std::string name)
+void randomChump(std::string name) // NOLINT
 {
 	Zombie zombie(name);
 }
