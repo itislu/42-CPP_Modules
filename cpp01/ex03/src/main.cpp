@@ -46,6 +46,24 @@ int main()
 	}
 	{
 		std::cout << '\n' << "HUMAN B:" << '\n';
+		Weapon shovel = Weapon("shovel");
+		Weapon axe = Weapon("axe");
+
+		HumanB bob("Bob");
+		bob.setWeapon(shovel);
+		bob.attack();
+		bob.setWeapon(axe);
+		bob.attack();
+		axe.setType("pickaxe");
+		bob.attack();
+		shovel.setType("hammer");
+		bob.attack();
+		bob.setWeapon(shovel);
+		bob.attack();
+	}
+
+	{
+		std::cout << '\n' << "HUMAN B:" << '\n';
 		Weapon axe = Weapon("axe");
 
 		HumanB knopf("Knopf");
