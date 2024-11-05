@@ -7,7 +7,7 @@ int main()
 {
 	std::cout << "GIVEN TEST CASE:" << "\n\n";
 	{
-		std::cout << "HUMAN A:" << "\n";
+		std::cout << "HUMAN A:" << '\n';
 		Weapon club = Weapon("crude spiked club");
 
 		HumanA bob("Bob", club);
@@ -16,7 +16,7 @@ int main()
 		bob.attack();
 	}
 	{
-		std::cout << "\n" << "HUMAN B:" << "\n";
+		std::cout << '\n' << "HUMAN B:" << '\n';
 		Weapon club = Weapon("crude spiked club");
 
 		HumanB jim("Jim");
@@ -26,9 +26,10 @@ int main()
 		jim.attack();
 	}
 
-	std::cout << "\n-----\n\n" << "MY TEST CASE:" << "\n\n";
+	std::cout << "\n-----\n\n"
+			  << "MY TEST CASE:" << "\n\n";
 	{
-		std::cout << "HUMAN A:" << "\n";
+		std::cout << "HUMAN A:" << '\n';
 		Weapon shovel = Weapon("shovel");
 		Weapon axe = Weapon("axe");
 
@@ -44,7 +45,7 @@ int main()
 		alice.attack();
 	}
 	{
-		std::cout << "\n" << "HUMAN B:" << "\n";
+		std::cout << '\n' << "HUMAN B:" << '\n';
 		Weapon axe = Weapon("axe");
 
 		HumanB knopf("Knopf");
