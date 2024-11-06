@@ -1,7 +1,6 @@
 #include "Account.hpp"
 #include <ctime>
 #include <iostream>
-#include <string>
 
 int Account::_nbAccounts;
 int Account::_totalAmount;
