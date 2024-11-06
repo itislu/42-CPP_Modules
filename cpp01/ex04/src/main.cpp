@@ -41,17 +41,20 @@ int main(int argc, char* argv[])
 		return ERROR_INFILE;
 	}
 
-	std::string content(buffer.str());
+	const std::string content(buffer.str());
+	std::string result;
 	if (!search.empty()) {
 		size_t start = 0;
-		while ((start = content.find(search, start)) != std::string::npos) {
-			content.erase(start, search.length());
-			content.insert(start, replace);
-			start += replace.length();
+		size_t end = 0;
+		while ((end = content.find(search, end)) != std::string::npos) {
+			result.append(content, start, end - start);
+			result.append(replace);
+			end += search.length();
+			start = end;
 		}
 	}
 
-	outfile << content;
+	outfile << result;
 	if (outfile.fail()) {
 		perror(outfile_name.c_str());
 		return ERROR_OUTFILE;
