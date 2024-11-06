@@ -1,14 +1,19 @@
+// NOLINTBEGIN(misc-use-anonymous-namespace)
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
+#include "File.hpp"
 #include <cstdio>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 
 enum error {
 	ERROR_USAGE = 1,
-	ERROR_INFILE = 2,
-	ERROR_OUTFILE = 3
+	ERROR_FILE = 2
 };
+
+static std::string do_replace(const std::string& content,
+							  const std::string& search,
+							  const std::string& replace);
 
 int main(int argc, char* argv[])
 {
@@ -16,32 +21,32 @@ int main(int argc, char* argv[])
 		std::cerr << "Usage: ./sed <filename> <search> <replace>" << '\n';
 		return ERROR_USAGE;
 	}
-	std::string infile_name(*(argv + 1));
-	std::string search(*(argv + 2));
-	std::string replace(*(argv + 3));
-	std::string outfile_name(infile_name + ".replace");
+	File file(argv[1]);
+	if (file.bad()) {
+		file.error();
+		return ERROR_FILE;
+	}
+	const std::string search(argv[2]);
+	const std::string replace(argv[3]);
 
-	std::ifstream infile(infile_name.c_str(), std::ifstream::in);
-	if (!infile) {
-		perror(infile_name.c_str());
-		return ERROR_INFILE;
+	std::string content;
+	if (!file.read(content)) {
+		file.error();
+		return ERROR_FILE;
 	}
 
-	std::ofstream outfile(outfile_name.c_str(),
-						  std::ofstream::out | std::ofstream::trunc);
-	if (!outfile) {
-		perror(outfile_name.c_str());
-		return ERROR_OUTFILE;
-	}
+	std::string result = do_replace(content, search, replace);
 
-	std::stringstream buffer;
-	buffer << infile.rdbuf();
-	if (infile.fail()) {
-		perror(infile_name.c_str());
-		return ERROR_INFILE;
+	if (!file.write(result)) {
+		file.error();
+		return ERROR_FILE;
 	}
+}
 
-	const std::string content(buffer.str());
+static std::string do_replace(const std::string& content,
+							  const std::string& search,
+							  const std::string& replace)
+{
 	std::string result;
 	if (!search.empty()) {
 		size_t start = 0;
@@ -54,10 +59,8 @@ int main(int argc, char* argv[])
 		}
 		result.append(content, start);
 	}
-
-	outfile << result;
-	if (outfile.fail()) {
-		perror(outfile_name.c_str());
-		return ERROR_OUTFILE;
-	}
+	return result;
 }
+
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+// NOLINTEND(misc-use-anonymous-namespace)
