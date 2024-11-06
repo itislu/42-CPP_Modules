@@ -10,8 +10,6 @@ const std::string Harl::_levels[Harl::_num_levels] = {"DEBUG",
 													  "WARNING",
 													  "ERROR"};
 void (*Harl::_complaints[Harl::_num_levels])();
-size_t Harl::_max_len;
-std::string Harl::_lookup;
 
 Harl::Harl()
 {
@@ -19,17 +17,6 @@ Harl::Harl()
 	Harl::_complaints[1] = &Harl::_info;
 	Harl::_complaints[2] = &Harl::_warning;
 	Harl::_complaints[3] = &Harl::_error;
-	Harl::_max_len = 0;
-	for (int i = 0; i < Harl::_num_levels; ++i) {
-		if (Harl::_levels[i].length() > Harl::_max_len) {
-			Harl::_max_len = Harl::_levels[i].length();
-		}
-	}
-	for (int i = 0; i < Harl::_num_levels; ++i) {
-		std::string padded = Harl::_levels[i];
-		padded.resize(Harl::_max_len, ' ');
-		Harl::_lookup += padded;
-	}
 }
 
 void Harl::complain(std::string level) // NOLINT
@@ -46,11 +33,12 @@ void Harl::complain(std::string level) // NOLINT
 
 size_t Harl::_index(const std::string& level)
 {
-	size_t index =
-		level.empty() ? std::string::npos : Harl::_lookup.find(level);
-
-	return index == std::string::npos ? std::string::npos
-									  : index / Harl::_max_len;
+	for (int i = 0; i < Harl::_num_levels; ++i) {
+		if (level == Harl::_levels[i]) {
+			return i;
+		}
+	}
+	return std::string::npos;
 }
 
 void Harl::_debug()
