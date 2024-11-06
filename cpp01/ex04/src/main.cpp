@@ -52,6 +52,7 @@ int main(int argc, char* argv[])
 			end += search.length();
 			start = end;
 		}
+		result.append(content, start);
 	}
 
 	outfile << result;
