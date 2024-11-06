@@ -1,8 +1,6 @@
 #include "Harl.hpp"
 #include <cstddef>
-#include <iomanip>
 #include <iostream>
-#include <sstream>
 #include <string>
 
 const std::string Harl::_levels[Harl::_num_levels] = {"DEBUG",
@@ -26,9 +24,9 @@ Harl::Harl()
 		}
 	}
 	for (int i = 0; i < Harl::_num_levels; ++i) {
-		std::stringstream ss;
-		ss << std::setw(Harl::_max_len) << std::left << Harl::_levels[i];
-		Harl::_lookup += ss.str();
+		std::string padded = Harl::_levels[i];
+		padded.resize(Harl::_max_len, ' ');
+		Harl::_lookup += padded;
 	}
 }
 
