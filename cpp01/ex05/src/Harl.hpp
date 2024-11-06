@@ -13,7 +13,7 @@ private:
 	static void warning();
 	static void error();
 
-	static size_t _index(std::string level);
+	static size_t _index(const std::string& level);
 
 	static const int _num_levels = 4;
 	static void (*_complaints[Harl::_num_levels])();

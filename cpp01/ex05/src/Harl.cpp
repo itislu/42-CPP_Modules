@@ -1,3 +1,5 @@
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+
 #include "Harl.hpp"
 #include <cstddef>
 #include <iostream>
@@ -30,7 +32,7 @@ Harl::Harl()
 	}
 }
 
-void Harl::complain(std::string level)
+void Harl::complain(std::string level) // NOLINT
 {
 	size_t index = Harl::_index(level);
 
@@ -42,7 +44,7 @@ void Harl::complain(std::string level)
 	}
 }
 
-size_t Harl::_index(std::string level)
+size_t Harl::_index(const std::string& level)
 {
 	size_t index =
 		level.empty() ? std::string::npos : Harl::_lookup.find(level);
@@ -69,3 +71,5 @@ void Harl::error()
 {
 	std::cout << "ERROR" << '\n';
 }
+
+// NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
