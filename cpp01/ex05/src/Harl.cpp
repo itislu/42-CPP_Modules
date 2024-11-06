@@ -40,7 +40,7 @@ void Harl::complain(std::string level) // NOLINT
 		Harl::_complaints[index]();
 	}
 	else {
-		std::cout << "I cannot complain about THAT thing..." << '\n';
+		std::cout << "\nI cannot complain about THAT..." << "\n\n";
 	}
 }
 
@@ -55,21 +55,25 @@ size_t Harl::_index(const std::string& level)
 
 void Harl::_debug()
 {
-	std::cout << "DEBUG" << '\n';
+	std::cout << "\n[ DEBUG ]\n"
+			  << "🚧🚧🚧🚧🚧" << "\n\n";
 }
 
 void Harl::_info()
 {
-	std::cout << "INFO" << '\n';
+	std::cout << "\n[ INFO ]\n"
+			  << "📣📣📣📣📣" << "\n\n";
 }
 void Harl::_warning()
 {
-	std::cout << "WARNING" << '\n';
+	std::cout << "\n[ WARNING ]\n"
+			  << "❗❗❗❗❗" << "\n\n";
 }
 
 void Harl::_error()
 {
-	std::cout << "ERROR" << '\n';
+	std::cout << "\n[ ERROR ]\n"
+			  << "🚨🚨🚨🚨🚨" << "\n\n";
 }
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
