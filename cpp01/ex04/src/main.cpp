@@ -18,7 +18,8 @@ static std::string do_replace(const std::string& content,
 int main(int argc, char* argv[])
 {
 	if (argc != 4) {
-		std::cerr << "Usage: ./sed <filename> <search> <replace>" << '\n';
+		std::cerr << "Usage: " << argv[0] << " <filename> <search> <replace>"
+				  << '\n';
 		return ERROR_USAGE;
 	}
 	File file(argv[1]);
