@@ -10,8 +10,8 @@ public:
 	Fixed(int num);
 	Fixed(float num);
 	~Fixed();
-	Fixed& operator=(const Fixed& right);
-	Fixed& operator<<(const Fixed& right);
+
+	Fixed& operator=(const Fixed& other);
 
 	int getRawBits() const;
 	void setRawBits(int raw);

@@ -16,11 +16,11 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << '\n';
 }
 
-Fixed& Fixed::operator=(const Fixed& right)
+Fixed& Fixed::operator=(const Fixed& other)
 {
 	std::cout << "Copy assignment operator called" << '\n';
-	if (this != &right) {
-		this->_value = right.getRawBits();
+	if (this != &other) {
+		this->_value = other.getRawBits();
 	}
 	return *this;
 }
