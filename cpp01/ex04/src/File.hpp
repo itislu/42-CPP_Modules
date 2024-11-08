@@ -1,3 +1,6 @@
+#ifndef FILE_HPP
+#define FILE_HPP
+
 #include <fstream>
 #include <string>
 
@@ -19,3 +22,5 @@ private:
 	int _infile_errno;
 	int _outfile_errno;
 };
+
+#endif

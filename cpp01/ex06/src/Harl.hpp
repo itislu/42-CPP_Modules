@@ -1,3 +1,6 @@
+#ifndef HARL_HPP
+#define HARL_HPP
+
 #include <string>
 
 class Harl {
@@ -22,3 +25,5 @@ private:
 	static const int _num_levels = 4;
 	static const std::string _levels[Harl::_num_levels];
 };
+
+#endif

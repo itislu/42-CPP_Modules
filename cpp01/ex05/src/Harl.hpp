@@ -1,3 +1,6 @@
+#ifndef HARL_HPP
+#define HARL_HPP
+
 #include <cstddef>
 #include <string>
 
@@ -18,3 +21,5 @@ private:
 	static const std::string _levels[Harl::_num_levels];
 	static void (*_complaints[Harl::_num_levels])();
 };
+
+#endif
