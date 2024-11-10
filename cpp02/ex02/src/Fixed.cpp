@@ -55,12 +55,12 @@ bool Fixed::operator!=(const Fixed& other) const
 
 Fixed Fixed::operator+(const Fixed& other) const
 {
-	return this->getRawBits() + other.getRawBits();
+	return this->toFloat() + other.toFloat();
 }
 
 Fixed Fixed::operator-(const Fixed& other) const
 {
-	return this->getRawBits() - other.getRawBits();
+	return this->toFloat() - other.toFloat();
 }
 
 Fixed Fixed::operator*(const Fixed& other) const
