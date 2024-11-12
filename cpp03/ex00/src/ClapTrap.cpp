@@ -32,12 +32,17 @@ ClapTrap::~ClapTrap()
 
 ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 {
+	std::cout << "ClapTrap " << this->_name << " copy assigned";
 	if (this != &other) {
 		this->_name = other._name;
 		this->_hp = other._hp;
 		this->_ep = other._ep;
 		this->_dmg = other._dmg;
 	}
+	else {
+		std::cout << " to itself";
+	}
+	std::cout << "." << '\n';
 	return *this;
 }
 
