@@ -9,7 +9,7 @@ ifndef NAME
 endif
 
 MSG_PROGRESS	?=	"🔨"
-COLOR_MAKE		?=	STY_WHI
+COLOR_MAKE		?=	STY_GRE
 
 
 # ************************** GLOBAL CONFIGURATION **************************** #
