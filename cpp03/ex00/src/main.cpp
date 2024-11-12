@@ -1,0 +1,31 @@
+// NOLINTBEGIN
+
+#include "ClapTrap.hpp"
+
+int main()
+{
+	ClapTrap clap1("ClapOne");
+	ClapTrap clap2("ClapTwo");
+	ClapTrap clap3(clap1);
+
+	clap1.takeDamage(5);
+	clap1.takeDamage(6); // Die
+	clap1.takeDamage(1); // Already dead
+	clap1.takeDamage(0);
+
+	clap1.beRepaired(5); // Dead
+	clap1.beRepaired(0);
+	clap2.beRepaired(5);
+	clap2.beRepaired(6);
+	clap2.beRepaired(0);
+
+	clap1.attack("TargetOne"); // Dead
+	clap2.attack("TargetTwo");
+
+	clap2 = clap1;
+	clap2.attack("TargetThree"); // Dead
+
+	return 0;
+}
+
+// NOLINTEND
