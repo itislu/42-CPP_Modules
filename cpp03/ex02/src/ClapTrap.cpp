@@ -9,7 +9,7 @@ ClapTrap::ClapTrap() :
 	_ep(ClapTrap::_ep_start),
 	_dmg(ClapTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << ClapTrap::_type << " " << " default constructed."
+	std::cout << "Unnamed " << ClapTrap::_type << " default constructed."
 			  << '\n';
 }
 
@@ -26,8 +26,7 @@ ClapTrap::ClapTrap(const std::string& name) :
 ClapTrap::ClapTrap(unsigned int hp, unsigned int ep, unsigned int dmg) :
 	_hp(hp), _ep(ep), _dmg(dmg)
 {
-	std::cout << "Unnamed " << ClapTrap::_type << " " << " constructed."
-			  << '\n';
+	std::cout << "Unnamed " << ClapTrap::_type << " constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const std::string& name,

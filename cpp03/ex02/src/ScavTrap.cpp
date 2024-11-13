@@ -8,7 +8,7 @@ const std::string ScavTrap::_type = "ScavTrap";
 ScavTrap::ScavTrap() :
 	ClapTrap(ScavTrap::_hp_start, ScavTrap::_ep_start, ScavTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << ScavTrap::_type << " " << " default constructed."
+	std::cout << "Unnamed " << ScavTrap::_type << " default constructed."
 			  << '\n';
 }
 

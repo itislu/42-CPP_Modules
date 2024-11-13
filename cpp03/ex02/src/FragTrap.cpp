@@ -8,7 +8,7 @@ const std::string FragTrap::_type = "FragTrap";
 FragTrap::FragTrap() :
 	ClapTrap(FragTrap::_hp_start, FragTrap::_ep_start, FragTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << FragTrap::_type << " " << " default constructed."
+	std::cout << "Unnamed " << FragTrap::_type << " default constructed."
 			  << '\n';
 }
 
@@ -52,9 +52,8 @@ void FragTrap::highFivesGuys()
 {
 	std::cout << FragTrap::_type << " " << this->_name;
 	if (this->_hp == 0) {
-		std::cout
-			<< " cannot request a high five because it's already dead."
-			<< '\n';
+		std::cout << " cannot request a high five because it's already dead."
+				  << '\n';
 	}
 	else {
 		std::cout << " requests a high five." << '\n';
