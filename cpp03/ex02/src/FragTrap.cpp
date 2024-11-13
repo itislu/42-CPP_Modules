@@ -18,26 +18,27 @@ FragTrap::FragTrap(const std::string& name) :
 			 FragTrap::_ep_start,
 			 FragTrap::_dmg_start)
 {
-	std::cout << FragTrap::_type << " " << this->_name << " constructed."
-			  << '\n';
+	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
+			  << " constructed." << '\n';
 }
 
 FragTrap::FragTrap(const FragTrap& other) :
 	ClapTrap(other._name, other._hp, other._ep, other._dmg)
 {
-	std::cout << FragTrap::_type << " " << this->_name << " copy constructed."
-			  << '\n';
+	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
+			  << " copy constructed." << '\n';
 }
 
 FragTrap::~FragTrap()
 {
-	std::cout << FragTrap::_type << " " << this->_name << " destructed."
-			  << '\n';
+	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
+			  << " destructed." << '\n';
 }
 
 FragTrap& FragTrap::operator=(const FragTrap& other)
 {
-	std::cout << FragTrap::_type << " " << this->_name << " copy assigned";
+	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
+			  << " copy assigned";
 	if (this != &other) {
 		ClapTrap::operator=(other);
 	}
@@ -50,7 +51,7 @@ FragTrap& FragTrap::operator=(const FragTrap& other)
 
 void FragTrap::highFivesGuys() const
 {
-	std::cout << FragTrap::_type << " " << this->_name;
+	std::cout << FragTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout << " cannot request a high five because it's already dead."
 				  << '\n';

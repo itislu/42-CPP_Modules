@@ -18,26 +18,27 @@ ScavTrap::ScavTrap(const std::string& name) :
 			 ScavTrap::_ep_start,
 			 ScavTrap::_dmg_start)
 {
-	std::cout << ScavTrap::_type << " " << this->_name << " constructed."
-			  << '\n';
+	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
+			  << " constructed." << '\n';
 }
 
 ScavTrap::ScavTrap(const ScavTrap& other) :
 	ClapTrap(other._name, other._hp, other._ep, other._dmg)
 {
-	std::cout << ScavTrap::_type << " " << this->_name << " copy constructed."
-			  << '\n';
+	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
+			  << " copy constructed." << '\n';
 }
 
 ScavTrap::~ScavTrap()
 {
-	std::cout << ScavTrap::_type << " " << this->_name << " destructed."
-			  << '\n';
+	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
+			  << " destructed." << '\n';
 }
 
 ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 {
-	std::cout << ScavTrap::_type << " " << this->_name << " copy assigned";
+	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
+			  << " copy assigned";
 	if (this != &other) {
 		this->_name = other._name;
 		this->_hp = other._hp;
@@ -53,7 +54,7 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 
 void ScavTrap::attack(const std::string& target) const
 {
-	std::cout << ScavTrap::_type << " " << this->_name;
+	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout << " cannot attack because it's already dead." << '\n';
 	}
@@ -69,7 +70,7 @@ void ScavTrap::attack(const std::string& target) const
 
 void ScavTrap::guardGate() const
 {
-	std::cout << ScavTrap::_type << " " << this->_name;
+	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout
 			<< " cannot go into Gate keeper mode because it's already dead."

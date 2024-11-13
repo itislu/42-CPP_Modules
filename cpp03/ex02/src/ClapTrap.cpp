@@ -19,7 +19,7 @@ ClapTrap::ClapTrap(const std::string& name) :
 	_ep(ClapTrap::_ep_start),
 	_dmg(ClapTrap::_dmg_start)
 {
-	std::cout << ClapTrap::_type << " " << this->_name
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
 			  << " with default values constructed." << '\n';
 }
 
@@ -35,26 +35,27 @@ ClapTrap::ClapTrap(const std::string& name,
 				   unsigned int dmg) :
 	_name(name), _hp(hp), _ep(ep), _dmg(dmg)
 {
-	std::cout << ClapTrap::_type << " " << this->_name
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
 			  << " with custom values constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const ClapTrap& other) :
 	_name(other._name), _hp(other._hp), _ep(other._ep), _dmg(other._dmg)
 {
-	std::cout << ClapTrap::_type << " " << this->_name << " copy constructed."
-			  << '\n';
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
+			  << " copy constructed." << '\n';
 }
 
 ClapTrap::~ClapTrap()
 {
-	std::cout << ClapTrap::_type << " " << this->_name << " destructed."
-			  << '\n';
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
+			  << " destructed." << '\n';
 }
 
 ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 {
-	std::cout << ClapTrap::_type << " " << this->_name << " copy assigned";
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
+			  << " copy assigned";
 	if (this != &other) {
 		this->_name = other._name;
 		this->_hp = other._hp;
@@ -70,7 +71,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 
 void ClapTrap::attack(const std::string& target) const
 {
-	std::cout << ClapTrap::_type << " " << this->_name;
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout << " cannot attack because it's already dead." << '\n';
 	}
@@ -86,7 +87,7 @@ void ClapTrap::attack(const std::string& target) const
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	std::cout << ClapTrap::_type << " " << this->_name;
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout << " cannot take more damage because it's already dead."
 				  << '\n';
@@ -104,7 +105,7 @@ void ClapTrap::takeDamage(unsigned int amount)
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-	std::cout << ClapTrap::_type << " " << this->_name;
+	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout << " cannot repair itself because it's already dead." << '\n';
 	}
