@@ -70,7 +70,7 @@ void DiamondTrap::whoAmI() const
 			  << "'" << "." << '\n';
 }
 
-std::string DiamondTrap::name() const
+const std::string& DiamondTrap::name() const
 {
 	return this->_name;
 }

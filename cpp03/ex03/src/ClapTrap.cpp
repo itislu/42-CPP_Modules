@@ -122,7 +122,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 	}
 }
 
-std::string ClapTrap::name() const
+const std::string& ClapTrap::name() const
 {
 	return this->_name;
 }

@@ -18,7 +18,7 @@ public:
 	void attack(const std::string& target) const;
 	void whoAmI() const;
 
-	std::string name() const;
+	const std::string& name() const;
 
 private:
 	static const std::string _type;

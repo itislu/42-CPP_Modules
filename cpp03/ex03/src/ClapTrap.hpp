@@ -23,7 +23,7 @@ public:
 	void attack(const std::string& target) const;
 	void takeDamage(unsigned int amount);
 	void beRepaired(unsigned int amount);
-	std::string name() const;
+	const std::string& name() const;
 	unsigned int hp() const;
 	unsigned int ep() const;
 	unsigned int dmg() const;
