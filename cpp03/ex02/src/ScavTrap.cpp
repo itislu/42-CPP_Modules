@@ -48,7 +48,7 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 	return *this;
 }
 
-void ScavTrap::attack(const std::string& target)
+void ScavTrap::attack(const std::string& target) const
 {
 	std::cout << ScavTrap::_type << " " << this->_name;
 	if (this->_hp == 0) {
@@ -64,7 +64,7 @@ void ScavTrap::attack(const std::string& target)
 	}
 }
 
-void ScavTrap::guardGate()
+void ScavTrap::guardGate() const
 {
 	std::cout << ScavTrap::_type << " " << this->_name;
 	if (this->_hp == 0) {

@@ -13,8 +13,8 @@ public:
 
 	ScavTrap& operator=(const ScavTrap& other);
 
-	void attack(const std::string& target);
-	void guardGate();
+	void attack(const std::string& target) const;
+	void guardGate() const;
 
 private:
 	static const std::string _type;

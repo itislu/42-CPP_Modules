@@ -68,7 +68,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 	return *this;
 }
 
-void ClapTrap::attack(const std::string& target)
+void ClapTrap::attack(const std::string& target) const
 {
 	std::cout << ClapTrap::_type << " " << this->_name;
 	if (this->_hp == 0) {

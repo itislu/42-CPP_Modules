@@ -12,7 +12,7 @@ public:
 
 	ClapTrap& operator=(const ClapTrap& other);
 
-	void attack(const std::string& target);
+	void attack(const std::string& target) const;
 	void takeDamage(unsigned int amount);
 	void beRepaired(unsigned int amount);
 

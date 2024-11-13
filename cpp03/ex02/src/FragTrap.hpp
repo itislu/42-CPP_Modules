@@ -13,7 +13,7 @@ public:
 
 	FragTrap& operator=(const FragTrap& other);
 
-	void highFivesGuys();
+	void highFivesGuys() const;
 
 private:
 	static const std::string _type;

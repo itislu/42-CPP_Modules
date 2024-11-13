@@ -48,7 +48,7 @@ FragTrap& FragTrap::operator=(const FragTrap& other)
 	return *this;
 }
 
-void FragTrap::highFivesGuys()
+void FragTrap::highFivesGuys() const
 {
 	std::cout << FragTrap::_type << " " << this->_name;
 	if (this->_hp == 0) {
