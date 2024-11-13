@@ -4,8 +4,8 @@
 
 int main()
 {
-	ClapTrap clap1("ClapOne");
-	ClapTrap clap2("ClapTwo");
+	ClapTrap clap1("Clap1");
+	ClapTrap clap2("Clap2");
 	ClapTrap clap3(clap1);
 
 	clap1.takeDamage(5);
@@ -19,11 +19,11 @@ int main()
 	clap2.beRepaired(6);
 	clap2.beRepaired(0);
 
-	clap1.attack("TargetOne"); // Dead
-	clap2.attack("TargetTwo");
+	clap1.attack("Target1"); // Dead
+	clap2.attack("Target2");
 
 	clap2 = clap1;
-	clap2.attack("TargetThree"); // Dead
+	clap2.attack("Target3"); // Dead
 
 	return 0;
 }
