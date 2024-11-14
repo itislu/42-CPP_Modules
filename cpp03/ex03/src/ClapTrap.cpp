@@ -69,7 +69,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 	return *this;
 }
 
-void ClapTrap::attack(const std::string& target) const
+void ClapTrap::attack(const std::string& target)
 {
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
@@ -80,6 +80,7 @@ void ClapTrap::attack(const std::string& target) const
 				  << '\n';
 	}
 	else {
+		this->_ep -= 1;
 		std::cout << " attacks " << target << ", causing " << this->_dmg
 				  << " points of damage!" << '\n';
 	}

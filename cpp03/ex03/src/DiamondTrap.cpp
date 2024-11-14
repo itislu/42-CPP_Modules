@@ -58,7 +58,7 @@ DiamondTrap& DiamondTrap::operator=(const DiamondTrap& other)
 	return *this;
 }
 
-void DiamondTrap::attack(const std::string& target) const
+void DiamondTrap::attack(const std::string& target)
 {
 	ScavTrap::attack(target);
 }

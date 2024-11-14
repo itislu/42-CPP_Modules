@@ -49,7 +49,7 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 	return *this;
 }
 
-void ScavTrap::attack(const std::string& target) const
+void ScavTrap::attack(const std::string& target)
 {
 	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
@@ -60,6 +60,7 @@ void ScavTrap::attack(const std::string& target) const
 				  << '\n';
 	}
 	else {
+		this->_ep -= 1;
 		std::cout << " attacks " << target << ", causing " << this->_dmg
 				  << " points of damage!" << '\n';
 	}

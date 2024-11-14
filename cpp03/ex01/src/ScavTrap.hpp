@@ -13,7 +13,7 @@ public:
 
 	ScavTrap& operator=(const ScavTrap& other);
 
-	void attack(const std::string& target) const;
+	void attack(const std::string& target);
 	void guardGate() const;
 
 private:
