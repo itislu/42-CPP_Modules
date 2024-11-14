@@ -67,7 +67,11 @@ void DiamondTrap::whoAmI() const
 {
 	std::cout << "I am " << "'" << this->_name << "'"
 			  << " and my ClapTrap name is " << "'" << this->ClapTrap::name()
-			  << "'" << "." << '\n';
+			  << "'";
+	if (this->_hp == 0) {
+		std::cout << ", and I'm dead";
+	}
+	std::cout << "." << '\n';
 }
 
 const std::string& DiamondTrap::name() const
