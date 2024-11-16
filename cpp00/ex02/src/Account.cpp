@@ -33,22 +33,22 @@ void Account::displayAccountsInfos()
 {
 	Account::_displayTimestamp();
 	std::cout << " "
-			  << "accounts:" << Account::getNbAccounts() << DELIM
-			  << "total:" << Account::getTotalAmount() << DELIM
-			  << "deposits:" << Account::getNbDeposits() << DELIM
-			  << "withdrawals:" << Account::getNbWithdrawals() << '\n';
+	          << "accounts:" << Account::getNbAccounts() << DELIM
+	          << "total:" << Account::getTotalAmount() << DELIM
+	          << "deposits:" << Account::getNbDeposits() << DELIM
+	          << "withdrawals:" << Account::getNbWithdrawals() << '\n';
 }
 
 Account::Account(int initial_deposit) :
-	_accountIndex(Account::_nbAccounts),
-	_amount(initial_deposit),
-	_nbDeposits(0),
-	_nbWithdrawals(0)
+    _accountIndex(Account::_nbAccounts),
+    _amount(initial_deposit),
+    _nbDeposits(0),
+    _nbWithdrawals(0)
 {
 	Account::_displayTimestamp();
 	std::cout << " "
-			  << "index:" << this->_accountIndex << DELIM
-			  << "amount:" << this->_amount << DELIM << "created" << '\n';
+	          << "index:" << this->_accountIndex << DELIM
+	          << "amount:" << this->_amount << DELIM << "created" << '\n';
 	Account::_nbAccounts++;
 	Account::_totalAmount += this->_amount;
 }
@@ -57,8 +57,8 @@ Account::~Account()
 {
 	Account::_displayTimestamp();
 	std::cout << " "
-			  << "index:" << this->_accountIndex << DELIM
-			  << "amount:" << this->_amount << DELIM << "closed" << '\n';
+	          << "index:" << this->_accountIndex << DELIM
+	          << "amount:" << this->_amount << DELIM << "closed" << '\n';
 }
 
 void Account::makeDeposit(int deposit)
@@ -71,11 +71,11 @@ void Account::makeDeposit(int deposit)
 	Account::_totalNbDeposits++;
 	Account::_displayTimestamp();
 	std::cout << " "
-			  << "index:" << this->_accountIndex << DELIM
-			  << "p_amount:" << p_amount << DELIM
-			  << "deposit:" << deposit << DELIM
-			  << "amount:" << this->_amount << DELIM
-			  << "nb_deposits:" << this->_nbDeposits << '\n';
+	          << "index:" << this->_accountIndex << DELIM
+	          << "p_amount:" << p_amount << DELIM
+	          << "deposit:" << deposit << DELIM
+	          << "amount:" << this->_amount << DELIM
+	          << "nb_deposits:" << this->_nbDeposits << '\n';
 }
 
 bool Account::makeWithdrawal(int withdrawal)
@@ -84,16 +84,16 @@ bool Account::makeWithdrawal(int withdrawal)
 
 	Account::_displayTimestamp();
 	std::cout << " "
-			  << "index:" << this->_accountIndex << DELIM
-			  << "p_amount:" << p_amount << DELIM
-			  << "withdrawal:";
+	          << "index:" << this->_accountIndex << DELIM
+	          << "p_amount:" << p_amount << DELIM
+	          << "withdrawal:";
 	if (withdrawal <= this->_amount) {
 		this->_amount -= withdrawal;
 		this->_nbWithdrawals++;
 		Account::_totalAmount -= withdrawal;
 		Account::_totalNbWithdrawals++;
 		std::cout << withdrawal << DELIM << "amount:" << this->_amount << DELIM
-				  << "nb_withdrawals:" << this->_nbWithdrawals << '\n';
+		          << "nb_withdrawals:" << this->_nbWithdrawals << '\n';
 		return true;
 	}
 	std::cout << "refused" << '\n';
@@ -109,10 +109,10 @@ void Account::displayStatus() const
 {
 	Account::_displayTimestamp();
 	std::cout << " "
-			  << "index:" << this->_accountIndex << DELIM
-			  << "amount:" << this->_amount << DELIM
-			  << "deposits:" << this->_nbDeposits << DELIM
-			  << "withdrawals:" << this->_nbWithdrawals << '\n';
+	          << "index:" << this->_accountIndex << DELIM
+	          << "amount:" << this->_amount << DELIM
+	          << "deposits:" << this->_nbDeposits << DELIM
+	          << "withdrawals:" << this->_nbWithdrawals << '\n';
 }
 
 void Account::_displayTimestamp()
@@ -125,6 +125,6 @@ void Account::_displayTimestamp()
 
 	const int timestamp_len = 18;
 	char output[timestamp_len];
-	strftime((char *)output, timestamp_len, "[%Y%m%d_%H%M%S]", datetime);
-	std::cout << (char *)output;
+	strftime((char*)output, timestamp_len, "[%Y%m%d_%H%M%S]", datetime);
+	std::cout << (char*)output;
 }

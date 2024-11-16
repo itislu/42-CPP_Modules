@@ -20,10 +20,10 @@ void PhoneBook::add()
 		return;
 	}
 	this->_contact_count = this->_contact_count + 1 < PhoneBook::max_contacts
-							   ? this->_contact_count + 1
-							   : PhoneBook::max_contacts;
+	                           ? this->_contact_count + 1
+	                           : PhoneBook::max_contacts;
 	this->_index_new_contact =
-		(this->_index_new_contact + 1) % PhoneBook::max_contacts;
+	    (this->_index_new_contact + 1) % PhoneBook::max_contacts;
 	std::wcout << L"Successfully added a new contact.\n";
 }
 
@@ -69,13 +69,13 @@ bool PhoneBook::_prompt_index(int& index) const
 		else if (index >= this->_contact_count) {
 			if (this->_contact_count == 1) {
 				std::wcout << L"Index out of range. There is only "
-						   << this->_contact_count << L" contact so far!"
-						   << '\n';
+				           << this->_contact_count << L" contact so far!"
+				           << '\n';
 			}
 			else {
 				std::wcout << L"Index out of range. There are only "
-						   << this->_contact_count << L" contacts so far!"
-						   << '\n';
+				           << this->_contact_count << L" contacts so far!"
+				           << '\n';
 			}
 		}
 		else {
