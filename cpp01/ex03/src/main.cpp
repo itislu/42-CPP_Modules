@@ -27,7 +27,7 @@ int main()
 	}
 
 	std::cout << "\n-----\n\n"
-			  << "MY TEST CASE:" << "\n\n";
+	          << "MY TEST CASE:" << "\n\n";
 	{
 		std::cout << "HUMAN A:" << '\n';
 		Weapon shovel = Weapon("shovel");

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-Zombie::Zombie(const std::string &name) : _name(name)
+Zombie::Zombie(const std::string& name) : _name(name)
 {
 	this->announce();
 }

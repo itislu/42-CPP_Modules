@@ -5,9 +5,9 @@
 #include <string>
 
 const std::string Harl::_levels[Harl::_num_levels] = {"DEBUG",
-													  "INFO",
-													  "WARNING",
-													  "ERROR"};
+                                                      "INFO",
+                                                      "WARNING",
+                                                      "ERROR"};
 
 void Harl::complain(std::string level) // NOLINT
 {
@@ -39,24 +39,24 @@ Harl::Level Harl::_index(const std::string& level)
 void Harl::_debug()
 {
 	std::cout << "[ DEBUG ]\n"
-			  << "🚧🚧🚧🚧🚧" << "\n\n";
+	          << "🚧🚧🚧🚧🚧" << "\n\n";
 }
 
 void Harl::_info()
 {
 	std::cout << "[ INFO ]\n"
-			  << "📣📣📣📣📣" << "\n\n";
+	          << "📣📣📣📣📣" << "\n\n";
 }
 void Harl::_warning()
 {
 	std::cout << "[ WARNING ]\n"
-			  << "❗❗❗❗❗" << "\n\n";
+	          << "❗❗❗❗❗" << "\n\n";
 }
 
 void Harl::_error()
 {
 	std::cout << "[ ERROR ]\n"
-			  << "🚨🚨🚨🚨🚨" << "\n\n";
+	          << "🚨🚨🚨🚨🚨" << "\n\n";
 }
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)

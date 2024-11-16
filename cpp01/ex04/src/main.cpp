@@ -12,14 +12,14 @@ enum error {
 };
 
 static std::string do_replace(const std::string& content,
-							  const std::string& search,
-							  const std::string& replace);
+                              const std::string& search,
+                              const std::string& replace);
 
 int main(int argc, char* argv[])
 {
 	if (argc != 4) {
 		std::cerr << "Usage: " << argv[0] << " <filename> <search> <replace>"
-				  << '\n';
+		          << '\n';
 		return ERROR_USAGE;
 	}
 	File file(argv[1]);
@@ -45,8 +45,8 @@ int main(int argc, char* argv[])
 }
 
 static std::string do_replace(const std::string& content,
-							  const std::string& search,
-							  const std::string& replace)
+                              const std::string& search,
+                              const std::string& replace)
 {
 	std::string result;
 	if (!search.empty()) {

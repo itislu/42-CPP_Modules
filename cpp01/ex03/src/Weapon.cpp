@@ -12,6 +12,6 @@ const std::string& Weapon::getType() const
 void Weapon::setType(const std::string& new_type)
 {
 	std::cout << "  " << this->_type << " dropped, " << new_type << " picked up"
-			  << '\n';
+	          << '\n';
 	this->_type = new_type;
 }
