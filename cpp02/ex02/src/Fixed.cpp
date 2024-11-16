@@ -9,7 +9,7 @@ Fixed::Fixed(const Fixed& other) : _value(other.getRawBits()) {}
 Fixed::Fixed(const int num) : _value(num << Fixed::_fractional_bits) {}
 
 Fixed::Fixed(const float num) :
-	_value((int)roundf(num * (1 << Fixed::_fractional_bits)))
+    _value((int)roundf(num * (1 << Fixed::_fractional_bits)))
 {
 }
 

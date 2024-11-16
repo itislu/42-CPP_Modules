@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
 	if (argc > 1 && argc != 3) {
 		std::cerr << "Usage: " << argv[0] << " <x> <y> (in unit triangle: 📐)"
-				  << '\n';
+		          << '\n';
 		return 1;
 	}
 
@@ -55,8 +55,8 @@ int main(int argc, char* argv[])
 static void test_triangle(Point& a, Point& b, Point& c, Point& point)
 {
 	std::cout << "Point " << point << " is "
-			  << (bsp(a, b, c, point) ? "INSIDE" : "OUTSIDE")
-			  << " the triangle." << '\n';
+	          << (bsp(a, b, c, point) ? "INSIDE" : "OUTSIDE")
+	          << " the triangle." << '\n';
 }
 
 static float ft_atof(char* str)

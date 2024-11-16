@@ -10,7 +10,7 @@ Fixed::Fixed(const Fixed& other) : _value(other.getRawBits()) {}
 Fixed::Fixed(const int num) : _value(num << Fixed::_fractional_bits) {}
 
 Fixed::Fixed(const float num) :
-	_value((int)roundf(num * (1 << Fixed::_fractional_bits)))
+    _value((int)roundf(num * (1 << Fixed::_fractional_bits)))
 {
 }
 
@@ -148,5 +148,5 @@ float Fixed::toFloat() const
 std::ostream& operator<<(std::ostream& os, const Fixed& fixed)
 {
 	return os << std::left << std::setprecision(Fixed::fractional_bits())
-			  << std::setw(Fixed::fractional_bits() + 2) << fixed.toFloat();
+	          << std::setw(Fixed::fractional_bits() + 2) << fixed.toFloat();
 }
