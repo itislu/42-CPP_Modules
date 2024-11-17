@@ -7,6 +7,10 @@
 
 int main(void)
 {
+	// Undefined behavior:
+	// std::cout << (int)(2147483648.f) << '\n';
+	// std::cout << (int)(long)argv << '\n';
+
 	Fixed a;
 	Fixed const b(10);
 	Fixed const c(42.42f);

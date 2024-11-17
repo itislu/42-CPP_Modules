@@ -1,4 +1,5 @@
 #include "Fixed.hpp"
+#include <climits>
 #include <cmath>
 #include <iostream>
 
@@ -17,10 +18,18 @@ Fixed::Fixed(const int num) : _value(num << Fixed::_fractional_bits)
 	std::cout << "Int constructor called" << '\n';
 }
 
-Fixed::Fixed(const float num) :
-    _value((int)roundf(num * (1 << Fixed::_fractional_bits)))
+Fixed::Fixed(const float num)
 {
 	std::cout << "Float constructor called" << '\n';
+	float scaled = roundf(num * (1 << Fixed::_fractional_bits));
+
+	if (isnan(scaled) != 0 || scaled >= (float)INT_MAX
+	    || scaled < (float)INT_MIN) {
+		_value = INT_MIN;
+	}
+	else {
+		_value = (int)scaled;
+	}
 }
 
 Fixed::~Fixed()
