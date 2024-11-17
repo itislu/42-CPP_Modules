@@ -32,7 +32,8 @@ Point::Vector Point::vec(const Point& point) const
 
 Fixed Point::cross(const Point::Vector& vector) const
 {
-	return this->_x * vector._y - vector._x * this->_y;
+	return this->_x.toFloat() * vector._y.toFloat()
+	       - vector._x.toFloat() * this->_y.toFloat();
 }
 
 Fixed Point::x() const
