@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <iostream>
 
+bool Fixed::_bad = false;
+
 Fixed::Fixed() : _value(0) {}
 
 Fixed::Fixed(const Fixed& other) : _value(other.getRawBits()) {}
@@ -15,9 +17,11 @@ Fixed::Fixed(const float num)
 	float scaled = roundf(num * (1 << Fixed::_fractional_bits));
 
 	if (isnan(scaled) != 0 || scaled < (float)INT_MIN) {
+		Fixed::_bad = true;
 		_value = INT_MIN;
 	}
 	else if (scaled >= (float)INT_MAX) {
+		Fixed::_bad = true;
 		_value = INT_MAX;
 	}
 	else {
@@ -129,6 +133,16 @@ Fixed& Fixed::max(Fixed& a, Fixed& b)
 const Fixed& Fixed::max(const Fixed& a, const Fixed& b)
 {
 	return a >= b ? a : b;
+}
+
+bool Fixed::bad()
+{
+	return Fixed::_bad;
+}
+
+void Fixed::clear()
+{
+	Fixed::_bad = false;
 }
 
 int Fixed::fractional_bits()

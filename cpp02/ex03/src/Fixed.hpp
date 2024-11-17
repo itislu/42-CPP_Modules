@@ -35,6 +35,8 @@ public:
 	static const Fixed& min(const Fixed& a, const Fixed& b);
 	static Fixed& max(Fixed& a, Fixed& b);
 	static const Fixed& max(const Fixed& a, const Fixed& b);
+	static bool bad();
+	static void clear();
 	static int fractional_bits();
 
 	int getRawBits() const;
@@ -44,6 +46,8 @@ public:
 
 private:
 	static const int _fractional_bits = FRACT_BITS;
+	static bool _bad;
+
 	int _value;
 };
 

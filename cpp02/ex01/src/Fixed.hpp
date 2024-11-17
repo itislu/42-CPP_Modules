@@ -17,6 +17,9 @@ public:
 
 	Fixed& operator=(const Fixed& other);
 
+	static bool bad();
+	static void clear();
+
 	int getRawBits() const;
 	void setRawBits(int raw);
 	int toInt() const;
@@ -24,6 +27,8 @@ public:
 
 private:
 	static const int _fractional_bits = FRACT_BITS;
+	static bool _bad;
+
 	int _value;
 };
 

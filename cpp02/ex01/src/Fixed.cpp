@@ -3,6 +3,8 @@
 #include <cmath>
 #include <iostream>
 
+bool Fixed::_bad = false;
+
 Fixed::Fixed() : _value(0)
 {
 	std::cout << "Default constructor called" << '\n';
@@ -24,9 +26,11 @@ Fixed::Fixed(const float num)
 	float scaled = roundf(num * (1 << Fixed::_fractional_bits));
 
 	if (isnan(scaled) != 0 || scaled < (float)INT_MIN) {
+		Fixed::_bad = true;
 		_value = INT_MIN;
 	}
 	else if (scaled >= (float)INT_MAX) {
+		Fixed::_bad = true;
 		_value = INT_MAX;
 	}
 	else {
@@ -46,6 +50,16 @@ Fixed& Fixed::operator=(const Fixed& other)
 		this->_value = other.getRawBits();
 	}
 	return *this;
+}
+
+bool Fixed::bad()
+{
+	return Fixed::_bad;
+}
+
+void Fixed::clear()
+{
+	Fixed::_bad = false;
 }
 
 int Fixed::getRawBits() const
