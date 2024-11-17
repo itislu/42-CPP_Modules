@@ -39,6 +39,13 @@ int main(int argc, char* argv[])
 			Point a(0, 1);
 			Point b(1, 0);
 			Point c(0, 0);
+			Point point(0.499F, 0.499F);
+			test_triangle(a, b, c, point);
+		}
+		{
+			Point a(0, 1);
+			Point b(1, 0);
+			Point c(0, 0);
 			Point point(--Fixed(0.5F), --Fixed(0.5F));
 			test_triangle(a, b, c, point);
 		}
@@ -46,7 +53,14 @@ int main(int argc, char* argv[])
 			Point a(0, 1);
 			Point b(1, 0);
 			Point c(0, 0);
-			Point point(0.499F, 0.499F);
+			Point point(0.1015625, -8388608);
+			test_triangle(a, b, c, point);
+		}
+		{
+			Point a(-8388608, 8388608);
+			Point b(8388608, -8388608);
+			Point c(-8388608, -8388608);
+			Point point(-10.1015625, -10);
 			test_triangle(a, b, c, point);
 		}
 	}
