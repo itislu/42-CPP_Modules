@@ -14,9 +14,11 @@ Fixed::Fixed(const float num)
 {
 	float scaled = roundf(num * (1 << Fixed::_fractional_bits));
 
-	if (isnan(scaled) != 0 || scaled >= (float)INT_MAX
-	    || scaled < (float)INT_MIN) {
+	if (isnan(scaled) != 0 || scaled < (float)INT_MIN) {
 		_value = INT_MIN;
+	}
+	else if (scaled >= (float)INT_MAX) {
+		_value = INT_MAX;
 	}
 	else {
 		_value = (int)scaled;
