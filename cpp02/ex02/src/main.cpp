@@ -45,6 +45,13 @@ int main(void)
 	std::cout << "min(a, 0): " << Fixed::min(a, 0) << std::endl;
 	std::cout << "max(a, a): " << Fixed::max(a, a) << std::endl;
 
+	const Fixed f(-8388608.f);
+	const Fixed g(-1.f);
+	std::cout << "f: " << f << '\n';
+	std::cout << "g: " << g << '\n';
+	std::cout << "f * g: " << f * g << '\n';
+	std::cout << "-8388608.f * -1.f: " << -8388608.f * -1.f << '\n';
+
 	return 0;
 }
 
