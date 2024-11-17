@@ -25,6 +25,16 @@ Point Point::operator-(const Point& other) const
 	return Point(this->_x - other._x, this->_y - other._y);
 }
 
+bool Point::bad()
+{
+	return Fixed::bad();
+}
+
+void Point::clear()
+{
+	Fixed::clear();
+}
+
 Point::Vector Point::vec(const Point& point) const
 {
 	return point - *this;

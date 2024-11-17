@@ -19,9 +19,11 @@ public:
 	Point& operator=(const Point& other);
 	Point operator-(const Point& other) const;
 
+	static bool bad();
+	static void clear();
+
 	Vector vec(const Point& point) const;
 	Fixed cross(const Vector& vector) const;
-
 	Fixed x() const;
 	Fixed y() const;
 

@@ -69,8 +69,10 @@ int main(int argc, char* argv[])
 static void test_triangle(Point& a, Point& b, Point& c, Point& point)
 {
 	std::cout << "Point " << point << " is "
-	          << (bsp(a, b, c, point) ? "INSIDE" : "OUTSIDE")
-	          << " the triangle." << '\n';
+	          << (bsp(a, b, c, point) ? "INSIDE" : "OUTSIDE") << " the triangle"
+	          << (Point::bad() ? ", but the result may be unreliable." : ".")
+	          << '\n';
+	Point::clear();
 }
 
 static float ft_atof(char* str)
