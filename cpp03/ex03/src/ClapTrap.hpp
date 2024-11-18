@@ -16,11 +16,11 @@ public:
 			 unsigned int ep,
 			 unsigned int dmg);
 	ClapTrap(const ClapTrap& other);
-	~ClapTrap();
+	virtual ~ClapTrap();
 
 	ClapTrap& operator=(const ClapTrap& other);
 
-	void attack(const std::string& target);
+	virtual void attack(const std::string& target);
 	void takeDamage(unsigned int amount);
 	void beRepaired(unsigned int amount);
 	const std::string& name() const;

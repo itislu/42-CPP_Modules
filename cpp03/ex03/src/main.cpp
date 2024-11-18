@@ -1,6 +1,8 @@
 // NOLINTBEGIN
 
+#include "ClapTrap.hpp"
 #include "DiamondTrap.hpp"
+#include "ScavTrap.hpp"
 #include <iostream>
 
 int main()
@@ -8,6 +10,16 @@ int main()
 	DiamondTrap diamond1("Diamond1");
 	diamond1.whoAmI();
 	std::cout << '\n' << diamond1 << '\n';
+
+	ClapTrap* scav1 = new ScavTrap("Scav");
+	ClapTrap* clap1 = new ClapTrap("Clap");
+	diamond1.attack("Target1");
+	scav1->attack("Target2");
+	clap1->attack("Target3");
+	std::cout << "Scav Address: " << scav1 << '\n';
+	std::cout << "Clap Address: " << clap1 << '\n';
+	delete scav1;
+	delete clap1;
 
 	DiamondTrap diamond2("Diamond2");
 	DiamondTrap diamond3(diamond1);
