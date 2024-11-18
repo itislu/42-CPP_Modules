@@ -22,7 +22,7 @@ WrongAnimal::~WrongAnimal()
 	std::cout << this->_type << " destructor called." << '\n';
 }
 
-void WrongAnimal::makeSound()
+void WrongAnimal::makeSound() const
 {
 	std::cout << "Silence..." << '\n';
 }

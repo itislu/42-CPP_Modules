@@ -8,11 +8,11 @@ public:
 	WrongAnimal();
 	WrongAnimal(const std::string& type);
 	WrongAnimal(const WrongAnimal& other);
-	 ~WrongAnimal();
+	~WrongAnimal();
 
 	WrongAnimal& operator=(const WrongAnimal& other);
 
-	static void makeSound();
+	void makeSound() const;
 	const std::string& getType() const;
 
 protected:

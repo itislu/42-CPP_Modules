@@ -1,3 +1,5 @@
+// NOLINTBEGIN
+
 #include "Animal.hpp"
 #include "Cat.hpp"
 #include "Dog.hpp"
@@ -28,10 +30,10 @@ int main()
 	Animal* dog = new Dog();
 	Animal* cat = new Cat();
 	std::cout << animal->getType() << '\n';
-	std::cout << dog->getType() << '\n';
-	std::cout << cat->getType() << '\n';
 	animal->makeSound();
+	std::cout << dog->getType() << '\n';
 	dog->makeSound();
+	std::cout << cat->getType() << '\n';
 	cat->makeSound();
 
 	delete animal;
@@ -40,14 +42,16 @@ int main()
 
 
 	std::cout << "\nMY WRONG_ANIMAL TEST CASES:" << '\n';
+
 	WrongAnimal* wrong_animal = new WrongAnimal();
 	WrongAnimal* wrong_cat = new WrongCat();
 	std::cout << wrong_animal->getType() << '\n';
-	std::cout << wrong_cat->getType() << '\n';
 	wrong_animal->makeSound();
+	std::cout << wrong_cat->getType() << '\n';
 	wrong_cat->makeSound();
 
 	delete wrong_animal;
 	delete wrong_cat;
-
 }
+
+// NOLINTEND
