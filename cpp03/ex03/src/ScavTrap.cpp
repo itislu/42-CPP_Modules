@@ -6,39 +6,39 @@
 const std::string ScavTrap::_type = "ScavTrap";
 
 ScavTrap::ScavTrap() :
-	ClapTrap(ScavTrap::_hp_start, ScavTrap::_ep_start, ScavTrap::_dmg_start)
+    ClapTrap(ScavTrap::_hp_start, ScavTrap::_ep_start, ScavTrap::_dmg_start)
 {
 	std::cout << "Unnamed " << ScavTrap::_type << " default constructed."
-			  << '\n';
+	          << '\n';
 }
 
 ScavTrap::ScavTrap(const std::string& name) :
-	ClapTrap(name,
-			 ScavTrap::_hp_start,
-			 ScavTrap::_ep_start,
-			 ScavTrap::_dmg_start)
+    ClapTrap(name,
+             ScavTrap::_hp_start,
+             ScavTrap::_ep_start,
+             ScavTrap::_dmg_start)
 {
 	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-			  << " constructed." << '\n';
+	          << " constructed." << '\n';
 }
 
 ScavTrap::ScavTrap(const ScavTrap& other) :
-	ClapTrap(other._name, other._hp, other._ep, other._dmg)
+    ClapTrap(other._name, other._hp, other._ep, other._dmg)
 {
 	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-			  << " copy constructed." << '\n';
+	          << " copy constructed." << '\n';
 }
 
 ScavTrap::~ScavTrap()
 {
 	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-			  << " destructed." << '\n';
+	          << " destructed." << '\n';
 }
 
 ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 {
 	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-			  << " copy assigned";
+	          << " copy assigned";
 	if (this != &other) {
 		ClapTrap::operator=(other);
 	}
@@ -57,12 +57,12 @@ void ScavTrap::attack(const std::string& target)
 	}
 	else if (this->_ep == 0) {
 		std::cout << " cannot attack because it has no energy points left."
-				  << '\n';
+		          << '\n';
 	}
 	else {
 		this->_ep -= 1;
 		std::cout << " attacks " << target << ", causing " << this->_dmg
-				  << " points of damage!" << '\n';
+		          << " points of damage!" << '\n';
 	}
 }
 
@@ -71,8 +71,8 @@ void ScavTrap::guardGate() const
 	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout
-			<< " cannot go into Gate keeper mode because it's already dead."
-			<< '\n';
+		    << " cannot go into Gate keeper mode because it's already dead."
+		    << '\n';
 	}
 	else {
 		std::cout << " is now in Gate keeper mode." << '\n';

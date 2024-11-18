@@ -5,57 +5,57 @@
 const std::string ClapTrap::_type = "ClapTrap";
 
 ClapTrap::ClapTrap() :
-	_hp(ClapTrap::_hp_start),
-	_ep(ClapTrap::_ep_start),
-	_dmg(ClapTrap::_dmg_start)
+    _hp(ClapTrap::_hp_start),
+    _ep(ClapTrap::_ep_start),
+    _dmg(ClapTrap::_dmg_start)
 {
 	std::cout << "Unnamed " << ClapTrap::_type << " default constructed."
-			  << '\n';
+	          << '\n';
 }
 
 ClapTrap::ClapTrap(const std::string& name) :
-	_name(name),
-	_hp(ClapTrap::_hp_start),
-	_ep(ClapTrap::_ep_start),
-	_dmg(ClapTrap::_dmg_start)
+    _name(name),
+    _hp(ClapTrap::_hp_start),
+    _ep(ClapTrap::_ep_start),
+    _dmg(ClapTrap::_dmg_start)
 {
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-			  << " with default values constructed." << '\n';
+	          << " with default values constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(unsigned int hp, unsigned int ep, unsigned int dmg) :
-	_hp(hp), _ep(ep), _dmg(dmg)
+    _hp(hp), _ep(ep), _dmg(dmg)
 {
 	std::cout << "Unnamed " << ClapTrap::_type << " constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const std::string& name,
-				   unsigned int hp,
-				   unsigned int ep,
-				   unsigned int dmg) :
-	_name(name), _hp(hp), _ep(ep), _dmg(dmg)
+                   unsigned int hp,
+                   unsigned int ep,
+                   unsigned int dmg) :
+    _name(name), _hp(hp), _ep(ep), _dmg(dmg)
 {
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-			  << " with custom values constructed." << '\n';
+	          << " with custom values constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const ClapTrap& other) :
-	_name(other._name), _hp(other._hp), _ep(other._ep), _dmg(other._dmg)
+    _name(other._name), _hp(other._hp), _ep(other._ep), _dmg(other._dmg)
 {
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-			  << " copy constructed." << '\n';
+	          << " copy constructed." << '\n';
 }
 
 ClapTrap::~ClapTrap()
 {
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-			  << " destructed." << '\n';
+	          << " destructed." << '\n';
 }
 
 ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 {
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-			  << " copy assigned";
+	          << " copy assigned";
 	if (this != &other) {
 		this->_name = other._name;
 		this->_hp = other._hp;
@@ -77,12 +77,12 @@ void ClapTrap::attack(const std::string& target)
 	}
 	else if (this->_ep == 0) {
 		std::cout << " cannot attack because it has no energy points left."
-				  << '\n';
+		          << '\n';
 	}
 	else {
 		this->_ep -= 1;
 		std::cout << " attacks " << target << ", causing " << this->_dmg
-				  << " points of damage!" << '\n';
+		          << " points of damage!" << '\n';
 	}
 }
 
@@ -91,12 +91,12 @@ void ClapTrap::takeDamage(unsigned int amount)
 	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
 	if (this->_hp == 0) {
 		std::cout << " cannot take more damage because it's already dead."
-				  << '\n';
+		          << '\n';
 	}
 	else if (this->_hp <= amount) {
 		this->_hp = 0;
 		std::cout << " takes " << amount << " points of damage and dies!"
-				  << '\n';
+		          << '\n';
 	}
 	else {
 		this->_hp -= amount;
@@ -112,14 +112,14 @@ void ClapTrap::beRepaired(unsigned int amount)
 	}
 	else if (this->_ep == 0) {
 		std::cout
-			<< " cannot repair itself because it has no energy points left."
-			<< '\n';
+		    << " cannot repair itself because it has no energy points left."
+		    << '\n';
 	}
 	else {
 		this->_ep -= 1;
 		this->_hp += amount;
 		std::cout << " repairs itself for " << amount << " points of damage!"
-				  << '\n';
+		          << '\n';
 	}
 }
 

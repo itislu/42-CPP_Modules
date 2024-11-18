@@ -12,9 +12,9 @@ public:
 	ClapTrap(const std::string& name);
 	ClapTrap(unsigned int hp, unsigned int ep, unsigned int dmg);
 	ClapTrap(const std::string& name,
-			 unsigned int hp,
-			 unsigned int ep,
-			 unsigned int dmg);
+	         unsigned int hp,
+	         unsigned int ep,
+	         unsigned int dmg);
 	ClapTrap(const ClapTrap& other);
 	virtual ~ClapTrap();
 
