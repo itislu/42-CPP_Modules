@@ -32,7 +32,7 @@ BUILDFILES		:=	Makefile ../global.mk
 
 CXX				:=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
-CXXFLAGS_STD	:=	-Wall -Wextra -Werror --std=c++98 -pedantic-errors
+CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic-errors
 CXXFLAGS_DBG	:=	-ggdb3
 CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
