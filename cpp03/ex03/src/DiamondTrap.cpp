@@ -8,10 +8,7 @@
 const std::string DiamondTrap::type = "DiamondTrap";
 
 DiamondTrap::DiamondTrap() :
-    ClapTrap("_clap_name",
-             FragTrap::_hp_start,
-             ScavTrap::_ep_start,
-             FragTrap::_dmg_start)
+    ClapTrap(FragTrap::_hp_start, ScavTrap::_ep_start, FragTrap::_dmg_start)
 {
 	std::cout << *this << " default constructed." << '\n';
 }
