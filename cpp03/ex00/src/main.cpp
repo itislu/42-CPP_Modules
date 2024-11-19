@@ -21,6 +21,14 @@ int main()
 
 	clap1.attack("Target1"); // Dead
 	clap2.attack("Target2");
+	clap2.attack("Target3");
+	clap2.attack("Target4");
+	clap2.attack("Target5");
+	clap2.attack("Target6");
+	clap2.attack("Target7");
+	clap2.attack("Target8");
+	clap2.attack("Target9"); // No energy
+	clap2.attack("Target10");
 
 	clap2 = clap1;
 	clap2.attack("Target3"); // Dead

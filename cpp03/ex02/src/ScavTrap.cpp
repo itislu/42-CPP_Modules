@@ -3,13 +3,12 @@
 #include <iostream>
 #include <string>
 
-const std::string ScavTrap::_type = "ScavTrap";
+const std::string ScavTrap::type = "ScavTrap";
 
 ScavTrap::ScavTrap() :
     ClapTrap(ScavTrap::_hp_start, ScavTrap::_ep_start, ScavTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << ScavTrap::_type << " default constructed."
-	          << '\n';
+	std::cout << *this << " default constructed." << '\n';
 }
 
 ScavTrap::ScavTrap(const std::string& name) :
@@ -18,27 +17,23 @@ ScavTrap::ScavTrap(const std::string& name) :
              ScavTrap::_ep_start,
              ScavTrap::_dmg_start)
 {
-	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-	          << " constructed." << '\n';
+	std::cout << *this << " with default values constructed." << '\n';
 }
 
 ScavTrap::ScavTrap(const ScavTrap& other) :
     ClapTrap(other._name, other._hp, other._ep, other._dmg)
 {
-	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy constructed." << '\n';
+	std::cout << *this << " copy constructed." << '\n';
 }
 
 ScavTrap::~ScavTrap()
 {
-	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-	          << " destructed." << '\n';
+	std::cout << *this << " destructed." << '\n';
 }
 
 ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 {
-	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy assigned";
+	std::cout << *this << " copy assigned";
 	if (this != &other) {
 		ClapTrap::operator=(other);
 	}
@@ -51,7 +46,7 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 
 void ScavTrap::attack(const std::string& target)
 {
-	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'";
+	std::cout << *this;
 	if (this->_hp == 0) {
 		std::cout << " cannot attack because it's already dead." << '\n';
 	}
@@ -68,7 +63,7 @@ void ScavTrap::attack(const std::string& target)
 
 void ScavTrap::guardGate() const
 {
-	std::cout << ScavTrap::_type << " " << "'" << this->_name << "'";
+	std::cout << *this;
 	if (this->_hp == 0) {
 		std::cout
 		    << " cannot go into Gate keeper mode because it's already dead."
@@ -77,4 +72,15 @@ void ScavTrap::guardGate() const
 	else {
 		std::cout << " is now in Gate keeper mode." << '\n';
 	}
+}
+
+std::ostream& operator<<(std::ostream& os, const ScavTrap& scavtrap)
+{
+	if (scavtrap.name().empty()) {
+		os << "Unnamed " << ScavTrap::type;
+	}
+	else {
+		os << ScavTrap::type << " " << "'" << scavtrap.name() << "'";
+	}
+	return os;
 }

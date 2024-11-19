@@ -2,6 +2,7 @@
 #define FRAGTRAP_HPP
 
 #include "ClapTrap.hpp"
+#include <ostream>
 #include <string>
 
 class FragTrap : public ClapTrap {
@@ -15,11 +16,14 @@ public:
 
 	void highFivesGuys() const;
 
+	static const std::string type;
+
 private:
-	static const std::string _type;
 	static const unsigned int _hp_start = 100;
 	static const unsigned int _ep_start = 100;
 	static const unsigned int _dmg_start = 30;
 };
+
+std::ostream& operator<<(std::ostream& os, const FragTrap& fragtrap);
 
 #endif

@@ -23,10 +23,11 @@ public:
 	virtual void attack(const std::string& target);
 	void takeDamage(unsigned int amount);
 	void beRepaired(unsigned int amount);
+	void print() const;
+
 	const std::string& name() const;
-	unsigned int hp() const;
-	unsigned int ep() const;
-	unsigned int dmg() const;
+
+	static const std::string type;
 
 protected:
 	std::string _name;
@@ -35,7 +36,6 @@ protected:
 	unsigned int _dmg;
 
 private:
-	static const std::string _type;
 	static const unsigned int _hp_start = 10;
 	static const unsigned int _ep_start = 10;
 	static const unsigned int _dmg_start = 0;

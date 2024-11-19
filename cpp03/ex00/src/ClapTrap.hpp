@@ -1,6 +1,7 @@
 #ifndef CLAPTRAP_HPP
 #define CLAPTRAP_HPP
 
+#include <ostream>
 #include <string>
 
 class ClapTrap {
@@ -16,6 +17,10 @@ public:
 	void takeDamage(unsigned int amount);
 	void beRepaired(unsigned int amount);
 
+	const std::string& name() const;
+
+	static const std::string type;
+
 private:
 	static const unsigned int _hp_start = 10;
 	static const unsigned int _ep_start = 10;
@@ -26,5 +31,7 @@ private:
 	unsigned int _ep;
 	unsigned int _dmg;
 };
+
+std::ostream& operator<<(std::ostream& os, const ClapTrap& claptrap);
 
 #endif

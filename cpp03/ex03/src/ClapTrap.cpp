@@ -2,15 +2,14 @@
 #include <iostream>
 #include <string>
 
-const std::string ClapTrap::_type = "ClapTrap";
+const std::string ClapTrap::type = "ClapTrap";
 
 ClapTrap::ClapTrap() :
     _hp(ClapTrap::_hp_start),
     _ep(ClapTrap::_ep_start),
     _dmg(ClapTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << ClapTrap::_type << " default constructed."
-	          << '\n';
+	std::cout << *this << " default constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const std::string& name) :
@@ -19,14 +18,13 @@ ClapTrap::ClapTrap(const std::string& name) :
     _ep(ClapTrap::_ep_start),
     _dmg(ClapTrap::_dmg_start)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-	          << " with default values constructed." << '\n';
+	std::cout << *this << " with default values constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(unsigned int hp, unsigned int ep, unsigned int dmg) :
     _hp(hp), _ep(ep), _dmg(dmg)
 {
-	std::cout << "Unnamed " << ClapTrap::_type << " constructed." << '\n';
+	std::cout << *this << " with custom values constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const std::string& name,
@@ -35,27 +33,23 @@ ClapTrap::ClapTrap(const std::string& name,
                    unsigned int dmg) :
     _name(name), _hp(hp), _ep(ep), _dmg(dmg)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-	          << " with custom values constructed." << '\n';
+	std::cout << *this << " with custom values constructed." << '\n';
 }
 
 ClapTrap::ClapTrap(const ClapTrap& other) :
     _name(other._name), _hp(other._hp), _ep(other._ep), _dmg(other._dmg)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy constructed." << '\n';
+	std::cout << *this << " copy constructed." << '\n';
 }
 
 ClapTrap::~ClapTrap()
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-	          << " destructed." << '\n';
+	std::cout << *this << " destructed." << '\n';
 }
 
 ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy assigned";
+	std::cout << *this << " copy assigned";
 	if (this != &other) {
 		this->_name = other._name;
 		this->_hp = other._hp;
@@ -71,7 +65,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 
 void ClapTrap::attack(const std::string& target)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
+	std::cout << *this;
 	if (this->_hp == 0) {
 		std::cout << " cannot attack because it's already dead." << '\n';
 	}
@@ -88,7 +82,7 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
+	std::cout << *this;
 	if (this->_hp == 0) {
 		std::cout << " cannot take more damage because it's already dead."
 		          << '\n';
@@ -106,7 +100,7 @@ void ClapTrap::takeDamage(unsigned int amount)
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-	std::cout << ClapTrap::_type << " " << "'" << this->_name << "'";
+	std::cout << *this;
 	if (this->_hp == 0) {
 		std::cout << " cannot repair itself because it's already dead." << '\n';
 	}
@@ -128,26 +122,21 @@ const std::string& ClapTrap::name() const
 	return this->_name;
 }
 
-unsigned int ClapTrap::hp() const
+void ClapTrap::print() const
 {
-	return this->_hp;
-}
-
-unsigned int ClapTrap::ep() const
-{
-	return this->_ep;
-}
-
-unsigned int ClapTrap::dmg() const
-{
-	return this->_dmg;
+	std::cout << "\tClapTrap name: " << this->_name << '\n'
+	          << "\tHealth: " << this->_hp << '\n'
+	          << "\tEnergy: " << this->_ep << '\n'
+	          << "\tDamage: " << this->_dmg << '\n';
 }
 
 std::ostream& operator<<(std::ostream& os, const ClapTrap& claptrap)
 {
-	os << "\tClapTrap name: " << claptrap.name() << '\n';
-	os << "\tHealth: " << claptrap.hp() << '\n';
-	os << "\tEnergy: " << claptrap.ep() << '\n';
-	os << "\tDamage: " << claptrap.dmg() << '\n';
+	if (claptrap.name().empty()) {
+		os << "Unnamed " << ClapTrap::type;
+	}
+	else {
+		os << ClapTrap::type << " " << "'" << claptrap.name() << "'";
+	}
 	return os;
 }

@@ -21,6 +21,14 @@ int main()
 
 	scav1.attack("Target1"); // Dead
 	scav2.attack("Target2");
+	scav2.attack("Target3");
+	scav2.attack("Target4");
+	scav2.attack("Target5");
+	scav2.attack("Target6");
+	scav2.attack("Target7");
+	scav2.attack("Target8");
+	scav2.attack("Target9"); // Still energy
+	scav2.attack("Target10");
 
 	scav1.guardGate();
 	scav2.guardGate();

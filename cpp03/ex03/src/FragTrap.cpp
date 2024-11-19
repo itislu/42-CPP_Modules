@@ -3,13 +3,12 @@
 #include <iostream>
 #include <string>
 
-const std::string FragTrap::_type = "FragTrap";
+const std::string FragTrap::type = "FragTrap";
 
 FragTrap::FragTrap() :
     ClapTrap(FragTrap::_hp_start, FragTrap::_ep_start, FragTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << FragTrap::_type << " default constructed."
-	          << '\n';
+	std::cout << *this << " default constructed." << '\n';
 }
 
 FragTrap::FragTrap(const std::string& name) :
@@ -18,27 +17,23 @@ FragTrap::FragTrap(const std::string& name) :
              FragTrap::_ep_start,
              FragTrap::_dmg_start)
 {
-	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
-	          << " constructed." << '\n';
+	std::cout << *this << " with default values constructed." << '\n';
 }
 
 FragTrap::FragTrap(const FragTrap& other) :
     ClapTrap(other._name, other._hp, other._ep, other._dmg)
 {
-	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy constructed." << '\n';
+	std::cout << *this << " copy constructed." << '\n';
 }
 
 FragTrap::~FragTrap()
 {
-	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
-	          << " destructed." << '\n';
+	std::cout << *this << " destructed." << '\n';
 }
 
 FragTrap& FragTrap::operator=(const FragTrap& other)
 {
-	std::cout << FragTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy assigned";
+	std::cout << *this << " copy assigned";
 	if (this != &other) {
 		ClapTrap::operator=(other);
 	}
@@ -51,7 +46,7 @@ FragTrap& FragTrap::operator=(const FragTrap& other)
 
 void FragTrap::highFivesGuys() const
 {
-	std::cout << FragTrap::_type << " " << "'" << this->_name << "'";
+	std::cout << *this;
 	if (this->_hp == 0) {
 		std::cout << " cannot request a high five because it's already dead."
 		          << '\n';
@@ -59,4 +54,15 @@ void FragTrap::highFivesGuys() const
 	else {
 		std::cout << " requests a high five." << '\n';
 	}
+}
+
+std::ostream& operator<<(std::ostream& os, const FragTrap& fragtrap)
+{
+	if (fragtrap.name().empty()) {
+		os << "Unnamed " << FragTrap::type;
+	}
+	else {
+		os << FragTrap::type << " " << "'" << fragtrap.name() << "'";
+	}
+	return os;
 }

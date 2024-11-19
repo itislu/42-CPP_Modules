@@ -21,6 +21,14 @@ int main()
 
 	frag1.attack("Target1"); // Dead
 	frag2.attack("Target2");
+	frag2.attack("Target3");
+	frag2.attack("Target4");
+	frag2.attack("Target5");
+	frag2.attack("Target6");
+	frag2.attack("Target7");
+	frag2.attack("Target8");
+	frag2.attack("Target9");
+	frag2.attack("Target10");
 
 	frag1.highFivesGuys();
 	frag2.highFivesGuys();

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-const std::string DiamondTrap::_type = "DiamondTrap";
+const std::string DiamondTrap::type = "DiamondTrap";
 
 DiamondTrap::DiamondTrap() :
     ClapTrap("_clap_name",
@@ -13,8 +13,7 @@ DiamondTrap::DiamondTrap() :
              ScavTrap::_ep_start,
              FragTrap::_dmg_start)
 {
-	std::cout << "Unnamed " << DiamondTrap::_type << " default constructed."
-	          << '\n';
+	std::cout << *this << " default constructed." << '\n';
 }
 
 /**
@@ -33,8 +32,7 @@ DiamondTrap::DiamondTrap(const std::string& name) :
     FragTrap(name),
     _name(name)
 {
-	std::cout << DiamondTrap::_type << " " << "'" << this->_name << "'"
-	          << " constructed." << '\n';
+	std::cout << *this << " constructed." << '\n';
 }
 
 DiamondTrap::DiamondTrap(const DiamondTrap& other) :
@@ -43,20 +41,17 @@ DiamondTrap::DiamondTrap(const DiamondTrap& other) :
     FragTrap(other),
     _name(other._name)
 {
-	std::cout << DiamondTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy constructed." << '\n';
+	std::cout << *this << " copy constructed." << '\n';
 }
 
 DiamondTrap::~DiamondTrap()
 {
-	std::cout << DiamondTrap::_type << " " << "'" << this->_name << "'"
-	          << " destructed." << '\n';
+	std::cout << *this << " destructed." << '\n';
 }
 
 DiamondTrap& DiamondTrap::operator=(const DiamondTrap& other)
 {
-	std::cout << DiamondTrap::_type << " " << "'" << this->_name << "'"
-	          << " copy assigned";
+	std::cout << *this << " copy assigned";
 	if (this != &other) {
 		ClapTrap::operator=(other);
 		this->_name = other._name;
@@ -79,6 +74,12 @@ void DiamondTrap::whoAmI() const
 	std::cout << "." << '\n';
 }
 
+void DiamondTrap::print() const
+{
+	std::cout << "\tDiamondTrap name: " << this->_name << '\n';
+	this->ClapTrap::print();
+}
+
 const std::string& DiamondTrap::name() const
 {
 	return this->_name;
@@ -86,7 +87,11 @@ const std::string& DiamondTrap::name() const
 
 std::ostream& operator<<(std::ostream& os, const DiamondTrap& diamondtrap)
 {
-	os << "\tDiamondTrap name: " << diamondtrap.name() << '\n';
-	os << (const ClapTrap&)diamondtrap;
+	if (diamondtrap.name().empty()) {
+		os << "Unnamed " << DiamondTrap::type;
+	}
+	else {
+		os << DiamondTrap::type << " " << "'" << diamondtrap.name() << "'";
+	}
 	return os;
 }
