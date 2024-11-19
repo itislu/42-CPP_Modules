@@ -51,15 +51,11 @@ DiamondTrap::~DiamondTrap()
 
 DiamondTrap& DiamondTrap::operator=(const DiamondTrap& other)
 {
-	std::cout << *this << " copy assigned";
+	std::cout << other << " copy assigned to " << *this << "." << '\n';
 	if (this != &other) {
 		ClapTrap::operator=(other);
 		this->_name = other._name;
 	}
-	else {
-		std::cout << " to itself";
-	}
-	std::cout << "." << '\n';
 	return *this;
 }
 

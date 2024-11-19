@@ -33,14 +33,10 @@ FragTrap::~FragTrap()
 
 FragTrap& FragTrap::operator=(const FragTrap& other)
 {
-	std::cout << *this << " copy assigned";
+	std::cout << other << " copy assigned to " << *this << "." << '\n';
 	if (this != &other) {
 		ClapTrap::operator=(other);
 	}
-	else {
-		std::cout << " to itself";
-	}
-	std::cout << "." << '\n';
 	return *this;
 }
 
