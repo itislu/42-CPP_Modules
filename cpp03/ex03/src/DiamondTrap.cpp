@@ -14,11 +14,11 @@ DiamondTrap::DiamondTrap() :
 }
 
 /**
- * This constructor starts the inheritance chain, therefore this constructor
- * decides which base class constructors get called - even for multi-level
+ * This constructor decides which base class constructors get called, because
+ * this constructor starts the inheritance chain - even for multi-level
  * inheritance.
- * If no constructor gets specified, the default constructor is chosen - even if
- * other constructors in the chain specify something else.
+ * If no constructor gets specified, the default constructor is
+ * chosen - even if other constructors in the chain specify something else.
  */
 DiamondTrap::DiamondTrap(const std::string& name) :
     ClapTrap(name + "_clap_name",

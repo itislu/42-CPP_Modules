@@ -6,6 +6,10 @@
 #include <ostream>
 #include <string>
 
+/**
+ * Virtual functions just for polymorphism (pointer type different than object
+ * type)
+ */
 class ClapTrap {
 public:
 	ClapTrap();
