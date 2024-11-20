@@ -29,11 +29,11 @@ int main()
 	Animal* animal = new Animal();
 	Animal* dog = new Dog();
 	Animal* cat = new Cat();
-	std::cout << animal->getType() << '\n';
+	std::cout << animal->getType() << ": ";
 	animal->makeSound();
-	std::cout << dog->getType() << '\n';
+	std::cout << dog->getType() << ": ";
 	dog->makeSound();
-	std::cout << cat->getType() << '\n';
+	std::cout << cat->getType() << ": ";
 	cat->makeSound();
 
 	delete animal;
@@ -45,9 +45,9 @@ int main()
 
 	WrongAnimal* wrong_animal = new WrongAnimal();
 	WrongAnimal* wrong_cat = new WrongCat();
-	std::cout << wrong_animal->getType() << '\n';
+	std::cout << wrong_animal->getType() << ": ";
 	wrong_animal->makeSound();
-	std::cout << wrong_cat->getType() << '\n';
+	std::cout << wrong_cat->getType() << ": ";
 	wrong_cat->makeSound();
 
 	delete wrong_animal;
