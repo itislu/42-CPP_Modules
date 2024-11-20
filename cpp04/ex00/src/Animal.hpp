@@ -1,3 +1,5 @@
+// NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
+
 #ifndef ANIMAL_HPP
 #define ANIMAL_HPP
 
@@ -17,8 +19,8 @@ public:
 
 protected:
 	std::string _type;
-
-private:
 };
 
 #endif
+
+// NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)

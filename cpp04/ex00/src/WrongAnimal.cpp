@@ -22,6 +22,15 @@ WrongAnimal::~WrongAnimal()
 	std::cout << "WrongAnimal destructor called." << '\n';
 }
 
+WrongAnimal& WrongAnimal::operator=(const WrongAnimal& other)
+{
+	if (this != &other) {
+		this->_type = other._type;
+	}
+	return *this;
+}
+
+// NOLINTNEXTLINE(readability-convert-member-functions-to-static)
 void WrongAnimal::makeSound() const
 {
 	std::cout << "Silence..." << '\n';

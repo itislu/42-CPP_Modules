@@ -22,6 +22,14 @@ Animal::~Animal()
 	std::cout << "Animal destructor called." << '\n';
 }
 
+Animal& Animal::operator=(const Animal& other)
+{
+	if (this != &other) {
+		this->_type = other._type;
+	}
+	return *this;
+}
+
 void Animal::makeSound() const
 {
 	std::cout << "Silence..." << '\n';

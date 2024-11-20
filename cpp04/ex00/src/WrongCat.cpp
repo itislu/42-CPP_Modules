@@ -20,11 +20,12 @@ WrongCat::~WrongCat()
 WrongCat& WrongCat::operator=(const WrongCat& other)
 {
 	if (this != &other) {
-		this->_type = other._type;
+		this->WrongAnimal::operator=(other);
 	}
 	return *this;
 }
 
+// NOLINTNEXTLINE(readability-convert-member-functions-to-static)
 void WrongCat::makeSound() const
 {
 	std::cout << "Meow!" << '\n';
