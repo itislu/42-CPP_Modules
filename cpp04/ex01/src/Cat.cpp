@@ -21,9 +21,10 @@ Cat::~Cat()
 
 Cat& Cat::operator=(const Cat& other)
 {
+	std::cout << this->_type << " copy assignment operator called." << '\n';
 	if (this != &other) {
 		this->Animal::operator=(other);
-		this->_brain = other._brain;
+		*this->_brain = *other._brain;
 	}
 	return *this;
 }
@@ -31,4 +32,9 @@ Cat& Cat::operator=(const Cat& other)
 void Cat::makeSound() const
 {
 	std::cout << "Meow!" << '\n';
+}
+
+Brain* Cat::brain()
+{
+	return this->_brain;
 }

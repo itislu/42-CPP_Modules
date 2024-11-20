@@ -14,6 +14,8 @@ public:
 
 	void makeSound() const;
 
+	Brain* brain();
+
 private:
 	Brain* _brain;
 };

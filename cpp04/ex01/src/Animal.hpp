@@ -3,6 +3,7 @@
 #ifndef ANIMAL_HPP
 #define ANIMAL_HPP
 
+#include "Brain.hpp"
 #include <string>
 
 class Animal {
@@ -14,8 +15,9 @@ public:
 
 	Animal& operator=(const Animal& other);
 
-	virtual void makeSound() const;
 	const std::string& getType() const;
+	virtual void makeSound() const;
+	virtual Brain* brain() = 0;
 
 protected:
 	std::string _type;
