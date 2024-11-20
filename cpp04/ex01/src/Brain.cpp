@@ -47,4 +47,20 @@ std::string Brain::get_idea(int index) const
 	return this->_ideas[index];
 }
 
+std::ostream& operator<<(std::ostream& os, const Brain& brain)
+{
+	std::string idea;
+
+	for (int i = 0; i < Brain::brain_size; ++i) {
+		idea = brain.get_idea(i);
+		if (idea.empty()) {
+			os << "No idea here..." << '\n';
+		}
+		else {
+			os << idea << '\n';
+		}
+	}
+	return os;
+}
+
 // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)

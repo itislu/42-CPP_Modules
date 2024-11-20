@@ -22,4 +22,6 @@ private:
 	int _index;
 };
 
+std::ostream& operator<<(std::ostream& os, const Brain& brain);
+
 #endif
