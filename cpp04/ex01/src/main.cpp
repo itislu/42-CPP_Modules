@@ -6,6 +6,8 @@
 #include "Dog.hpp"
 #include <iostream>
 
+#define ANIMAL_COUNT 10
+
 void fill_array(Animal* animals[]);
 void delete_array(Animal* animals[]);
 
@@ -22,9 +24,9 @@ int main()
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "ARRAY OF ANIMAL POINTERS:\n" << '\n';
-		Animal* animals[10];
+		Animal* animals[ANIMAL_COUNT];
 		fill_array(animals);
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < ANIMAL_COUNT; ++i) {
 			std::cout << animals[i]->getType() << ": ";
 			animals[i]->makeSound();
 		}
@@ -51,7 +53,7 @@ int main()
 
 void fill_array(Animal* animals[])
 {
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < ANIMAL_COUNT; ++i) {
 		if (i % 2 == 0) {
 			animals[i] = new Dog();
 		}
@@ -63,7 +65,7 @@ void fill_array(Animal* animals[])
 
 void delete_array(Animal* animals[])
 {
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < ANIMAL_COUNT; ++i) {
 		delete animals[i];
 	}
 }
