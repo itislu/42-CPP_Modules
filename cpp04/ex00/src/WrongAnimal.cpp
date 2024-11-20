@@ -4,22 +4,22 @@
 
 WrongAnimal::WrongAnimal() : _type("WrongAnimal")
 {
-	std::cout << this->_type << " constructor called." << '\n';
+	std::cout << "WrongAnimal constructor called." << '\n';
 }
 
 WrongAnimal::WrongAnimal(const std::string& type) : _type(type)
 {
-	std::cout << this->_type << " parameterized constructor called." << '\n';
+	std::cout << "WrongAnimal parameterized constructor called." << '\n';
 }
 
 WrongAnimal::WrongAnimal(const WrongAnimal& other) : _type(other._type)
 {
-	std::cout << this->_type << " copy constructor called." << '\n';
+	std::cout << "WrongAnimal copy constructor called." << '\n';
 }
 
 WrongAnimal::~WrongAnimal()
 {
-	std::cout << this->_type << " destructor called." << '\n';
+	std::cout << "WrongAnimal destructor called." << '\n';
 }
 
 void WrongAnimal::makeSound() const

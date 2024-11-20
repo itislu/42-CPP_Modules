@@ -4,22 +4,22 @@
 
 Animal::Animal() : _type("Animal")
 {
-	std::cout << this->_type << " constructor called." << '\n';
+	std::cout << "Animal constructor called." << '\n';
 }
 
 Animal::Animal(const std::string& type) : _type(type)
 {
-	std::cout << this->_type << " parameterized constructor called." << '\n';
+	std::cout << "Animal parameterized constructor called." << '\n';
 }
 
 Animal::Animal(const Animal& other) : _type(other._type)
 {
-	std::cout << this->_type << " copy constructor called." << '\n';
+	std::cout << "Animal copy constructor called." << '\n';
 }
 
 Animal::~Animal()
 {
-	std::cout << this->_type << " destructor called." << '\n';
+	std::cout << "Animal destructor called." << '\n';
 }
 
 void Animal::makeSound() const
