@@ -50,6 +50,7 @@ int main()
 		cat2 = cat1;
 		std::cout << "\n🧠 CAT2 BRAIN 🧠" << '\n';
 		std::cout << *cat2.brain();
+		std::cout << '\n';
 	}
 }
 
