@@ -5,14 +5,24 @@
 #include "Cat.hpp"
 #include "Dog.hpp"
 #include <iostream>
+#include <sstream>
 
-#define ANIMAL_COUNT 10
+static unsigned int ft_atoui(char* str);
+static void fill_array(Animal**& animals, unsigned int size);
+static void delete_array(Animal**& animals, unsigned int size);
 
-void fill_array(Animal* animals[]);
-void delete_array(Animal* animals[]);
-
-int main()
+int main(int argc, char* argv[])
 {
+	unsigned int animal_count = 10;
+
+	if (argc > 2) {
+		std::cerr << "Usage: " << argv[0] << " [animal_count]" << '\n';
+		return 1;
+	}
+	if (argc == 2) {
+		animal_count = ft_atoui(argv[1]);
+	}
+
 	{
 		std::cout << "SUBJECT TEST CASE:\n" << '\n';
 		const Animal* j = new Dog();
@@ -23,14 +33,15 @@ int main()
 	}
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
-		std::cout << "ARRAY OF ANIMAL POINTERS:\n" << '\n';
-		Animal* animals[ANIMAL_COUNT];
-		fill_array(animals);
-		for (int i = 0; i < ANIMAL_COUNT; ++i) {
+		std::cout << "ARRAY OF AANIMAL POINTERS:\n" << '\n';
+		Animal** animals;
+
+		fill_array(animals, animal_count);
+		for (unsigned int i = 0; i < animal_count; ++i) {
 			std::cout << animals[i]->getType() << ": ";
 			animals[i]->makeSound();
 		}
-		delete_array(animals);
+		delete_array(animals, animal_count);
 	}
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
@@ -52,9 +63,18 @@ int main()
 	}
 }
 
-void fill_array(Animal* animals[])
+static unsigned int ft_atoui(char* str)
 {
-	for (int i = 0; i < ANIMAL_COUNT; ++i) {
+	std::istringstream ss(str);
+	unsigned int n;
+	ss >> n;
+	return n;
+}
+
+static void fill_array(Animal**& animals, unsigned int size)
+{
+	animals = new Animal*[size];
+	for (unsigned int i = 0; i < size; ++i) {
 		if (i % 2 == 0) {
 			animals[i] = new Dog();
 		}
@@ -64,11 +84,12 @@ void fill_array(Animal* animals[])
 	}
 }
 
-void delete_array(Animal* animals[])
+static void delete_array(Animal**& animals, unsigned int size)
 {
-	for (int i = 0; i < ANIMAL_COUNT; ++i) {
+	for (unsigned int i = 0; i < size; ++i) {
 		delete animals[i];
 	}
+	delete[] animals;
 }
 
 // NOLINTEND
