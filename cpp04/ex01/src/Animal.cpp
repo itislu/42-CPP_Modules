@@ -1,4 +1,6 @@
 #include "Animal.hpp"
+#include "Brain.hpp"
+#include <cstddef>
 #include <iostream>
 #include <string>
 
@@ -38,4 +40,10 @@ void Animal::makeSound() const
 const std::string& Animal::getType() const
 {
 	return this->_type;
+}
+
+// Pure virtual in the next exercise
+Brain* Animal::brain()
+{
+	return NULL;
 }
