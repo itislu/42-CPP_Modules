@@ -13,6 +13,8 @@ void delete_array(AAnimal* animals[]);
 
 int main()
 {
+	// AAnimal not_instantiable;
+
 	{
 		std::cout << "SUBJECT TEST CASE:\n" << '\n';
 		const AAnimal* j = new Dog();
