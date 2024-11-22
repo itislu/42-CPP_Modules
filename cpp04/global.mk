@@ -37,7 +37,7 @@ CXXFLAGS_DBG	:=	-ggdb3
 CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
 CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG)
-CPPFLAGS		:=	$(addprefix -I,$(INC_DIR))
+CPPFLAGS		+=	$(addprefix -I,$(INC_DIR))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 MAKEFLAGS		:=	-j -s
 
