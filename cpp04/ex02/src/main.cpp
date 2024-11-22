@@ -17,7 +17,9 @@ int main(int argc, char* argv[])
 	unsigned int animal_count = 10;
 
 	if (argc > 2) {
-		std::cerr << "Usage: " << argv[0] << " [animal_count]" << '\n';
+		std::cerr << "Usage: " << argv[0]
+		          << " [animal_count (default: " << animal_count << ")]"
+		          << '\n';
 		return 1;
 	}
 	if (argc == 2) {
