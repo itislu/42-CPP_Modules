@@ -2,9 +2,9 @@
 
 | Exercise     | Name           | Learnings                                                                                                      |
 | ------------ | -------------- | -------------------------------------------------------------------------------------------------------------- |
-| [ex00](ex00) | 🤖 ClapTrap    | -                                                                                                              |
+| [ex00](ex00) | 🤖 ClapTrap    |                                                                                                                |
 | [ex01](ex01) | 🤖 ScavTrap    | - Inheritance, <br> - Shadowing                                                                                |
-| [ex02](ex02) | 🤖 Fragtrap    | -                                                                                                              |
+| [ex02](ex02) | 🤖 Fragtrap    |                                                                                                                |
 | [ex03](ex03) | 🤖 DiamondTrap | - Virtual inheritance, <br> - Multiple inheritance, <br> - Multilevel inheritance, <br> - Subtype polymorphism |
 
 # Resources
