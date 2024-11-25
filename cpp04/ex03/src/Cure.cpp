@@ -4,13 +4,14 @@
 
 Cure::Cure() : AMateria("cure") {}
 
-Cure::Cure(const Cure& other) : AMateria(other._type) {}
+Cure::Cure(const Cure& other) : AMateria(other) {}
 
 Cure::~Cure() {}
 
 Cure& Cure::operator=(const Cure& other)
 {
 	if (this != &other) {
+		this->AMateria::operator=(other);
 	}
 	return *this;
 }
