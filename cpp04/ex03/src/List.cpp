@@ -60,7 +60,7 @@ void List::swap(List& other)
 
 void List::clear()
 {
-	for (Node* cur = this->_head; cur != NULL; cur = this->_head->next) {
+	while (Node* cur = this->_head) {
 		this->_head = this->_head->next;
 		delete cur;
 	}
