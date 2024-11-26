@@ -1,3 +1,4 @@
+// NOLINTBEGIN(cppcoreguidelines-avoid-const-or-ref-data-members)
 // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
 
 #ifndef AMATERIA_HPP
@@ -21,7 +22,7 @@ public:
 	virtual void use(ICharacter& target);
 
 protected:
-	std::string _type;
+	const std::string _type;
 
 private:
 	AMateria();
@@ -30,3 +31,4 @@ private:
 #endif
 
 // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
+// NOLINTEND(cppcoreguidelines-avoid-const-or-ref-data-members)
