@@ -5,16 +5,18 @@
 #include <cstddef>
 #include <string>
 
-MateriaSource::MateriaSource()
+MateriaSource::MateriaSource() : _templates() {}
+
+MateriaSource::MateriaSource(const MateriaSource& other) : _templates()
 {
 	for (int i = 0; i < MateriaSource::size; ++i) {
-		this->_templates[i] = NULL;
+		if (other._templates[i] != NULL) {
+			this->_templates[i] = other._templates[i]->clone();
+		}
+		else {
+			this->_templates[i] = NULL;
+		}
 	}
-}
-
-MateriaSource::MateriaSource(const MateriaSource& other)
-{
-	*this = other;
 }
 
 MateriaSource::~MateriaSource()

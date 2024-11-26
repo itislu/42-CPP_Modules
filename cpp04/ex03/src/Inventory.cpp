@@ -4,21 +4,17 @@
 #include "AMateria.hpp"
 #include <cstddef>
 
-Inventory::Inventory()
+Inventory::Inventory() : _inventory() {}
+
+Inventory::Inventory(const Inventory& other) : _inventory()
 {
 	for (int i = 0; i < Inventory::inventory_size; ++i) {
-		this->_inventory[i] = NULL;
+		if (other._inventory[i] != NULL) {
+			AMateria* m = other._inventory[i]->clone();
+			this->_history.push_back(m);
+			this->_inventory[i] = m;
+		}
 	}
-}
-
-Inventory::Inventory(const Inventory& other)
-{
-	*this = other;
-	// for (int i = 0; i < Inventory::inventory_size; ++i) {
-	// 	AMateria* m = other._inventory[i]->clone();
-	// 	this->_history.push_back(m);
-	// 	this->_inventory[i] = m;
-	// }
 }
 
 Inventory::~Inventory()
