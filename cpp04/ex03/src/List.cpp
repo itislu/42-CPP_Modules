@@ -25,26 +25,26 @@ List& List::operator=(List other)
 
 void List::push_front(void* content)
 {
-	Node* new_head = new Node(content);
+	Node* new_node = new Node(content);
 
-	new_head->next = this->_head;
-	this->_head = new_head;
+	new_node->next = this->_head;
+	this->_head = new_node;
 	if (this->_tail == NULL) {
-		this->_tail = new_head;
+		this->_tail = new_node;
 	}
 }
 
 void List::push_back(void* content)
 {
-	Node* new_tail = new Node(content);
+	Node* new_node = new Node(content);
 
 	if (this->_head == NULL) {
-		this->_head = new_tail;
+		this->_head = new_node;
 	}
 	else {
-		this->_tail->next = new_tail;
+		this->_tail->next = new_node;
 	}
-	this->_tail = new_tail;
+	this->_tail = new_node;
 }
 
 void List::swap(List& other)
