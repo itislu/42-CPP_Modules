@@ -15,7 +15,7 @@ public:
 	Inventory& operator=(Inventory other);
 	AMateria* operator[](int idx);
 
-	void add(AMateria *m);
+	void add(AMateria* m);
 	void remove(int idx);
 	void swap(Inventory& other);
 	// AMateria *index(int idx);
@@ -24,7 +24,7 @@ public:
 
 private:
 	AMateria* _inventory[inventory_size];
-	List _history;
+	List<AMateria> _history;
 };
 
 #endif

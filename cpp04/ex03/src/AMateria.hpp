@@ -16,8 +16,6 @@ public:
 
 	AMateria& operator=(const AMateria& other);
 
-	static void delete_materia(void* m);
-
 	std::string const& getType() const; // Returns the materia type
 
 	virtual AMateria* clone() const = 0;

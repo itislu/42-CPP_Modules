@@ -18,11 +18,6 @@ AMateria& AMateria::AMateria::operator=(const AMateria& other)
 	return *this;
 }
 
-void AMateria::delete_materia(void* m)
-{
-	delete static_cast<AMateria*>(m);
-}
-
 std::string const& AMateria::getType() const
 {
 	return this->_type;

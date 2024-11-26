@@ -4,10 +4,10 @@
 #include "AMateria.hpp"
 #include <cstddef>
 
-Inventory::Inventory() : _inventory(), _history(&AMateria::delete_materia) {}
+Inventory::Inventory() : _inventory() {}
 
 Inventory::Inventory(const Inventory& other) :
-    _inventory(), _history(&AMateria::delete_materia)
+    _inventory()
 {
 	for (int i = 0; i < Inventory::inventory_size; ++i) {
 		if (other._inventory[i] != NULL) {
