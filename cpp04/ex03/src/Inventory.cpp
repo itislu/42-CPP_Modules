@@ -39,9 +39,10 @@ void Inventory::add(AMateria* m)
 		if (this->_inventory[i] == NULL) {
 			this->_inventory[i] = m;
 			this->_history.push_back(m);
-			break;
+			return;
 		}
 	}
+	delete m;
 }
 
 void Inventory::remove(int idx)

@@ -35,11 +35,12 @@ MateriaSource& MateriaSource::operator=(MateriaSource other)
 void MateriaSource::learnMateria(AMateria* m)
 {
 	for (int i = 0; i < MateriaSource::size; ++i) {
-		if (this->_templates[i] != NULL) {
-			this->_templates[i] = m->clone();
-			break;
+		if (this->_templates[i] == NULL) {
+			this->_templates[i] = m;
+			return;
 		}
 	}
+	delete m;
 }
 
 AMateria* MateriaSource::createMateria(std::string const& type)
