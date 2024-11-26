@@ -1,3 +1,5 @@
+// NOLINTBEGIN(cppcoreguidelines-special-member-functions)
+
 #ifndef ICHARACTER_HPP
 #define ICHARACTER_HPP
 
@@ -14,3 +16,5 @@ public:
 };
 
 #endif
+
+// NOLINTEND(cppcoreguidelines-special-member-functions)

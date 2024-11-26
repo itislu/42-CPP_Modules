@@ -1,3 +1,5 @@
+// NOLINTBEGIN
+
 #include "AMateria.hpp"
 #include "Character.hpp"
 #include "Cure.hpp"
@@ -23,3 +25,5 @@ int main()
 	delete me;
 	delete src;
 }
+
+// NOLINTEND

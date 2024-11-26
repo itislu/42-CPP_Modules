@@ -1,3 +1,5 @@
+// NOLINTBEGIN(cppcoreguidelines-special-member-functions)
+
 #ifndef IMATERIASOURCE_HPP
 #define IMATERIASOURCE_HPP
 
@@ -12,3 +14,5 @@ public:
 };
 
 #endif
+
+// NOLINTEND(cppcoreguidelines-special-member-functions)

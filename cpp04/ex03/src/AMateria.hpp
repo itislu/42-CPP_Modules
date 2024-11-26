@@ -1,3 +1,5 @@
+// NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
+
 #ifndef AMATERIA_HPP
 #define AMATERIA_HPP
 
@@ -26,3 +28,5 @@ private:
 };
 
 #endif
+
+// NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
