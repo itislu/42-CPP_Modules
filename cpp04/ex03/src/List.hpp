@@ -8,10 +8,11 @@ public:
 	List(const List& other);
 	~List();
 
-	List& operator=(const List& other);
+	List& operator=(List other);
 
 	void push_front(void* content);
 	void push_back(void* content);
+	void swap(List& other);
 	void clear();
 
 private:

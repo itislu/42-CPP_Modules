@@ -20,6 +20,7 @@ public:
 
 	virtual AMateria* clone() const = 0;
 	virtual void use(ICharacter& target);
+	virtual void swap(AMateria& other);
 
 protected:
 	const std::string _type;

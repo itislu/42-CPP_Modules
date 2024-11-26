@@ -22,17 +22,9 @@ Inventory::~Inventory()
 	this->_history.clear();
 }
 
-Inventory& Inventory::operator=(const Inventory& other)
+Inventory& Inventory::operator=(Inventory other)
 {
-	if (this != &other) {
-		this->_history.clear();
-		// this->_history = other._history;
-		for (int i = 0; i < Inventory::inventory_size; ++i) {
-			AMateria* m = other._inventory[i]->clone();
-			this->_history.push_back(m);
-			this->_inventory[i] = m;
-		}
-	}
+	this->swap(other);
 	return *this;
 }
 
@@ -60,6 +52,16 @@ void Inventory::remove(int idx)
 	if (idx >= 0 && idx < Inventory::inventory_size) {
 		this->_inventory[idx] = NULL;
 	}
+}
+
+void Inventory::swap(Inventory& other)
+{
+	for (int i = 0; i < Inventory::inventory_size; ++i) {
+		AMateria* tmp = this->_inventory[i];
+		this->_inventory[i] = other._inventory[i];
+		other._inventory[i] = tmp;
+	}
+	this->_history.swap(other._history);
 }
 
 // AMateria* Inventory::index(int idx)

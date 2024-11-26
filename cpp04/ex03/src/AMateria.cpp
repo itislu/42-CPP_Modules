@@ -11,8 +11,10 @@ AMateria::~AMateria() {}
 
 AMateria& AMateria::AMateria::operator=(const AMateria& other)
 {
-	if (this != &other) {
-	}
+	(void)other;
+	// AMateria* tmp = other.clone();
+	// this->swap(*tmp);
+	// delete tmp;
 	return *this;
 }
 
@@ -25,4 +27,9 @@ void AMateria::use(ICharacter& target)
 {
 	std::cout << "* uses " << this->_type << "on " << target.getName() << " *"
 	          << '\n';
+}
+
+void AMateria::swap(AMateria& other)
+{
+	(void)other;
 }

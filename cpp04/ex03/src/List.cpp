@@ -7,7 +7,9 @@ List::List(void* content) : _head(new Node(content)), _tail(this->_head) {}
 
 List::List(const List& other) : _head(NULL), _tail(NULL)
 {
-	*this = other;
+	for (Node* cur = other._head; cur != NULL; cur = cur->next) {
+		this->push_back(cur->content);
+	}
 }
 
 List::~List()
@@ -15,14 +17,9 @@ List::~List()
 	this->clear();
 }
 
-List& List::operator=(const List& other)
+List& List::operator=(List other)
 {
-	if (this != &other) {
-		this->clear();
-		for (Node* cur = other._head; cur != NULL; cur = cur->next) {
-			this->push_back(cur->content);
-		}
-	}
+	this->swap(other);
 	return *this;
 }
 
@@ -48,6 +45,17 @@ void List::push_back(void* content)
 		this->_tail->next = new_tail;
 	}
 	this->_tail = new_tail;
+}
+
+void List::swap(List& other)
+{
+	Node* tmp = this->_head;
+	this->_head = other._head;
+	other._head = tmp;
+
+	tmp = this->_tail;
+	this->_tail = other._tail;
+	other._tail = tmp;
 }
 
 void List::clear()

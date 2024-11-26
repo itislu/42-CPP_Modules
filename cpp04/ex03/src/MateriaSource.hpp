@@ -11,10 +11,11 @@ public:
 	MateriaSource(const MateriaSource& other);
 	~MateriaSource();
 
-	MateriaSource& operator=(const MateriaSource& other);
+	MateriaSource& operator=(MateriaSource other);
 
 	void learnMateria(AMateria* m);
 	AMateria* createMateria(std::string const& type);
+	void swap(MateriaSource& other);
 
 	static const int size = 4;
 

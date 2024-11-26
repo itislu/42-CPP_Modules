@@ -12,12 +12,9 @@ Character::Character(const Character& other) :
 
 Character::~Character() {}
 
-Character& Character::operator=(const Character& other)
+Character& Character::operator=(Character other)
 {
-	if (this != &other) {
-		this->_name = other._name;
-		this->_inventory = other._inventory;
-	}
+	this->swap(other);
 	return *this;
 }
 
@@ -41,4 +38,10 @@ void Character::use(int idx, ICharacter& target)
 	if (this->_inventory[idx] != NULL) {
 		this->_inventory[idx]->use(target);
 	}
+}
+
+void Character::swap(Character& other)
+{
+	this->_name.swap(other._name);
+	this->_inventory.swap(other._inventory);
 }

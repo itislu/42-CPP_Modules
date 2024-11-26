@@ -8,11 +8,9 @@ Ice::Ice(const Ice& other) : AMateria(other) {}
 
 Ice::~Ice() {}
 
-Ice& Ice::operator=(const Ice& other)
+Ice& Ice::operator=(Ice other)
 {
-	if (this != &other) {
-		this->AMateria::operator=(other);
-	}
+	this->swap(other);
 	return *this;
 }
 

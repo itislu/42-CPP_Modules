@@ -26,18 +26,9 @@ MateriaSource::~MateriaSource()
 	}
 }
 
-MateriaSource& MateriaSource::operator=(const MateriaSource& other)
+MateriaSource& MateriaSource::operator=(MateriaSource other)
 {
-	if (this != &other) {
-		for (int i = 0; i < MateriaSource::size; ++i) {
-			if (other._templates[i] != NULL) {
-				this->_templates[i] = other._templates[i]->clone();
-			}
-			else {
-				this->_templates[i] = NULL;
-			}
-		}
-	}
+	this->swap(other);
 	return *this;
 }
 
@@ -60,6 +51,15 @@ AMateria* MateriaSource::createMateria(std::string const& type)
 		}
 	}
 	return NULL;
+}
+
+void MateriaSource::swap(MateriaSource& other)
+{
+	for (int i = 0; i < MateriaSource::size; ++i) {
+		AMateria* tmp = this->_templates[i];
+		this->_templates[i] = other._templates[i];
+		other._templates[i] = tmp;
+	}
 }
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)

@@ -12,17 +12,18 @@ public:
 	Inventory(const Inventory& other);
 	~Inventory();
 
-	Inventory& operator=(const Inventory& other);
+	Inventory& operator=(Inventory other);
 	AMateria* operator[](int idx);
 
 	void add(AMateria *m);
 	void remove(int idx);
+	void swap(Inventory& other);
 	// AMateria *index(int idx);
 
 	static const int inventory_size = 4;
 
 private:
-	AMateria* _inventory[inventory_size]; // Maybe make dynamic with param for constructor
+	AMateria* _inventory[inventory_size];
 	List _history;
 };
 
