@@ -3,8 +3,10 @@
 
 class List {
 public:
+	typedef void (*deleter)(void*);
+
 	List();
-	List(void *content);
+	List(deleter d);
 	List(const List& other);
 	~List();
 
@@ -17,7 +19,7 @@ public:
 
 private:
 	struct Node {
-		Node(void *content);
+		Node(void* content);
 
 		void* content;
 		Node* next;
@@ -25,6 +27,7 @@ private:
 
 	Node* _head;
 	Node* _tail;
+	deleter _deleter;
 };
 
 #endif
