@@ -17,10 +17,7 @@ Inventory::Inventory(const Inventory& other) : _inventory()
 	}
 }
 
-Inventory::~Inventory()
-{
-	this->_history.clear();
-}
+Inventory::~Inventory() {}
 
 Inventory& Inventory::operator=(Inventory other)
 {
