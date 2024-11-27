@@ -39,7 +39,9 @@ void Inventory::add(AMateria* m)
 	for (int i = 0; i < Inventory::inventory_size; ++i) {
 		if (this->_inventory[i] == NULL) {
 			this->_inventory[i] = m;
-			this->_history.push_back(m);
+			if (this->_history.find(m) == NULL) {
+				this->_history.push_back(m);
+			}
 			return;
 		}
 	}

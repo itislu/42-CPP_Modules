@@ -72,6 +72,17 @@ void List<T>::swap(List& other)
 }
 
 template <typename T>
+T* List<T>::find(T* content)
+{
+	for (Node* cur = this->_head; cur != NULL; cur = cur->next) {
+		if (cur->content == content) {
+			return cur->content;
+		}
+	}
+	return NULL;
+}
+
+template <typename T>
 void List<T>::clear()
 {
 	while (this->_head != NULL) {

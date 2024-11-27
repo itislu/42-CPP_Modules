@@ -13,6 +13,7 @@ public:
 	void push_front(T* content);
 	void push_back(T* content);
 	void swap(List& other);
+	T* find(T* content);
 	void clear();
 
 private:
