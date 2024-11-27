@@ -3,10 +3,10 @@
 #include <cstddef>
 #include <string>
 
-MateriaSource::MateriaSource() : _templates(MateriaSource::inventory_size) {}
+MateriaSource::MateriaSource() : _inventory(MateriaSource::inventory_size) {}
 
 MateriaSource::MateriaSource(const MateriaSource& other) :
-    _templates(other._templates)
+    _inventory(other._inventory)
 {
 }
 
@@ -20,12 +20,12 @@ MateriaSource& MateriaSource::operator=(MateriaSource other)
 
 void MateriaSource::learnMateria(AMateria* m)
 {
-	this->_templates.add(m);
+	this->_inventory.add(m);
 }
 
 AMateria* MateriaSource::createMateria(std::string const& type)
 {
-	AMateria* m = this->_templates.find(type);
+	AMateria* m = this->_inventory.find(type);
 	if (m != NULL) {
 		return m->clone();
 	}
@@ -34,5 +34,5 @@ AMateria* MateriaSource::createMateria(std::string const& type)
 
 void MateriaSource::swap(MateriaSource& other)
 {
-	this->_templates.swap(other._templates);
+	this->_inventory.swap(other._inventory);
 }
