@@ -3,7 +3,10 @@
 #include <cstddef>
 #include <string>
 
-Character::Character(const std::string& name) : _name(name) {}
+Character::Character(const std::string& name) :
+    _name(name), _inventory(Character::inventory_size)
+{
+}
 
 Character::Character(const Character& other) :
     _name(other._name), _inventory(other._inventory)

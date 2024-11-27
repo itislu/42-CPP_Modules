@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <string>
 
-MateriaSource::MateriaSource() {}
+MateriaSource::MateriaSource() : _templates(MateriaSource::inventory_size) {}
 
 MateriaSource::MateriaSource(const MateriaSource& other) :
     _templates(other._templates)

@@ -18,8 +18,10 @@ public:
 	AMateria* createMateria(std::string const& type);
 	void swap(MateriaSource& other);
 
+	static const unsigned int inventory_size = 4;
+
 private:
-	Inventory _templates;
+	Inventory _templates; // TODO Rename to _inventory
 };
 
 #endif

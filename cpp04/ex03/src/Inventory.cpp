@@ -1,4 +1,4 @@
-// NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
 #include "Inventory.hpp"
 #include "AMateria.hpp"
@@ -8,11 +8,15 @@
 
 List<AMateria> Inventory::_history;
 
-Inventory::Inventory() : _inventory() {}
-
-Inventory::Inventory(const Inventory& other) : _inventory()
+Inventory::Inventory(unsigned int size) :
+    _inventory(new AMateria*[size]()), _size(size)
 {
-	for (int i = 0; i < Inventory::inventory_size; ++i) {
+}
+
+Inventory::Inventory(const Inventory& other) :
+    _inventory(new AMateria*[other._size]()), _size(other._size)
+{
+	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (other._inventory[i] != NULL) {
 			AMateria* m = other._inventory[i]->clone();
 			Inventory::_history.push_back(m);
@@ -21,7 +25,10 @@ Inventory::Inventory(const Inventory& other) : _inventory()
 	}
 }
 
-Inventory::~Inventory() {}
+Inventory::~Inventory()
+{
+	delete[] this->_inventory;
+}
 
 Inventory& Inventory::operator=(Inventory other)
 {
@@ -29,9 +36,9 @@ Inventory& Inventory::operator=(Inventory other)
 	return *this;
 }
 
-AMateria* Inventory::operator[](int idx)
+AMateria* Inventory::operator[](unsigned int idx)
 {
-	if (idx >= 0 && idx < Inventory::inventory_size) {
+	if (idx < this->_size) {
 		return this->_inventory[idx];
 	}
 	return NULL;
@@ -39,7 +46,7 @@ AMateria* Inventory::operator[](int idx)
 
 void Inventory::add(AMateria* m)
 {
-	for (int i = 0; i < Inventory::inventory_size; ++i) {
+	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (this->_inventory[i] == NULL) {
 			this->_inventory[i] = m;
 			if (Inventory::_history.find(m) == NULL) {
@@ -51,25 +58,27 @@ void Inventory::add(AMateria* m)
 	delete m;
 }
 
-void Inventory::remove(int idx)
+void Inventory::remove(unsigned int idx)
 {
-	if (idx >= 0 && idx < Inventory::inventory_size) {
+	if (idx < this->_size) {
 		this->_inventory[idx] = NULL;
 	}
 }
 
 void Inventory::swap(Inventory& other)
 {
-	for (int i = 0; i < Inventory::inventory_size; ++i) {
-		AMateria* tmp = this->_inventory[i];
-		this->_inventory[i] = other._inventory[i];
-		other._inventory[i] = tmp;
-	}
+	AMateria** tmp_inventory = this->_inventory;
+	this->_inventory = other._inventory;
+	other._inventory = tmp_inventory;
+
+	unsigned int tmp_size = this->_size;
+	this->_size = other._size;
+	other._size = tmp_size;
 }
 
 AMateria* Inventory::find(const std::string& type)
 {
-	for (int i = 0; i < Inventory::inventory_size; ++i) {
+	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (this->_inventory[i] != NULL
 		    && this->_inventory[i]->getType() == type) {
 			return this->_inventory[i];
@@ -78,9 +87,4 @@ AMateria* Inventory::find(const std::string& type)
 	return NULL;
 }
 
-// AMateria* Inventory::index(int idx)
-// {
-// 	return (*this)[idx];
-// }
-
-// NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

@@ -20,7 +20,7 @@ public:
 	void use(int idx, ICharacter& target);
 	void swap(Character& other);
 
-	// static const int inventory_size = 4;
+	static const unsigned int inventory_size = 4;
 
 private:
 	Character();

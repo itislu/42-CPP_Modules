@@ -9,25 +9,25 @@ class Character;
 
 class Inventory {
 public:
-	Inventory();
+	Inventory(unsigned int size);
 	Inventory(const Inventory& other);
 	~Inventory();
 
 	Inventory& operator=(Inventory other);
-	AMateria* operator[](int idx);
+	AMateria* operator[](unsigned int idx);
 
 	void add(AMateria* m);
-	void remove(int idx);
+	void remove(unsigned int idx);
 	void swap(Inventory& other);
 	AMateria* find(const std::string& type);
-	// AMateria *index(int idx);
-
-	static const int inventory_size = 4;
 
 private:
+	Inventory();
+
 	static List<AMateria> _history;
 
-	AMateria* _inventory[inventory_size];
+	AMateria** _inventory;
+	unsigned int _size;
 };
 
 #endif
