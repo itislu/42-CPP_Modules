@@ -55,7 +55,9 @@ void Inventory::add(AMateria* m)
 			return;
 		}
 	}
-	delete m;
+	if (Inventory::_history.find(m) == NULL) {
+		delete m;
+	}
 }
 
 void Inventory::remove(unsigned int idx)
