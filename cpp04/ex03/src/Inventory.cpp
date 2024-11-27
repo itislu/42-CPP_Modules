@@ -4,6 +4,7 @@
 #include "AMateria.hpp"
 #include "List.hpp"
 #include <cstddef>
+#include <string>
 
 List<AMateria> Inventory::_history;
 
@@ -64,6 +65,17 @@ void Inventory::swap(Inventory& other)
 		this->_inventory[i] = other._inventory[i];
 		other._inventory[i] = tmp;
 	}
+}
+
+AMateria* Inventory::find(const std::string& type)
+{
+	for (int i = 0; i < Inventory::inventory_size; ++i) {
+		if (this->_inventory[i] != NULL
+		    && this->_inventory[i]->getType() == type) {
+			return this->_inventory[i];
+		}
+	}
+	return NULL;
 }
 
 // AMateria* Inventory::index(int idx)
