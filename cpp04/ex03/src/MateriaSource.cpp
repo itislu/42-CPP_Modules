@@ -2,8 +2,11 @@
 
 #include "MateriaSource.hpp"
 #include "AMateria.hpp"
+#include "List.hpp"
 #include <cstddef>
 #include <string>
+
+List<AMateria> MateriaSource::_history;
 
 MateriaSource::MateriaSource() : _templates() {}
 
@@ -11,20 +14,14 @@ MateriaSource::MateriaSource(const MateriaSource& other) : _templates()
 {
 	for (int i = 0; i < MateriaSource::size; ++i) {
 		if (other._templates[i] != NULL) {
-			this->_templates[i] = other._templates[i]->clone();
-		}
-		else {
-			this->_templates[i] = NULL;
+			AMateria* m = other._templates[i]->clone();
+			MateriaSource::_history.push_back(m);
+			this->_templates[i] = m;
 		}
 	}
 }
 
-MateriaSource::~MateriaSource()
-{
-	for (int i = 0; i < MateriaSource::size; ++i) {
-		delete this->_templates[i];
-	}
-}
+MateriaSource::~MateriaSource() {}
 
 MateriaSource& MateriaSource::operator=(MateriaSource other)
 {
@@ -37,6 +34,9 @@ void MateriaSource::learnMateria(AMateria* m)
 	for (int i = 0; i < MateriaSource::size; ++i) {
 		if (this->_templates[i] == NULL) {
 			this->_templates[i] = m;
+			if (MateriaSource::_history.find(m) == NULL) {
+				MateriaSource::_history.push_back(m);
+			}
 			return;
 		}
 	}

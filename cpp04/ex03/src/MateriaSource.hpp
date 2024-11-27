@@ -3,6 +3,7 @@
 
 #include "AMateria.hpp"
 #include "IMateriaSource.hpp"
+#include "List.hpp"
 #include <string>
 
 class MateriaSource : public IMateriaSource {
@@ -20,6 +21,8 @@ public:
 	static const int size = 4;
 
 private:
+	static List<AMateria> _history;
+
 	AMateria* _templates[MateriaSource::size];
 };
 
