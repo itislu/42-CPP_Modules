@@ -2,17 +2,19 @@
 
 #include "Inventory.hpp"
 #include "AMateria.hpp"
+#include "List.hpp"
 #include <cstddef>
+
+List<AMateria> Inventory::_history;
 
 Inventory::Inventory() : _inventory() {}
 
-Inventory::Inventory(const Inventory& other) :
-    _inventory()
+Inventory::Inventory(const Inventory& other) : _inventory()
 {
 	for (int i = 0; i < Inventory::inventory_size; ++i) {
 		if (other._inventory[i] != NULL) {
 			AMateria* m = other._inventory[i]->clone();
-			this->_history.push_back(m);
+			Inventory::_history.push_back(m);
 			this->_inventory[i] = m;
 		}
 	}
@@ -39,8 +41,8 @@ void Inventory::add(AMateria* m)
 	for (int i = 0; i < Inventory::inventory_size; ++i) {
 		if (this->_inventory[i] == NULL) {
 			this->_inventory[i] = m;
-			if (this->_history.find(m) == NULL) {
-				this->_history.push_back(m);
+			if (Inventory::_history.find(m) == NULL) {
+				Inventory::_history.push_back(m);
 			}
 			return;
 		}
@@ -62,7 +64,6 @@ void Inventory::swap(Inventory& other)
 		this->_inventory[i] = other._inventory[i];
 		other._inventory[i] = tmp;
 	}
-	this->_history.swap(other._history);
 }
 
 // AMateria* Inventory::index(int idx)

@@ -23,8 +23,9 @@ public:
 	static const int inventory_size = 4;
 
 private:
+	static List<AMateria> _history;
+
 	AMateria* _inventory[inventory_size];
-	List<AMateria> _history;
 };
 
 #endif
