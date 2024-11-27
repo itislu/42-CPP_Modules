@@ -12,7 +12,7 @@ int main()
 	setlocale(LC_CTYPE, "");
 	while (true) {
 		std::wcout << L"Input a command [ADD, SEARCH, EXIT]: ";
-		if (!std::getline(std::wcin, input)) {
+		if (!std::getline(std::wcin, input) || std::wcin.eof()) {
 			std::wcout << '\n';
 			break;
 		}

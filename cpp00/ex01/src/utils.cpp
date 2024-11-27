@@ -7,7 +7,7 @@ bool prompt(const wchar_t* p, std::wstring& dest)
 {
 	while (std::wcin.good()) {
 		std::wcout << p << L": ";
-		if (!std::getline(std::wcin, dest)) {
+		if (!std::getline(std::wcin, dest) || std::wcin.eof()) {
 			std::wcout << '\n';
 			break;
 		}
