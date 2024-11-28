@@ -10,12 +10,9 @@ int main()
 	std::wstring input(L"Reserving some space for you, Valgrind");
 
 	setlocale(LC_CTYPE, "");
-	while (true) {
+	while (std::wcin.good()) {
 		std::wcout << L"Input a command [ADD, SEARCH, EXIT]: ";
-		if (!std::getline(std::wcin, input) || std::wcin.eof()) {
-			std::wcout << '\n';
-			break;
-		}
+		std::getline(std::wcin, input);
 		if (input == L"ADD") {
 			phonebook.add();
 		}
@@ -25,7 +22,7 @@ int main()
 		else if (input == L"EXIT") {
 			break;
 		}
-		else {
+		else if (std::wcin.good()) {
 			std::wcout << L"Unknown command.\n";
 		}
 		std::wcout << '\n';

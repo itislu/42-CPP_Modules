@@ -7,8 +7,8 @@ bool prompt(const wchar_t* p, std::wstring& dest)
 {
 	while (std::wcin.good()) {
 		std::wcout << p << L": ";
-		if (!std::getline(std::wcin, dest) || std::wcin.eof()) {
-			std::wcout << '\n';
+		std::getline(std::wcin, dest);
+		if (!std::wcin.good()) {
 			break;
 		}
 		if (dest.empty()) {
@@ -18,6 +18,7 @@ bool prompt(const wchar_t* p, std::wstring& dest)
 			return true;
 		}
 	}
+	std::wcout << '\n';
 	std::wcin.ignore();
 	std::wcin.clear();
 	freopen("/dev/tty", "r", stdin);
