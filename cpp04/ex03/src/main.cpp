@@ -300,6 +300,43 @@ int main()
 		delete cloud;
 		delete src1;
 	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** COPY CHARACTER: ***\n" << '\n';
+		MateriaSource src1;
+		AMateria* ice = new Ice();
+		AMateria* cure = new Cure();
+		src1.learnMateria(ice);
+		src1.learnMateria(cure);
+		Character cloud("Cloud");
+		Character tifa("Tifa");
+		cloud.equip(ice);
+		tifa.equip(src1.createMateria("cure"));
+		std::cout << "Before copying:" << '\n';
+		cloud.use(0, tifa);
+		tifa.use(0, cloud);
+		std::cout << "\nAfter copying:" << '\n';
+		cloud = tifa;
+		cloud.use(0, tifa);
+		tifa.use(0, cloud);
+	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** COPY MATERIA: ***\n" << '\n';
+		MateriaSource src1;
+		AMateria* ice = new Ice();
+		AMateria* cure = new Cure();
+		*cure = *ice;
+		src1.learnMateria(ice);
+		src1.learnMateria(cure);
+		Character tifa("Tifa");
+		tifa.equip(cure);
+		tifa.equip(ice);
+		std::cout << cure->getType() << '\n';
+		std::cout << ice->getType() << '\n';
+		tifa.use(0, tifa);
+		tifa.use(1, tifa);
+	}
 	std::cout << '\n';
 }
 
