@@ -27,6 +27,11 @@ Inventory::Inventory(const Inventory& other) :
 
 Inventory::~Inventory()
 {
+	for (unsigned int i = 0; i < this->_size; ++i) {
+		if (this->_inventory[i] != NULL) {
+			Inventory::_history.remove(this->_inventory[i]);
+		}
+	}
 	delete[] this->_inventory;
 }
 
@@ -58,6 +63,7 @@ void Inventory::add(AMateria* m)
 	}
 }
 
+// Does not decrease references
 void Inventory::remove(unsigned int idx)
 {
 	if (idx < this->_size) {
