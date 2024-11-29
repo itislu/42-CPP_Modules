@@ -2,7 +2,7 @@
 #define INVENTORY_HPP
 
 #include "AMateria.hpp"
-#include "List.hpp"
+#include "RefCountedList.hpp"
 #include <string>
 
 class Character;
@@ -24,7 +24,7 @@ public:
 private:
 	Inventory();
 
-	static List<AMateria> _history;
+	static RefCountedList<AMateria*> _history;
 
 	AMateria** _inventory;
 	unsigned int _size;

@@ -2,11 +2,11 @@
 
 #include "Inventory.hpp"
 #include "AMateria.hpp"
-#include "List.hpp"
+#include "RefCountedList.hpp"
 #include <cstddef>
 #include <string>
 
-List<AMateria> Inventory::_history;
+RefCountedList<AMateria*> Inventory::_history;
 
 Inventory::Inventory(unsigned int size) :
     _inventory(new AMateria*[size]()), _size(size)
@@ -49,9 +49,7 @@ void Inventory::add(AMateria* m)
 	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (this->_inventory[i] == NULL) {
 			this->_inventory[i] = m;
-			if (Inventory::_history.find(m) == NULL) {
-				Inventory::_history.push_back(m);
-			}
+			Inventory::_history.push_back(m);
 			return;
 		}
 	}
