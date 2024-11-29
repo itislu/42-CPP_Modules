@@ -142,7 +142,7 @@ bool RefCountedList<T*>::_decrease_ref(T* content)
 
 template <typename T>
 RefCountedList<T*>::Node::Node(T* content, RefCountedList* parent) :
-    content(content), refs(1), next(), prev(), parent(parent)
+    content(content), refs(1), parent(parent), next(), prev()
 {
 }
 

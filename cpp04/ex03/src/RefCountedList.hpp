@@ -29,9 +29,9 @@ private:
 
 		T* content;
 		int refs;
+		RefCountedList* parent;
 		Node* next;
 		Node* prev;
-		RefCountedList* parent;
 	};
 
 	Node* _find_node(T* content);
