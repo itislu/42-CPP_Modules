@@ -8,12 +8,12 @@
 #include <cstddef>
 
 template <typename T>
-List<T>::List() : _head(NULL), _tail(NULL)
+List<T>::List() : _head(), _tail()
 {
 }
 
 template <typename T>
-List<T>::List(const List& other) : _head(NULL), _tail(NULL)
+List<T>::List(const List& other) : _head(), _tail()
 {
 	for (Node* cur = other._head; cur != NULL; cur = cur->next) {
 		this->push_back(cur->content);
@@ -94,7 +94,7 @@ void List<T>::clear()
 }
 
 template <typename T>
-List<T>::Node::Node(T* content) : content(content), next(NULL)
+List<T>::Node::Node(T* content) : content(content), next()
 {
 }
 
