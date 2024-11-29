@@ -22,6 +22,7 @@ private:
 
 		T* content;
 		Node* next;
+		Node* prev;
 	};
 
 	Node* _head;

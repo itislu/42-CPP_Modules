@@ -39,6 +39,9 @@ void List<T>::push_front(T* content)
 	Node* new_node = new Node(content);
 
 	new_node->next = this->_head;
+	if (this->_head != NULL) {
+		this->_head->prev = new_node;
+	}
 	this->_head = new_node;
 	if (this->_tail == NULL) {
 		this->_tail = new_node;
@@ -56,6 +59,7 @@ void List<T>::push_back(T* content)
 	else {
 		this->_tail->next = new_node;
 	}
+	new_node->prev = this->_tail;
 	this->_tail = new_node;
 }
 
@@ -94,7 +98,7 @@ void List<T>::clear()
 }
 
 template <typename T>
-List<T>::Node::Node(T* content) : content(content), next()
+List<T>::Node::Node(T* content) : content(content), next(), prev()
 {
 }
 
