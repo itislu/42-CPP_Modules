@@ -24,7 +24,7 @@ public:
 
 private:
 	struct Node {
-		Node(T* content, RefCountedList* parent);
+		Node(T* content_, RefCountedList* parent_);
 		~Node();
 
 		T* content;
