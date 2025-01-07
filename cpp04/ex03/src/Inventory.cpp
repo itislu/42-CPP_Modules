@@ -2,11 +2,11 @@
 
 #include "Inventory.hpp"
 #include "AMateria.hpp"
-#include "RefCountedList.hpp"
+// #include "RefCountedList.hpp"
 #include <cstddef>
 #include <string>
 
-RefCountedList<AMateria*> Inventory::_history;
+// RefCountedList<AMateria*> Inventory::_history;
 
 Inventory::Inventory(unsigned int size) :
     _inventory(new AMateria*[size]()), _size(size)
@@ -19,19 +19,20 @@ Inventory::Inventory(const Inventory& other) :
 	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (other._inventory[i] != NULL) {
 			AMateria* m = other._inventory[i]->clone();
-			Inventory::_history.push_back(m);
+			// Inventory::_history.push_back(m);
 			this->_inventory[i] = m;
 		}
+		// this->_inventory[i] = other._inventory[i];
 	}
 }
 
 Inventory::~Inventory()
 {
-	for (unsigned int i = 0; i < this->_size; ++i) {
-		if (this->_inventory[i] != NULL) {
-			Inventory::_history.remove(this->_inventory[i]);
-		}
-	}
+	// for (unsigned int i = 0; i < this->_size; ++i) {
+	// 	if (this->_inventory[i] != NULL) {
+	// 		Inventory::_history.remove(this->_inventory[i]);
+	// 	}
+	// }
 	delete[] this->_inventory;
 }
 
@@ -54,13 +55,13 @@ void Inventory::add(AMateria* m)
 	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (this->_inventory[i] == NULL) {
 			this->_inventory[i] = m;
-			Inventory::_history.push_back(m);
+			// Inventory::_history.push_back(m);
 			return;
 		}
 	}
-	if (Inventory::_history.find(m) == NULL) {
-		delete m;
-	}
+	// if (Inventory::_history.find(m) == NULL) {
+	// 	delete m;
+	// }
 }
 
 // Does not decrease references
@@ -71,13 +72,18 @@ void Inventory::remove(unsigned int idx)
 	}
 }
 
+// void Inventory::track(AMateria* m)
+// {
+// 	Inventory::_history.push_back(m);
+// }
+
 void Inventory::swap(Inventory& other)
 {
 	AMateria** tmp_inventory = this->_inventory;
 	this->_inventory = other._inventory;
 	other._inventory = tmp_inventory;
 
-	unsigned int tmp_size = this->_size;
+	const unsigned int tmp_size = this->_size;
 	this->_size = other._size;
 	other._size = tmp_size;
 }

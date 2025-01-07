@@ -2,7 +2,7 @@
 #define INVENTORY_HPP
 
 #include "AMateria.hpp"
-#include "RefCountedList.hpp"
+// #include "RefCountedList.hpp"
 #include <string>
 
 class Character;
@@ -18,13 +18,14 @@ public:
 
 	void add(AMateria* m);
 	void remove(unsigned int idx);
+	// static void track(AMateria* m);
 	void swap(Inventory& other);
 	AMateria* find(const std::string& type);
 
 private:
 	Inventory();
 
-	static RefCountedList<AMateria*> _history;
+	// static RefCountedList<AMateria*> _history;
 
 	AMateria** _inventory;
 	unsigned int _size;

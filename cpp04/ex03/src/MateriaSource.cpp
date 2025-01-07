@@ -1,5 +1,6 @@
 #include "MateriaSource.hpp"
 #include "AMateria.hpp"
+// #include "Inventory.hpp"
 #include <cstddef>
 #include <string>
 
@@ -27,7 +28,10 @@ AMateria* MateriaSource::createMateria(std::string const& type)
 {
 	AMateria* m = this->_inventory.find(type);
 	if (m != NULL) {
-		return m->clone();
+		return m->clone(); // Need to keep track of this allocation
+		// AMateria *new_m = m->clone();
+		// Inventory::track(new_m);
+		// return new_m;
 	}
 	return NULL;
 }

@@ -97,10 +97,14 @@ void RefCountedList<T*>::remove(T* content)
 	this->_decrease_ref(content);
 }
 
+#include <iostream>
 template <typename T>
 void RefCountedList<T*>::clear()
 {
+	int i = 0;
+	std::cout << "Clearing RefCountedList" << '\n';
 	while (this->_head != NULL) {
+		std::cout << "Deleting node " << i++ << '\n';
 		delete this->_head;
 	}
 }
@@ -134,7 +138,7 @@ bool RefCountedList<T*>::_decrease_ref(T* content)
 	if (hit == NULL) {
 		return false;
 	}
-	if (--hit->refs <= 0) {
+	if (--hit->refs == 0) {
 		delete hit;
 	}
 	return true;
@@ -163,7 +167,7 @@ RefCountedList<T*>::Node::~Node()
 	if (this->next != NULL) {
 		this->next->prev = prev;
 	}
-	delete this->content;
+	delete(this->content);
 }
 
 #endif

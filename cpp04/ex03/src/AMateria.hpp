@@ -4,6 +4,8 @@
 #ifndef AMATERIA_HPP
 #define AMATERIA_HPP
 
+#include "RefCountedList.hpp"
+#include <cstddef>
 #include <string>
 
 class ICharacter;
@@ -15,6 +17,8 @@ public:
 	virtual ~AMateria();
 
 	AMateria& operator=(const AMateria& other);
+	static void* operator new(size_t size);
+	static void operator delete(void* ptr);
 
 	std::string const& getType() const; // Returns the materia type
 
@@ -23,6 +27,7 @@ public:
 	virtual void swap(AMateria& other);
 
 protected:
+	static RefCountedList<AMateria*> _history; //? protected or private?
 	const std::string _type;
 
 private:

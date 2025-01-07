@@ -11,6 +11,17 @@
 int main()
 {
 	{
+		IMateriaSource* src = new MateriaSource();
+		// Ice ice;
+		AMateria* ice = new Ice();
+		src->learnMateria(ice);
+		AMateria* hehe = src->createMateria("ice");
+		(void)hehe;
+		delete hehe;
+		delete src;
+		return 0;
+	}
+	{
 		std::cout << "*** SUBJECT TEST CASE: ***\n" << '\n';
 		IMateriaSource* src = new MateriaSource();
 		src->learnMateria(new Ice());
@@ -24,9 +35,19 @@ int main()
 		ICharacter* bob = new Character("bob");
 		me->use(0, *bob);
 		me->use(1, *bob);
+
+		AMateria* hehe = src->createMateria("ice");
+		(void)hehe;
+
+		Ice hehe2;
+		me->equip(&hehe2);
+		me->use(2, *bob);
+
 		delete bob;
 		delete me;
 		delete src;
+		std::cout << "RETURNING" << '\n';
+		return 0;
 	}
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
@@ -47,6 +68,11 @@ int main()
 		tmp = src->createMateria("ice");
 		me->equip(tmp);
 		ICharacter* bob = new Character("bob");
+		AMateria* hehe3;
+		hehe3 = src->createMateria("ice");
+		me->equip(hehe3);
+		bob->equip(hehe3);
+		bob->use(0, *me);
 		me->use(0, *bob);
 		me->use(1, *bob);
 		me->use(2, *bob);
