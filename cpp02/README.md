@@ -10,6 +10,8 @@
 # Resources
 
 ### Floating Point and Fixed Point Numbers
+- [How Floating-Point Numbers Are Represented - Spanning Tree](https://youtu.be/bbkcEiUjehk) - YouTube
+
 - [Understanding Floating Point Number Representation](https://www.cprogramming.com/tutorial/floating_point/understanding_floating_point.html)
 
 - [Introduction to Fixed Point Number Representation](https://web.archive.org/web/20231224143018/https://inst.eecs.berkeley.edu/~cs61c/sp06/handout/fixedpt.html)
