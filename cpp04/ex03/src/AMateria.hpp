@@ -4,7 +4,7 @@
 #ifndef AMATERIA_HPP
 #define AMATERIA_HPP
 
-#include "RefCountedList.hpp"
+#include "RcList.hpp"
 #include <cstddef>
 #include <string>
 
@@ -32,7 +32,7 @@ protected:
 private:
 	AMateria();
 
-	static RefCountedList<AMateria*> _history;
+	static RcList<AMateria*> _history;
 };
 
 #endif
