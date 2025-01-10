@@ -9,22 +9,37 @@ Fixed::Fixed() : _value(0) {}
 
 Fixed::Fixed(const Fixed& other) : _value(other.getRawBits()) {}
 
-Fixed::Fixed(const int num) : _value(num << Fixed::_fractional_bits) {}
+Fixed::Fixed(const int num)
+{
+	const unsigned int save_bits = UINT_MAX >> Fixed::_fractional_bits;
+
+	if (num > 0 && ((num & ~save_bits) != 0)) {
+		Fixed::_bad = true;
+		this->_value = INT_MAX;
+	}
+	else if (num < 0 && ((~num & ~save_bits) != 0)) {
+		Fixed::_bad = true;
+		this->_value = INT_MIN;
+	}
+	else {
+		this->_value = num * (1 << Fixed::_fractional_bits);
+	}
+}
 
 Fixed::Fixed(const float num)
 {
-	float scaled = roundf(num * (1 << Fixed::_fractional_bits));
+	const float scaled = roundf(num * (1 << Fixed::_fractional_bits));
 
 	if (isnan(scaled) != 0 || scaled < (float)INT_MIN) {
 		Fixed::_bad = true;
-		_value = INT_MIN;
+		this->_value = INT_MIN;
 	}
 	else if (scaled >= (float)INT_MAX) {
 		Fixed::_bad = true;
-		_value = INT_MAX;
+		this->_value = INT_MAX;
 	}
 	else {
-		_value = (int)scaled;
+		this->_value = (int)scaled;
 	}
 }
 
@@ -90,26 +105,30 @@ Fixed Fixed::operator/(const Fixed& other) const
 
 Fixed& Fixed::operator++()
 {
-	this->setRawBits(this->getRawBits() + 1);
+	if (this->getRawBits() != INT_MAX) {
+		this->setRawBits(this->getRawBits() + 1);
+	}
 	return *this;
 }
 
 Fixed Fixed::operator++(int)
 {
-	Fixed prev(*this);
+	const Fixed prev(*this);
 	++*this;
 	return prev;
 }
 
 Fixed& Fixed::operator--()
 {
-	this->setRawBits(this->getRawBits() - 1);
+	if (this->getRawBits() != INT_MIN) {
+		this->setRawBits(this->getRawBits() - 1);
+	}
 	return *this;
 }
 
 Fixed Fixed::operator--(int)
 {
-	Fixed prev(*this);
+	const Fixed prev(*this);
 	--*this;
 	return prev;
 }
@@ -156,7 +175,7 @@ void Fixed::setRawBits(const int raw)
 
 int Fixed::toInt() const
 {
-	return this->getRawBits() >> Fixed::_fractional_bits;
+	return this->getRawBits() / (1 << Fixed::_fractional_bits);
 }
 
 float Fixed::toFloat() const
