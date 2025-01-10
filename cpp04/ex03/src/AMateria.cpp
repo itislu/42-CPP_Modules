@@ -1,12 +1,12 @@
 #include "AMateria.hpp"
 #include "ICharacter.hpp"
-#include "RefCountedList.hpp"
+#include "RcList.hpp"
 #include <cstddef>
 #include <iostream>
 #include <new>
 #include <string>
 
-RefCountedList<AMateria*> AMateria::_history;
+RcList<AMateria*> AMateria::_history;
 
 AMateria::AMateria(std::string const& type) : _type(type) {}
 

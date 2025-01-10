@@ -1,21 +1,20 @@
-#ifndef REFCOUNTEDLIST_TPP
-#define REFCOUNTEDLIST_TPP
+#ifndef RCLIST_TPP
+#define RCLIST_TPP
 
-#ifndef REFCOUNTEDLIST_HPP
-#include "RefCountedList.hpp"
+#ifndef RCLIST_HPP
+#include "RcList.hpp"
 #endif
 
 #include <cstddef>
 #include <iostream>
 
 template <typename T>
-RefCountedList<T*>::RefCountedList() : _head(), _tail()
+RcList<T*>::RcList() : _head(), _tail()
 {
 }
 
 template <typename T>
-RefCountedList<T*>::RefCountedList(const RefCountedList& other) :
-    _head(), _tail()
+RcList<T*>::RcList(const RcList& other) : _head(), _tail()
 {
 	for (Node* cur = other._head; cur != NULL; cur = cur->next) {
 		this->push_back(cur->content);
@@ -23,20 +22,20 @@ RefCountedList<T*>::RefCountedList(const RefCountedList& other) :
 }
 
 template <typename T>
-RefCountedList<T*>::~RefCountedList()
+RcList<T*>::~RcList()
 {
 	this->clear();
 }
 
 template <typename T>
-RefCountedList<T*>& RefCountedList<T*>::operator=(RefCountedList other)
+RcList<T*>& RcList<T*>::operator=(RcList other)
 {
 	this->swap(other);
 	return *this;
 }
 
 template <typename T>
-void RefCountedList<T*>::push_front(T* content)
+void RcList<T*>::push_front(T* content)
 {
 	if (this->_increase_ref(content)) {
 		return;
@@ -53,7 +52,7 @@ void RefCountedList<T*>::push_front(T* content)
 }
 
 template <typename T>
-void RefCountedList<T*>::push_back(T* content)
+void RcList<T*>::push_back(T* content)
 {
 	std::cout << "push_back " << content << '\n';
 
@@ -72,7 +71,7 @@ void RefCountedList<T*>::push_back(T* content)
 }
 
 template <typename T>
-void RefCountedList<T*>::swap(RefCountedList& other)
+void RcList<T*>::swap(RcList& other)
 {
 	Node* tmp = this->_head;
 	this->_head = other._head;
@@ -84,7 +83,7 @@ void RefCountedList<T*>::swap(RefCountedList& other)
 }
 
 template <typename T>
-T* RefCountedList<T*>::find(T* content)
+T* RcList<T*>::find(T* content)
 {
 	std::cout << "find " << content << '\n';
 
@@ -97,7 +96,7 @@ T* RefCountedList<T*>::find(T* content)
 }
 
 template <typename T>
-void RefCountedList<T*>::remove(T* content)
+void RcList<T*>::remove(T* content)
 {
 	std::cout << "remove " << content << '\n';
 
@@ -105,7 +104,7 @@ void RefCountedList<T*>::remove(T* content)
 }
 
 template <typename T>
-void RefCountedList<T*>::forget(T* content)
+void RcList<T*>::forget(T* content)
 {
 	std::cout << "forget " << content << '\n';
 
@@ -113,10 +112,10 @@ void RefCountedList<T*>::forget(T* content)
 }
 
 template <typename T>
-void RefCountedList<T*>::clear()
+void RcList<T*>::clear()
 {
 	int i = 0;
-	std::cout << "Clearing RefCountedList" << '\n';
+	std::cout << "Clearing RcList" << '\n';
 	while (this->_head != NULL) {
 		std::cout << "Deleting node " << i++ << '\n';
 		this->_drop_node(this->_head);
@@ -124,7 +123,7 @@ void RefCountedList<T*>::clear()
 }
 
 template <typename T>
-typename RefCountedList<T*>::Node* RefCountedList<T*>::_find_node(T* content)
+typename RcList<T*>::Node* RcList<T*>::_find_node(T* content)
 {
 	for (Node* cur = this->_head; cur != NULL; cur = cur->next) {
 		if (cur->content == content) {
@@ -135,7 +134,7 @@ typename RefCountedList<T*>::Node* RefCountedList<T*>::_find_node(T* content)
 }
 
 template <typename T>
-void RefCountedList<T*>::_drop_node(Node* node)
+void RcList<T*>::_drop_node(Node* node)
 {
 	if (node == NULL) {
 		return;
@@ -146,7 +145,7 @@ void RefCountedList<T*>::_drop_node(Node* node)
 }
 
 template <typename T>
-bool RefCountedList<T*>::_increase_ref(T* content)
+bool RcList<T*>::_increase_ref(T* content)
 {
 	Node* hit = this->_find_node(content);
 	if (hit == NULL) {
@@ -157,7 +156,7 @@ bool RefCountedList<T*>::_increase_ref(T* content)
 }
 
 template <typename T>
-bool RefCountedList<T*>::_decrease_ref(T* content)
+bool RcList<T*>::_decrease_ref(T* content)
 {
 	std::cout << "_decrease_ref " << content << '\n';
 
@@ -172,13 +171,13 @@ bool RefCountedList<T*>::_decrease_ref(T* content)
 }
 
 template <typename T>
-RefCountedList<T*>::Node::Node(T* content_, RefCountedList* parent_) :
+RcList<T*>::Node::Node(T* content_, RcList* parent_) :
     content(content_), refs(1), parent(parent_), next(), prev()
 {
 }
 
 template <typename T>
-RefCountedList<T*>::Node::~Node()
+RcList<T*>::Node::~Node()
 {
 	if (this->parent != NULL) {
 		if (this == this->parent->_head) {

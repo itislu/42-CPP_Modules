@@ -1,26 +1,25 @@
 // NOLINTBEGIN(cppcoreguidelines-special-member-functions)
 
-#ifndef REFCOUNTEDLIST_HPP
-#define REFCOUNTEDLIST_HPP
+#ifndef RCLIST_HPP
+#define RCLIST_HPP
 
 template <typename T>
-class RefCountedList;
+class RcList;
 
-// TODO: Rename to RcList
 // TODO: I could just make a Rc class and this could then be a normal linked list
 template <typename T>
-class RefCountedList<T*> {
+class RcList<T*> {
 public:
-	RefCountedList();
-	RefCountedList(const RefCountedList& other);
-	~RefCountedList();
+	RcList();
+	RcList(const RcList& other);
+	~RcList();
 
-	RefCountedList& operator=(RefCountedList other);
+	RcList& operator=(RcList other);
 
 	// TODO: Consider that many methods can be made static
 	void push_front(T* content);
 	void push_back(T* content);
-	void swap(RefCountedList& other);
+	void swap(RcList& other);
 	T* find(T* content);
 	void remove(T* content);
 	void forget(T* content);
@@ -28,12 +27,12 @@ public:
 
 private:
 	struct Node {
-		Node(T* content_, RefCountedList* parent_);
+		Node(T* content_, RcList* parent_);
 		~Node();
 
 		T* content;
 		int refs;
-		RefCountedList* parent;
+		RcList* parent;
 		Node* next;
 		Node* prev;
 	};
@@ -47,8 +46,8 @@ private:
 	Node* _tail;
 };
 
-#ifndef REFCOUNTEDLIST_TPP
-#include "RefCountedList.tpp"
+#ifndef RCLIST_TPP
+#include "RcList.tpp"
 #endif
 
 #endif
