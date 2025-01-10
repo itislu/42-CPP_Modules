@@ -63,6 +63,13 @@ int main()
 		me->use(1, *bob);
 		me->use(2, *bob);
 		me->use(3, *bob);
+		std::cout << "\nEquip what doesn't fit in another:" << '\n';
+		AMateria* full;
+		full = src->createMateria("ice");
+		me->equip(full);
+		bob->equip(full);
+		me->use(3, *bob);
+		bob->use(0, *me);
 		delete bob;
 		delete me;
 		delete src;
@@ -337,7 +344,74 @@ int main()
 		tifa.use(0, tifa);
 		tifa.use(1, tifa);
 	}
-	std::cout << '\n';
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** STACK ONLY: ***\n" << '\n';
+		MateriaSource src;
+		Ice ice;
+		Cure cure;
+		src.learnMateria(&ice);
+		src.learnMateria(&cure);
+		Character kamilla("Kamilla");
+		Character me("me");
+		kamilla.equip(&ice);
+		kamilla.equip(&ice);
+		kamilla.equip(&cure);
+		kamilla.equip(&ice);
+		kamilla.equip(&ice);
+		kamilla.use(0, me);
+		kamilla.use(2, me);
+		me.equip(src.createMateria("ice"));
+		(void)src.createMateria("cure");
+		(void)src.createMateria("ice");
+		(void)src.createMateria("cure");
+	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** DON'T DELETE MATERIA: ***\n" << '\n';
+		MateriaSource src;
+		src.learnMateria(new Ice());
+		(void)src.createMateria("ice");
+		new Ice();
+		new Ice();
+		new Cure();
+		new Cure();
+	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** DELETE SOURCE AND CHARACTER EARLY: ***\n" << '\n';
+		IMateriaSource* src = new MateriaSource();
+		AMateria* ice = new Ice();
+		AMateria* cure = new Cure();
+		src->learnMateria(ice);
+		src->learnMateria(cure);
+		AMateria* created = src->createMateria("ice");
+		delete src;
+		ICharacter* kamilla = new Character("Kamilla");
+		ICharacter* me = new Character("me");
+		kamilla->equip(created);
+		kamilla->use(0, *kamilla);
+		delete kamilla;
+		me->equip(created);
+		me->use(0, *me);
+		delete me;
+	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** DELETE MATERIA MANUALLY: ***\n" << '\n';
+		IMateriaSource* src = new MateriaSource();
+		AMateria* ice = new Ice();
+		src->learnMateria(ice);
+		AMateria* created = src->createMateria("ice");
+		delete src;
+		delete ice;
+		ICharacter* kamilla = new Character("Kamilla");
+		kamilla->equip(created);
+		kamilla->use(0, *kamilla);
+		delete kamilla;
+		delete created;
+	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 }
 
 // NOLINTEND

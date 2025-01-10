@@ -6,6 +6,7 @@
 #endif
 
 #include <cstddef>
+#include <iostream>
 
 template <typename T>
 RefCountedList<T*>::RefCountedList() : _head(), _tail()
@@ -54,6 +55,8 @@ void RefCountedList<T*>::push_front(T* content)
 template <typename T>
 void RefCountedList<T*>::push_back(T* content)
 {
+	std::cout << "push_back " << content << '\n';
+
 	if (this->_increase_ref(content)) {
 		return;
 	}
@@ -83,6 +86,8 @@ void RefCountedList<T*>::swap(RefCountedList& other)
 template <typename T>
 T* RefCountedList<T*>::find(T* content)
 {
+	std::cout << "find " << content << '\n';
+
 	for (Node* cur = this->_head; cur != NULL; cur = cur->next) {
 		if (cur->content == content) {
 			return cur->content;
@@ -94,14 +99,27 @@ T* RefCountedList<T*>::find(T* content)
 template <typename T>
 void RefCountedList<T*>::remove(T* content)
 {
+	std::cout << "remove " << content << '\n';
+
 	this->_decrease_ref(content);
+}
+
+template <typename T>
+void RefCountedList<T*>::forget(T* content)
+{
+	std::cout << "forget " << content << '\n';
+
+	delete this->_find_node(content);
 }
 
 template <typename T>
 void RefCountedList<T*>::clear()
 {
+	int i = 0;
+	std::cout << "Clearing RefCountedList" << '\n';
 	while (this->_head != NULL) {
-		delete this->_head;
+		std::cout << "Deleting node " << i++ << '\n';
+		this->_drop_node(this->_head);
 	}
 }
 
@@ -114,6 +132,17 @@ typename RefCountedList<T*>::Node* RefCountedList<T*>::_find_node(T* content)
 		}
 	}
 	return NULL;
+}
+
+template <typename T>
+void RefCountedList<T*>::_drop_node(Node* node)
+{
+	if (node == NULL) {
+		return;
+	}
+	const T* tmp = node->content;
+	delete node;
+	delete tmp;
 }
 
 template <typename T>
@@ -130,12 +159,14 @@ bool RefCountedList<T*>::_increase_ref(T* content)
 template <typename T>
 bool RefCountedList<T*>::_decrease_ref(T* content)
 {
+	std::cout << "_decrease_ref " << content << '\n';
+
 	Node* hit = this->_find_node(content);
 	if (hit == NULL) {
 		return false;
 	}
-	if (--hit->refs <= 0) {
-		delete hit;
+	if (--hit->refs == 0) {
+		this->_drop_node(hit);
 	}
 	return true;
 }
@@ -163,7 +194,11 @@ RefCountedList<T*>::Node::~Node()
 	if (this->next != NULL) {
 		this->next->prev = prev;
 	}
-	delete this->content;
+
+	std::cout << "Node destructor containing " << this->content << '\n';
+	// this->content->~T();
+	// ::operator delete(this->content);
+	// delete this->content;
 }
 
 #endif

@@ -6,6 +6,8 @@
 template <typename T>
 class RefCountedList;
 
+// TODO: Rename to RcList
+// TODO: I could just make a Rc class and this could then be a normal linked list
 template <typename T>
 class RefCountedList<T*> {
 public:
@@ -15,11 +17,13 @@ public:
 
 	RefCountedList& operator=(RefCountedList other);
 
+	// TODO: Consider that many methods can be made static
 	void push_front(T* content);
 	void push_back(T* content);
 	void swap(RefCountedList& other);
 	T* find(T* content);
 	void remove(T* content);
+	void forget(T* content);
 	void clear();
 
 private:
@@ -35,6 +39,7 @@ private:
 	};
 
 	Node* _find_node(T* content);
+	void _drop_node(Node* node);
 	bool _increase_ref(T* content);
 	bool _decrease_ref(T* content);
 
