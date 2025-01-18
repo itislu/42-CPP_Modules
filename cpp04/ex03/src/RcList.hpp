@@ -16,11 +16,10 @@ public:
 
 	RcList& operator=(RcList other);
 
-	// TODO: Consider that many methods can be made static
 	void push_front(T* content);
 	void push_back(T* content);
 	void swap(RcList& other);
-	T* find(T* content);
+	T* find(const T* content) const;
 	void remove(T* content);
 	void forget(T* content);
 	void clear();
@@ -37,9 +36,10 @@ private:
 		Node* prev;
 	};
 
-	Node* _find_node(T* content);
-	void _drop_node(Node* node);
-	bool _increase_ref(T* content);
+	static void _drop_node(Node* node);
+
+	Node* _find_node(const T* content) const;
+	bool _increase_ref(const T* content);
 	bool _decrease_ref(T* content);
 
 	Node* _head;

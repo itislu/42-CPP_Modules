@@ -83,7 +83,7 @@ void RcList<T*>::swap(RcList& other)
 }
 
 template <typename T>
-T* RcList<T*>::find(T* content)
+T* RcList<T*>::find(const T* content) const
 {
 	std::cout << "find " << content << '\n';
 
@@ -118,12 +118,25 @@ void RcList<T*>::clear()
 	std::cout << "Clearing RcList" << '\n';
 	while (this->_head != NULL) {
 		std::cout << "Deleting node " << i++ << '\n';
-		this->_drop_node(this->_head);
+		RcList::_drop_node(this->_head);
 	}
 }
 
 template <typename T>
-typename RcList<T*>::Node* RcList<T*>::_find_node(T* content)
+void RcList<T*>::_drop_node(Node* node)
+{
+	if (node == NULL) {
+		return;
+	}
+	// First remove Node container in case delete of T tries
+	// to delete same node again
+	T* tmp = node->content;
+	delete node;
+	delete tmp;
+}
+
+template <typename T>
+typename RcList<T*>::Node* RcList<T*>::_find_node(const T* content) const
 {
 	for (Node* cur = this->_head; cur != NULL; cur = cur->next) {
 		if (cur->content == content) {
@@ -134,18 +147,7 @@ typename RcList<T*>::Node* RcList<T*>::_find_node(T* content)
 }
 
 template <typename T>
-void RcList<T*>::_drop_node(Node* node)
-{
-	if (node == NULL) {
-		return;
-	}
-	const T* tmp = node->content;
-	delete node;
-	delete tmp;
-}
-
-template <typename T>
-bool RcList<T*>::_increase_ref(T* content)
+bool RcList<T*>::_increase_ref(const T* content)
 {
 	Node* hit = this->_find_node(content);
 	if (hit == NULL) {
@@ -165,7 +167,7 @@ bool RcList<T*>::_decrease_ref(T* content)
 		return false;
 	}
 	if (--hit->refs == 0) {
-		this->_drop_node(hit);
+		RcList::_drop_node(hit);
 	}
 	return true;
 }
