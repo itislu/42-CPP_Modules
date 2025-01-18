@@ -28,6 +28,7 @@ int main()
 		delete me;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** FULL INVENTORY: ***\n" << '\n';
@@ -74,6 +75,7 @@ int main()
 		delete me;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** EQUIP UNKNOWN MATERIAS: ***\n" << '\n';
@@ -118,6 +120,7 @@ int main()
 		delete me;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** UNEQUIP MATERIAS: ***\n" << '\n';
@@ -177,6 +180,7 @@ int main()
 		delete me;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** EMPTY MATERIA SOURCE: ***\n" << '\n';
@@ -200,6 +204,7 @@ int main()
 		delete me;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** MULTIPLE CHARACTERS: ***\n" << '\n';
@@ -227,6 +232,7 @@ int main()
 		delete tifa;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** ONE MATERIA OWNED BY MULTIPLE CHARACTERS: ***\n"
@@ -249,6 +255,7 @@ int main()
 		delete tifa;
 		delete src;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** LEARN SAME MATERIA MULTIPLE TIMES: ***\n" << '\n';
@@ -279,6 +286,7 @@ int main()
 		delete src1;
 		delete src2;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** SAME MATERIA FOR LEARNING AND EQUIPPING: ***\n"
@@ -307,6 +315,7 @@ int main()
 		delete cloud;
 		delete src1;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** COPY CHARACTER: ***\n" << '\n';
@@ -327,6 +336,7 @@ int main()
 		cloud.use(0, tifa);
 		tifa.use(0, cloud);
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** COPY MATERIA: ***\n" << '\n';
@@ -344,6 +354,7 @@ int main()
 		tifa.use(0, tifa);
 		tifa.use(1, tifa);
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** STACK ONLY: ***\n" << '\n';
@@ -366,6 +377,7 @@ int main()
 		(void)src.createMateria("ice");
 		(void)src.createMateria("cure");
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** DON'T DELETE MATERIA: ***\n" << '\n';
@@ -377,6 +389,7 @@ int main()
 		new Cure();
 		new Cure();
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** DELETE SOURCE AND CHARACTER EARLY: ***\n" << '\n';
@@ -396,6 +409,7 @@ int main()
 		me->use(0, *me);
 		delete me;
 	}
+	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** DELETE MATERIA MANUALLY: ***\n" << '\n';

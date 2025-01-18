@@ -20,6 +20,8 @@ public:
 	static void* operator new(size_t size);
 	static void operator delete(void* ptr);
 
+	static void clear();
+
 	std::string const& getType() const; // Returns the materia type
 
 	virtual AMateria* clone() const = 0;

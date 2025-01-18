@@ -41,6 +41,11 @@ void AMateria::operator delete(void* ptr)
 	::operator delete(ptr);
 }
 
+void AMateria::clear()
+{
+	AMateria::_history.clear();
+}
+
 std::string const& AMateria::getType() const
 {
 	return this->_type;
