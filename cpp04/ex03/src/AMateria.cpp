@@ -14,7 +14,7 @@ AMateria::AMateria(const AMateria& other) : _type(other._type) {}
 
 AMateria::~AMateria()
 {
-	std::cout << "AMateria destructor of " << this << '\n';
+	std::cerr << "AMateria destructor of " << this << '\n';
 }
 
 AMateria& AMateria::operator=(const AMateria& other)
@@ -28,7 +28,8 @@ AMateria& AMateria::operator=(const AMateria& other)
 
 void* AMateria::operator new(size_t size)
 {
-	std::cout << "Custom AMateria new with size " << size << '\n';
+	std::cerr << "Custom AMateria new with size " << size << '\n';
+
 	AMateria* ptr = static_cast<AMateria*>(::operator new(size));
 	AMateria::_history.push_back(ptr);
 	return ptr;
@@ -36,7 +37,8 @@ void* AMateria::operator new(size_t size)
 
 void AMateria::operator delete(void* ptr)
 {
-	std::cout << "Custom AMateria delete" << '\n';
+	std::cerr << "Custom AMateria delete" << '\n';
+
 	AMateria::_history.forget(static_cast<AMateria*>(ptr));
 	::operator delete(ptr);
 }

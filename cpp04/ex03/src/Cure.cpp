@@ -6,7 +6,10 @@ Cure::Cure() : AMateria("cure") {}
 
 Cure::Cure(const Cure& other) : AMateria(other) {}
 
-Cure::~Cure() {}
+Cure::~Cure()
+{
+	std::cerr << "Ice destructor of " << this << '\n';
+}
 
 Cure& Cure::operator=(Cure other)
 {

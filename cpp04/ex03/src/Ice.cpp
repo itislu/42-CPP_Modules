@@ -8,7 +8,7 @@ Ice::Ice(const Ice& other) : AMateria(other) {}
 
 Ice::~Ice()
 {
-	std::cout << "Ice destructor of " << this << '\n';
+	std::cerr << "Ice destructor of " << this << '\n';
 }
 
 Ice& Ice::operator=(Ice other)

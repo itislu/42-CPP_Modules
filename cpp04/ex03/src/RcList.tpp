@@ -54,7 +54,7 @@ void RcList<T*>::push_front(T* content)
 template <typename T>
 void RcList<T*>::push_back(T* content)
 {
-	std::cout << "push_back " << content << '\n';
+	std::cerr << "push_back " << content << '\n';
 
 	if (this->_increase_ref(content)) {
 		return;
@@ -85,7 +85,7 @@ void RcList<T*>::swap(RcList& other)
 template <typename T>
 T* RcList<T*>::find(const T* content) const
 {
-	std::cout << "find " << content << '\n';
+	std::cerr << "find " << content << '\n';
 
 	for (Node* cur = this->_head; cur != NULL; cur = cur->next) {
 		if (cur->content == content) {
@@ -98,7 +98,7 @@ T* RcList<T*>::find(const T* content) const
 template <typename T>
 void RcList<T*>::remove(T* content)
 {
-	std::cout << "remove " << content << '\n';
+	std::cerr << "remove " << content << '\n';
 
 	this->_decrease_ref(content);
 }
@@ -106,7 +106,7 @@ void RcList<T*>::remove(T* content)
 template <typename T>
 void RcList<T*>::forget(T* content)
 {
-	std::cout << "forget " << content << '\n';
+	std::cerr << "forget " << content << '\n';
 
 	delete this->_find_node(content);
 }
@@ -115,9 +115,10 @@ template <typename T>
 void RcList<T*>::clear()
 {
 	int i = 0;
-	std::cout << "Clearing RcList" << '\n';
+	std::cerr << "Clearing RcList" << '\n';
+
 	while (this->_head != NULL) {
-		std::cout << "Deleting node " << i++ << '\n';
+		std::cerr << "Deleting node " << i++ << '\n';
 		RcList::_drop_node(this->_head);
 	}
 }
@@ -160,7 +161,7 @@ bool RcList<T*>::_increase_ref(const T* content)
 template <typename T>
 bool RcList<T*>::_decrease_ref(T* content)
 {
-	std::cout << "_decrease_ref " << content << '\n';
+	std::cerr << "_decrease_ref " << content << '\n';
 
 	Node* hit = this->_find_node(content);
 	if (hit == NULL) {
@@ -181,6 +182,8 @@ RcList<T*>::Node::Node(T* content_, RcList* parent_) :
 template <typename T>
 RcList<T*>::Node::~Node()
 {
+	std::cerr << "Node destructor containing " << this->content << '\n';
+
 	if (this->parent != NULL) {
 		if (this == this->parent->_head) {
 			this->parent->_head = this->parent->_head->next;
@@ -195,11 +198,6 @@ RcList<T*>::Node::~Node()
 	if (this->next != NULL) {
 		this->next->prev = prev;
 	}
-
-	std::cout << "Node destructor containing " << this->content << '\n';
-	// this->content->~T();
-	// ::operator delete(this->content);
-	// delete this->content;
 }
 
 #endif
