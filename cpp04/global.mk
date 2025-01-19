@@ -301,7 +301,7 @@ help-run		:
 					echo -e "Build the project and run the executable."
 					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo -e "Usage: make run ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make run [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-opt		:
 					echo -e "Rebuild the project with the following compiler optimization flags:"
@@ -318,7 +318,7 @@ help-val		:
 					echo -e "The following valgrind flags are used:"
 					echo -e "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo
-					echo -e "Usage: make val ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make val [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-valfd		:
 					echo -e "Build the project and run the executable with valgrind and file descriptor tracking."
@@ -330,7 +330,7 @@ help-valfd		:
 					echo -e "File descriptor specific flags:"
 					echo -e "$(VALGRINDFDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo
-					echo -e "Usage: make valfd ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make valfd [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-term		:
 					echo -e "Build the project and run the executable in a new terminal window."
@@ -340,7 +340,7 @@ help-term		:
 					echo -e "The following terminal emulator is used by default:"
 					echo -e "  $(TERMINAL)"
 					echo
-					echo -e "Usage: make term TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make term [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-clear		:
 					echo -e "Build the project and clear the terminal."
