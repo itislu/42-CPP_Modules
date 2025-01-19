@@ -11,6 +11,18 @@
 int main()
 {
 	{
+		/* Call pure virtual function: */
+
+		// Ice* ice = new Ice();
+		// ice->~Ice();
+		// ice->clone();
+
+		// Ice derived;
+		// AMateria* base = &derived;
+		// base->~AMateria();
+		// base->clone();
+	}
+	{
 		std::cout << "*** SUBJECT TEST CASE: ***\n" << '\n';
 		IMateriaSource* src = new MateriaSource();
 		src->learnMateria(new Ice());
@@ -380,7 +392,7 @@ int main()
 	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
-		std::cout << "*** DON'T DELETE MATERIA: ***\n" << '\n';
+		std::cout << "*** NOT DELETING MATERIA: ***\n" << '\n';
 		MateriaSource src;
 		src.learnMateria(new Ice());
 		(void)src.createMateria("ice");
