@@ -68,7 +68,7 @@ else
 TERMINALTITLE	:=	$(NAME)
 endif
 
-TERMINALFLAGS	:=	--title="$(TERMINALTITLE)" -- /bin/sh -c
+TERMINALFLAGS	:=	--title="$(TERMINALTITLE)" --
 
 
 #	Files
@@ -186,10 +186,10 @@ modes			:
 						clear; \
 					fi
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
-						$(TERMINAL) $(TERMINALFLAGS) \
-							"bash --posix -c 'trap \"\" SIGINT; \
+						$(TERMINAL) $(TERMINALFLAGS) bash -c \
+							"trap '' SIGINT; \
 							$(ENV) ./$(NAME) $(ARGS); \
-							exec bash --posix'"; \
+							exec $(shell echo $$SHELL)"; \
 					elif [ "$(RUN)" = "true" ]; then \
 						$(ENV) "./$(NAME)" $(ARGS); \
 					else \
