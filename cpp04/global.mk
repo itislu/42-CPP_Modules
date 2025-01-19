@@ -30,7 +30,7 @@ BUILDFILES		:=	Makefile ../global.mk
 
 #	Flags
 
-CXX				:=	c++
+CXX				?=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
 CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic-errors
 CXXFLAGS_DBG	:=	-ggdb3
@@ -39,7 +39,7 @@ CXXFLAGS_OPT	:=	-O3
 CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG)
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIR))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
-MAKEFLAGS		:=	-j -s
+MAKEFLAGS		+=	-j -s
 
 
 #	Valgrind
