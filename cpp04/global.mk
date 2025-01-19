@@ -58,17 +58,19 @@ VALGRINDFDFLAGS	:=	--track-fds=all
 
 #	Terminal
 
-TERMINAL		:=	$(shell which gnome-terminal 2>/dev/null)
+TERMINAL		?=	$(if $(shell command -v gnome-terminal), gnome-terminal, \
+					$(if $(shell command -v terminator), terminator, \
+					$(if $(shell command -v xterm), xterm, \
+					)))
 
-ifeq (val, $(filter val,$(MAKECMDGOALS)))
-TERMINALTITLE	:=	valgrind $(NAME)
-else ifeq (valfd, $(filter valfd,$(MAKECMDGOALS)))
-TERMINALTITLE	:=	valgrind-fd $(NAME)
-else
-TERMINALTITLE	:=	$(NAME)
-endif
+TERMINALTITLE	:=	$(if $(filter val, $(MAKECMDGOALS)), valgrind $(NAME), \
+					$(if $(filter valfd, $(MAKECMDGOALS)), valgrind-fd $(NAME), \
+					$(NAME)))
 
-TERMINALFLAGS	:=	--title="$(TERMINALTITLE)" --
+TERMINALFLAGS	?=	$(if $(filter gnome-terminal, $(TERMINAL)), --title="$(TERMINALTITLE)" --, \
+					$(if $(filter terminator, $(TERMINAL)), --title="$(TERMINALTITLE)" -x, \
+					$(if $(filter xterm, $(TERMINAL)), -title "$(TERMINALTITLE)" -e, \
+					)))
 
 
 #	Files
@@ -287,8 +289,9 @@ help			:
 					echo -e "Environment Variables:"
 					echo -e "  MODE             Build mode to combine multiple targets"
 					echo -e "  ARGS             If specified, the program will run with those arguments after compilation."
+					echo -e "  TERMINAL         Terminal emulator to use for targets opening a new terminal window"
 					echo
-					echo -e "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\"] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
+					echo -e "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\"] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"] [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>]"
 
 help-all		:
 					echo -e "Build the project."
@@ -331,9 +334,13 @@ help-valfd		:
 
 help-term		:
 					echo -e "Build the project and run the executable in a new terminal window."
+					echo -e "The terminal emulator used is determined by the TERMINAL variable."
 					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo -e "Usage: make term ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "The following terminal emulator is used by default:"
+					echo -e "  $(TERMINAL)"
+					echo
+					echo -e "Usage: make term TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
 
 help-clear		:
 					echo -e "Build the project and clear the terminal."
@@ -371,6 +378,11 @@ help-ARGS ARGS-help:
 					echo -e "If specified, the program will run with those arguments after compilation."
 					echo
 					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+
+help-TERMINAL TERMINAL-help:
+					echo -e "Override the default terminal emulator for targets opening a new terminal window."
+					echo
+					echo -e "Usage: make <target> TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>"
 
 %-help:
 					$(MAKE) help-$(subst -help,,$@)
