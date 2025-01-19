@@ -48,7 +48,6 @@ VALGRIND		:=	$(shell which valgrind)
 
 VALGRINDFLAGS	=	--errors-for-leak-kinds=all \
 					--leak-check=full \
-					--read-var-info=yes \
 					--show-error-list=yes \
 					--show-leak-kinds=all \
 					--trace-children=yes \
@@ -127,13 +126,11 @@ endif
 
 ifeq (val, $(filter val,$(MAKECMDGOALS) $(MODE)))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS)
-PATH			:=	/bin:/usr/bin:/usr/sbin:$(PATH)
 RUN				:=	true
 endif
 
 ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
-PATH			:=	/bin:/usr/bin:/usr/sbin:$(PATH)
 NEW_TERM		:=	true
 RUN				:=	true
 endif
