@@ -3,10 +3,11 @@
 #ifndef RCLIST_HPP
 #define RCLIST_HPP
 
+#include <cstddef>
+
 template <typename T>
 class RcList;
 
-// TODO: I could just make a Rc class and this could then be a normal linked list
 template <typename T>
 class RcList<T*> {
 public:
@@ -19,9 +20,9 @@ public:
 	void push_front(T* content);
 	void push_back(T* content);
 	void swap(RcList& other);
-	T* find(const T* content) const;
-	void remove(T* content);
+	size_t size() const;
 	void forget(T* content);
+	void remove(T* content);
 	void clear();
 
 private:
@@ -30,10 +31,10 @@ private:
 		~Node();
 
 		T* content;
-		int refs;
-		RcList* parent;
+		size_t refs;
 		Node* next;
 		Node* prev;
+		RcList* parent;
 	};
 
 	static void _drop_node(Node* node);
@@ -44,6 +45,7 @@ private:
 
 	Node* _head;
 	Node* _tail;
+	size_t _size;
 };
 
 #ifndef RCLIST_TPP

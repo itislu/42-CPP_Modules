@@ -9,12 +9,12 @@
 #include <iostream>
 
 template <typename T>
-RcList<T*>::RcList() : _head(), _tail()
+RcList<T*>::RcList() : _head(), _tail(), _size()
 {
 }
 
 template <typename T>
-RcList<T*>::RcList(const RcList& other) : _head(), _tail()
+RcList<T*>::RcList(const RcList& other) : _head(), _tail(), _size()
 {
 	for (Node* cur = other._head; cur != NULL; cur = cur->next) {
 		this->push_back(cur->content);
@@ -73,34 +73,17 @@ void RcList<T*>::push_back(T* content)
 template <typename T>
 void RcList<T*>::swap(RcList& other)
 {
-	Node* tmp = this->_head;
-	this->_head = other._head;
-	other._head = tmp;
+	char tmp[sizeof(RcList)];
 
-	tmp = this->_tail;
-	this->_tail = other._tail;
-	other._tail = tmp;
+	memcpy(&tmp, this, sizeof(RcList));
+	memcpy(this, &other, sizeof(RcList));
+	memcpy(&other, tmp, sizeof(RcList));
 }
 
 template <typename T>
-T* RcList<T*>::find(const T* content) const
+size_t RcList<T*>::size() const
 {
-	std::cerr << "find " << content << '\n';
-
-	for (Node* cur = this->_head; cur != NULL; cur = cur->next) {
-		if (cur->content == content) {
-			return cur->content;
-		}
-	}
-	return NULL;
-}
-
-template <typename T>
-void RcList<T*>::remove(T* content)
-{
-	std::cerr << "remove " << content << '\n';
-
-	this->_decrease_ref(content);
+	return this->_size;
 }
 
 template <typename T>
@@ -112,10 +95,18 @@ void RcList<T*>::forget(T* content)
 }
 
 template <typename T>
+void RcList<T*>::remove(T* content)
+{
+	std::cerr << "remove " << content << '\n';
+
+	this->_decrease_ref(content);
+}
+
+template <typename T>
 void RcList<T*>::clear()
 {
-	int i = 0;
 	std::cerr << "Clearing RcList" << '\n';
+	size_t i = 0;
 
 	while (this->_head != NULL) {
 		std::cerr << "Deleting node " << i++ << '\n';
@@ -175,8 +166,9 @@ bool RcList<T*>::_decrease_ref(T* content)
 
 template <typename T>
 RcList<T*>::Node::Node(T* content_, RcList* parent_) :
-    content(content_), refs(1), parent(parent_), next(), prev()
+    content(content_), refs(1), next(), prev(), parent(parent_)
 {
+	++this->parent->_size;
 }
 
 template <typename T>
@@ -191,6 +183,7 @@ RcList<T*>::Node::~Node()
 		if (this == this->parent->_tail) {
 			this->parent->_tail = this->parent->_tail->prev;
 		}
+		--this->parent->_size;
 	}
 	if (this->prev != NULL) {
 		this->prev->next = this->next;
