@@ -10,9 +10,11 @@ class Character : public ICharacter {
 public:
 	Character(const std::string& name);
 	Character(const Character& other);
+	Character(const ICharacter& other);
 	~Character();
 
 	Character& operator=(Character other);
+	Character& operator=(const ICharacter& other);
 
 	std::string const& getName() const;
 	void equip(AMateria* m);

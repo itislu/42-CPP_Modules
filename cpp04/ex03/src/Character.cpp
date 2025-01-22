@@ -13,11 +13,26 @@ Character::Character(const Character& other) :
 {
 }
 
+Character::Character(const ICharacter& other) :
+    _inventory(Character::inventory_size)
+{
+	*this = other;
+}
+
 Character::~Character() {}
 
 Character& Character::operator=(Character other)
 {
 	this->swap(other);
+	return *this;
+}
+
+Character& Character::operator=(const ICharacter& other)
+{
+	const Character* derived = dynamic_cast<const Character*>(&other);
+	if (derived != NULL) {
+		*this = *derived;
+	}
 	return *this;
 }
 

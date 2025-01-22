@@ -338,15 +338,25 @@ int main()
 		src1.learnMateria(cure);
 		Character cloud("Cloud");
 		Character tifa("Tifa");
+		ICharacter* me = new Character("me");
+		ICharacter* lea = new Character("Lea");
 		cloud.equip(ice);
 		tifa.equip(src1.createMateria("cure"));
+		me->equip(new Ice());
 		std::cout << "Before copying:" << '\n';
 		cloud.use(0, tifa);
 		tifa.use(0, cloud);
+		me->use(0, *lea);
+		lea->use(0, *me);
 		std::cout << "\nAfter copying:" << '\n';
 		cloud = tifa;
+		*dynamic_cast<Character*>(lea) = *me;
 		cloud.use(0, tifa);
 		tifa.use(0, cloud);
+		me->use(0, *lea);
+		lea->use(0, *me);
+		delete me;
+		delete lea;
 	}
 	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
@@ -365,6 +375,38 @@ int main()
 		std::cout << ice->getType() << '\n';
 		tifa.use(0, tifa);
 		tifa.use(1, tifa);
+	}
+	AMateria::clear();
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "*** COPY MATERIASOURCE: ***\n" << '\n';
+		IMateriaSource* src_ice = new MateriaSource();
+		IMateriaSource* src_cure = new MateriaSource();
+		MateriaSource src_empty(*src_cure);
+		src_ice->learnMateria(new Ice());
+		src_cure->learnMateria(new Cure());
+		Character cloud("Cloud");
+		cloud.equip(src_ice->createMateria("ice"));
+		cloud.equip(src_cure->createMateria("ice"));
+		cloud.equip(src_empty.createMateria("ice"));
+		std::cout << "Before copying:" << '\n';
+		cloud.use(0, cloud);
+		cloud.use(1, cloud);
+		cloud.use(2, cloud);
+		cloud.unequip(0);
+		cloud.unequip(1);
+		cloud.unequip(2);
+		std::cout << "\nAfter copying:" << '\n';
+		src_empty = *src_cure;
+		*dynamic_cast<MateriaSource*>(src_ice) = *src_cure;
+		cloud.equip(src_ice->createMateria("cure"));
+		cloud.equip(src_cure->createMateria("cure"));
+		cloud.equip(src_empty.createMateria("cure"));
+		cloud.use(0, cloud);
+		cloud.use(1, cloud);
+		cloud.use(2, cloud);
+		delete src_ice;
+		delete src_cure;
 	}
 	AMateria::clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
