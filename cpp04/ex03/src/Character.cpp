@@ -21,6 +21,25 @@ Character::Character(const ICharacter& other) :
 
 Character::~Character() {}
 
+/*
+The Copy-and-Swap Idiom
+
+The main benefit of the copy-and-swap idiom is that it provides strong exception
+guarantee. In the copy assignment operator, this means that all operations which
+could throw an exception (the copying) are made before the object being assigned
+to gets changed.
+
+It also helps to reuse code because assignment essentially boils down to
+deletion of the original value and copying over the new value. This idiom allows
+us to reuse the copy constructor and the destructor because of that fact.
+
+It works by:
+1. Taking the argument by value (which creates a copy using the copy
+constructor).
+2. Swapping the contents of *this with the parameter (which mustn't throw).
+3. Letting the destructor clean up the old data when the parameter goes out of
+scope.
+*/
 Character& Character::operator=(Character other)
 {
 	this->swap(other);
