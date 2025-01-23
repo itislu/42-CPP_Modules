@@ -91,6 +91,12 @@ size_t RcList<T*>::size() const
 }
 
 template <typename T>
+bool RcList<T*>::contains(const T* content) const
+{
+	return this->_find_node(content) != NULL;
+}
+
+template <typename T>
 void RcList<T*>::forget(T* content)
 {
 	std::cerr << "forget " << content << '\n';
@@ -113,7 +119,8 @@ void RcList<T*>::clear()
 	size_t i = 0;
 
 	while (this->_head != NULL) {
-		std::cerr << "Deleting node " << i++ << '\n';
+		std::cerr << "Deleting node " << i++ << ", refs: " << this->_head->refs
+		          << '\n';
 		this->_clean_node(this->_head);
 	}
 }
@@ -126,18 +133,19 @@ bool RcList<T*>::_increase_ref(const T* content)
 		return false;
 	}
 	++hit->refs;
+	std::cerr << "_increase_ref " << content << ", refs: " << hit->refs << '\n';
 	return true;
 }
 
 template <typename T>
 bool RcList<T*>::_decrease_ref(T* content)
 {
-	std::cerr << "_decrease_ref " << content << '\n';
-
 	Node* hit = this->_find_node(content);
 	if (hit == NULL) {
 		return false;
 	}
+	std::cerr << "_decrease_ref " << content << ", refs: " << hit->refs - 1
+	          << '\n';
 	if (--hit->refs == 0) {
 		this->_clean_node(hit);
 	}

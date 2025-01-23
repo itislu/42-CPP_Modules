@@ -2,8 +2,12 @@
 
 #include "Inventory.hpp"
 #include "AMateria.hpp"
+#include "RcList.hpp"
 #include <cstddef>
+#include <cstring>
 #include <string>
+
+extern RcList<AMateria*> g_ref_counter; // NOLINT
 
 Inventory::Inventory(unsigned int size) :
     _inventory(new AMateria*[size]()), _size(size)
@@ -22,6 +26,11 @@ Inventory::Inventory(const Inventory& other) :
 
 Inventory::~Inventory()
 {
+	for (unsigned int i = 0; i < this->_size; ++i) {
+		if (this->_inventory[i] != NULL) {
+			g_ref_counter.remove(this->_inventory[i]);
+		}
+	}
 	delete[] this->_inventory;
 }
 
@@ -41,8 +50,16 @@ AMateria* Inventory::operator[](unsigned int idx)
 
 void Inventory::add(AMateria* m)
 {
+	if (m == NULL) {
+		return;
+	}
 	for (unsigned int i = 0; i < this->_size; ++i) {
 		if (this->_inventory[i] == NULL) {
+			// Since every newed AMateria is already in the history, this is a
+			// check to only increase the refs for heap-based AMaterias
+			if (g_ref_counter.contains(m)) {
+				g_ref_counter.push_back(m);
+			}
 			this->_inventory[i] = m;
 			return;
 		}
@@ -51,20 +68,23 @@ void Inventory::add(AMateria* m)
 
 void Inventory::remove(unsigned int idx)
 {
-	if (idx < this->_size) {
+	if (idx < this->_size && this->_inventory[idx] != NULL) {
+		g_ref_counter.remove(this->_inventory[idx]);
 		this->_inventory[idx] = NULL;
 	}
 }
 
 void Inventory::swap(Inventory& other)
 {
-	AMateria** tmp_inventory = this->_inventory;
-	this->_inventory = other._inventory;
-	other._inventory = tmp_inventory;
+	char tmp[sizeof(Inventory)];
 
-	const unsigned int tmp_size = this->_size;
-	this->_size = other._size;
-	other._size = tmp_size;
+	memcpy(
+	    static_cast<void*>(tmp), static_cast<void*>(this), sizeof(Inventory));
+	memcpy(static_cast<void*>(this),
+	       static_cast<void*>(&other),
+	       sizeof(Inventory));
+	memcpy(
+	    static_cast<void*>(&other), static_cast<void*>(tmp), sizeof(Inventory));
 }
 
 AMateria* Inventory::find(const std::string& type)

@@ -6,7 +6,10 @@
 #include "IMateriaSource.hpp"
 #include "Ice.hpp"
 #include "MateriaSource.hpp"
+#include "RcList.hpp"
 #include <iostream>
+
+RcList<AMateria*> g_ref_counter;
 
 int main()
 {
@@ -40,7 +43,7 @@ int main()
 		delete me;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** FULL INVENTORY: ***\n" << '\n';
@@ -87,7 +90,7 @@ int main()
 		delete me;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** EQUIP UNKNOWN MATERIAS: ***\n" << '\n';
@@ -132,7 +135,7 @@ int main()
 		delete me;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** UNEQUIP MATERIAS: ***\n" << '\n';
@@ -192,7 +195,7 @@ int main()
 		delete me;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** EMPTY MATERIA SOURCE: ***\n" << '\n';
@@ -216,7 +219,7 @@ int main()
 		delete me;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** MULTIPLE CHARACTERS: ***\n" << '\n';
@@ -244,7 +247,7 @@ int main()
 		delete tifa;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** ONE MATERIA OWNED BY MULTIPLE CHARACTERS: ***\n"
@@ -267,7 +270,7 @@ int main()
 		delete tifa;
 		delete src;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** LEARN SAME MATERIA MULTIPLE TIMES: ***\n" << '\n';
@@ -298,7 +301,7 @@ int main()
 		delete src1;
 		delete src2;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** SAME MATERIA FOR LEARNING AND EQUIPPING: ***\n"
@@ -327,7 +330,7 @@ int main()
 		delete cloud;
 		delete src1;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** COPY CHARACTER: ***\n" << '\n';
@@ -358,7 +361,7 @@ int main()
 		delete me;
 		delete lea;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** COPY MATERIA: ***\n" << '\n';
@@ -376,7 +379,7 @@ int main()
 		tifa.use(0, tifa);
 		tifa.use(1, tifa);
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** COPY MATERIASOURCE: ***\n" << '\n';
@@ -408,7 +411,7 @@ int main()
 		delete src_ice;
 		delete src_cure;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** STACK ONLY: ***\n" << '\n';
@@ -431,7 +434,7 @@ int main()
 		(void)src.createMateria("ice");
 		(void)src.createMateria("cure");
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** NOT DELETING MATERIA: ***\n" << '\n';
@@ -443,7 +446,7 @@ int main()
 		new Cure();
 		new Cure();
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** DELETE SOURCE AND CHARACTER EARLY: ***\n" << '\n';
@@ -463,7 +466,7 @@ int main()
 		me->use(0, *me);
 		delete me;
 	}
-	AMateria::clear();
+	g_ref_counter.clear();
 	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
 	{
 		std::cout << "*** DELETE MATERIA MANUALLY: ***\n" << '\n';

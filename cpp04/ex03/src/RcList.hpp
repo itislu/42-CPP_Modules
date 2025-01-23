@@ -21,6 +21,7 @@ public:
 	void push_back(T* content);
 	void swap(RcList& other);
 	size_t size() const;
+	bool contains(const T* content) const;
 	void forget(T* content);
 	void remove(T* content);
 	void clear();

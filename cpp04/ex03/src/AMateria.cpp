@@ -6,7 +6,7 @@
 #include <new>
 #include <string>
 
-RcList<AMateria*> AMateria::_history;
+extern RcList<AMateria*> g_ref_counter; // NOLINT
 
 AMateria::AMateria(std::string const& type) : _type(type) {}
 
@@ -31,7 +31,7 @@ void* AMateria::operator new(size_t size)
 	std::cerr << "Custom AMateria new with size " << size << '\n';
 
 	AMateria* ptr = static_cast<AMateria*>(::operator new(size));
-	AMateria::_history.push_back(ptr);
+	g_ref_counter.push_back(ptr);
 	return ptr;
 }
 
@@ -39,13 +39,8 @@ void AMateria::operator delete(void* ptr)
 {
 	std::cerr << "Custom AMateria delete" << '\n';
 
-	AMateria::_history.forget(static_cast<AMateria*>(ptr));
+	g_ref_counter.forget(static_cast<AMateria*>(ptr));
 	::operator delete(ptr);
-}
-
-void AMateria::clear()
-{
-	AMateria::_history.clear();
 }
 
 std::string const& AMateria::getType() const
