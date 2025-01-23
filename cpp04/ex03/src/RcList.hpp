@@ -27,21 +27,20 @@ public:
 
 private:
 	struct Node {
-		Node(T* content_, RcList* parent_);
+		Node(T* content_);
 		~Node();
 
 		T* content;
 		size_t refs;
 		Node* next;
 		Node* prev;
-		RcList* parent;
 	};
 
-	static void _drop_node(Node* node);
-
-	Node* _find_node(const T* content) const;
 	bool _increase_ref(const T* content);
 	bool _decrease_ref(T* content);
+	Node* _find_node(const T* content) const;
+	T* _drop_node(Node* node);
+	void _clean_node(Node* node);
 
 	Node* _head;
 	Node* _tail;
