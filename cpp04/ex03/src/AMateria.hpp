@@ -37,6 +37,8 @@ private:
 	static RcList<AMateria*> _history;
 };
 
+template class RcList<AMateria*>;
+
 #endif
 
 // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)

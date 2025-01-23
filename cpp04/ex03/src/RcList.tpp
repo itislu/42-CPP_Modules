@@ -6,6 +6,7 @@
 #endif
 
 #include <cstddef>
+#include <cstring>
 #include <iostream>
 
 template <typename T>
@@ -75,9 +76,9 @@ void RcList<T*>::swap(RcList& other)
 {
 	char tmp[sizeof(RcList)];
 
-	memcpy(&tmp, this, sizeof(RcList));
-	memcpy(this, &other, sizeof(RcList));
-	memcpy(&other, tmp, sizeof(RcList));
+	memcpy(tmp, (void*)this, sizeof(RcList));
+	memcpy((void*)this, (void*)&other, sizeof(RcList));
+	memcpy((void*)&other, tmp, sizeof(RcList));
 }
 
 template <typename T>
