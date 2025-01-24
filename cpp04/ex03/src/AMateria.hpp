@@ -4,7 +4,6 @@
 #ifndef AMATERIA_HPP
 #define AMATERIA_HPP
 
-#include "RcList.hpp"
 #include <cstddef>
 #include <string>
 
@@ -32,8 +31,6 @@ protected:
 private:
 	AMateria();
 };
-
-template class RcList<AMateria*>;
 
 #endif
 
