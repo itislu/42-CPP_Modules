@@ -95,7 +95,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 PHONY_TARGETS	:=	all run opt san val valfd term clear modes re clean fclean ffclean
-ENV_VARIABLES	:=	MODE ARGS
+ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
@@ -383,7 +383,7 @@ help-ARGS ARGS-help:
 help-TERMINAL TERMINAL-help:
 					echo -e "Override the default terminal emulator for targets opening a new terminal window."
 					echo
-					echo -e "Usage: make <target> TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>"
+					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>"
 
 %-help:
 					$(MAKE) help-$(subst -help,,$@)
