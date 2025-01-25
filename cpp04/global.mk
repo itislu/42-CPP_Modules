@@ -1,3 +1,6 @@
+SHELL			:=	/bin/bash
+
+
 # ************************* DEFAULT CONFIGURATION **************************** #
 
 ifeq ($(words $(MAKEFILE_LIST)), 1)
@@ -88,8 +91,6 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 
 # *************************** BUILD PREPARATION ****************************** #
-
-SHELL			:=	/bin/bash
 
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
