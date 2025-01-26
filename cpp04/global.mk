@@ -33,7 +33,7 @@ BUILDFILES		:=	Makefile ../global.mk
 
 #	Flags
 
-CXX				?=	c++
+CXX				:=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
 CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic-errors
 CXXFLAGS_DBG	:=	-ggdb3
