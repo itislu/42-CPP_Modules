@@ -1,11 +1,11 @@
 # CPP04 - Table of Contents
 
-| Exercise     | Name       | Learnings                                                                                                                                                                                                                                                  |
-| ------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [ex00](ex00) | 🐾 Animal  | - Subtype polymorphism                                                                                                                                                                                                                                     |
-| [ex01](ex01) | 🧠 Animal  | - Deep copy vs. shallow copy                                                                                                                                                                                                                               |
-| [ex02](ex02) | 💭 Animal  | - Abstract classes                                                                                                                                                                                                                                         |
-| [ex03](ex03) | 🔮 Materia | - Interfaces, <br> - Value-initialization of arrays, <br> - Copy-and-swap idiom, <br> - Move semantics, <br> - Templates and template specialization, <br> - Overloading `new` and `delete`, <br> - Dynamic dispatch, vTable and vPtr, <br> - Dynamic cast |
+| Exercise     | Name       | Learnings                                                                                                                                                                                                                                                                             |
+| ------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ex00](ex00) | 🐾 Animal  | - Subtype polymorphism                                                                                                                                                                                                                                                                |
+| [ex01](ex01) | 🧠 Animal  | - Deep copy vs. shallow copy                                                                                                                                                                                                                                                          |
+| [ex02](ex02) | 💭 Animal  | - Abstract classes                                                                                                                                                                                                                                                                    |
+| [ex03](ex03) | 🔮 Materia | - Interfaces, <br> - Value-initialization of arrays, <br> - Copy-and-swap idiom, <br> - Move semantics, <br> - Templates and template specialization, <br> - Reference counting, <br> - Overloading `new` and `delete`, <br> - Dynamic dispatch, vTable and vPtr, <br> - Dynamic cast |
 
 # Resources
 
@@ -51,3 +51,19 @@ It works by:
 - [How are virtual functions and vtable implemented?](https://stackoverflow.com/questions/99297/how-are-virtual-functions-and-vtable-implemented)
 
 - [Does the vptr change during destruction?](https://stackoverflow.com/questions/7916833/does-the-vptr-change-during-destruction)
+
+- [When `__cxa_pure_virtual` is just a different flavor of SEGFAULT](https://uvdn7.github.io/pure_virtual/)
+
+- [V-table pseudo-code](https://isocpp.org/wiki/faq/virtual-functions#dyn-binding2)
+
+- [When should my destructor be virtual?](https://isocpp.org/wiki/faq/virtual-functions#virtual-dtors)
+
+### Reference Counting
+
+- [How do I do simple reference counting?](https://isocpp.org/wiki/faq/freestore-mgmt#ref-count-simple)
+
+### Overloading `new` and `delete`
+
+- [What are the two steps that happen when I say delete p?](https://isocpp.org/wiki/faq/freestore-mgmt#two-steps-of-delete)
+
+- [What are the steps of new?](https://isocpp.org/wiki/faq/freestore-mgmt#new-doesnt-leak-if-ctor-throws)
