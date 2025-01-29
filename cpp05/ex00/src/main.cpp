@@ -11,7 +11,7 @@ int main()
 		bureaucrat.demote();
 		std::cout << bureaucrat << '\n';
 	}
-	catch (std::exception& e) {
+	catch (const std::exception& e) {
 		std::cout << e.what() << '\n';
 	}
 
@@ -23,7 +23,7 @@ int main()
 		bureaucrat.promote();
 		std::cout << bureaucrat << '\n';
 	}
-	catch (std::exception& e) {
+	catch (const std::exception& e) {
 		std::cout << e.what() << '\n';
 	}
 
@@ -35,7 +35,7 @@ int main()
 		bureaucrat.promote();
 		std::cout << bureaucrat << '\n';
 	}
-	catch (std::exception& e) {
+	catch (const std::exception& e) {
 		std::cout << e.what() << '\n';
 	}
 
@@ -47,7 +47,7 @@ int main()
 		bureaucrat.demote();
 		std::cout << bureaucrat << '\n';
 	}
-	catch (std::exception& e) {
+	catch (const std::exception& e) {
 		std::cout << e.what() << '\n';
 	}
 
@@ -59,7 +59,7 @@ int main()
 		bureaucrat.promote();
 		std::cout << bureaucrat << '\n';
 	}
-	catch (GradeException& e) {
+	catch (const GradeException& e) {
 		std::cout << e.what() << '\n';
 	}
 
@@ -71,10 +71,10 @@ int main()
 		bureaucrat.promote();
 		std::cout << bureaucrat << '\n';
 	}
-	catch (Bureaucrat::GradeTooHighException& e) {
+	catch (const Bureaucrat::GradeTooHighException& e) {
 		std::cout << "SHOULD NOT GET HERE " << e.what() << '\n';
 	}
-	catch (Bureaucrat::GradeTooLowException& e) {
+	catch (const Bureaucrat::GradeTooLowException& e) {
 		std::cout << e.what() << '\n';
 	}
 }
