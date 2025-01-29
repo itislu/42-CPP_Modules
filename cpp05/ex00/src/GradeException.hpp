@@ -3,18 +3,12 @@
 #ifndef GRADEEXCEPTION_HPP
 #define GRADEEXCEPTION_HPP
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
-class GradeException : public std::exception {
+class GradeException : public std::runtime_error {
 public:
 	GradeException(const std::string& error);
-	virtual ~GradeException() throw();
-
-	const char* what() const throw();
-
-private:
-	std::string _error;
 };
 
 #endif

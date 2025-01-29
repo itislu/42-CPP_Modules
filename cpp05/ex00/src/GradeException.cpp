@@ -1,11 +1,8 @@
 #include "GradeException.hpp"
+#include <stdexcept>
 #include <string>
 
-GradeException::GradeException(const std::string& error) : _error(error) {}
-
-GradeException::~GradeException() throw() {}
-
-const char* GradeException::what() const throw()
+GradeException::GradeException(const std::string& error) :
+    std::runtime_error(error)
 {
-	return _error.c_str();
 }
