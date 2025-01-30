@@ -1,6 +1,6 @@
 #include "Bureaucrat.hpp"
 #include "GradeException.hpp"
-#include "where.hpp"
+#include "utils.hpp"
 #include <cstring>
 #include <ostream>
 #include <string>
@@ -61,9 +61,7 @@ void Bureaucrat::demote()
 
 void Bureaucrat::swap(Bureaucrat& other)
 {
-	const unsigned int tmp = _grade;
-	_grade = other._grade;
-	other._grade = tmp;
+	utils::swap(_grade, other._grade);
 }
 
 const std::string& Bureaucrat::getName() const
