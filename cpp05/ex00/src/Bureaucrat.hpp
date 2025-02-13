@@ -18,8 +18,8 @@ public:
 		GradeTooLowException(const std::string& error);
 	};
 
-	Bureaucrat(const Bureaucrat& other);
 	Bureaucrat(const std::string& name, unsigned int grade);
+	Bureaucrat(const Bureaucrat& other);
 	~Bureaucrat();
 
 	Bureaucrat& operator=(Bureaucrat other);

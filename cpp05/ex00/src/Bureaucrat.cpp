@@ -16,10 +16,6 @@ Bureaucrat::GradeTooLowException::GradeTooLowException(
     GradeException(error)
 {}
 
-Bureaucrat::Bureaucrat(const Bureaucrat& other) :
-    _name(other._name), _grade(other._grade)
-{}
-
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
     _name(name), _grade(grade)
 {
@@ -32,6 +28,10 @@ Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
 		    WHERE("constructing Bureaucrat with too low grade"));
 	}
 }
+
+Bureaucrat::Bureaucrat(const Bureaucrat& other) :
+    _name(other._name), _grade(other._grade)
+{}
 
 Bureaucrat::~Bureaucrat() {}
 
