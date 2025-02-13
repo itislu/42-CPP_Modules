@@ -1,5 +1,6 @@
 #include "Bureaucrat.hpp"
 #include "GradeException.hpp"
+#include "grade.hpp"
 #include "utils.hpp"
 #include <cstring>
 #include <ostream>
@@ -22,11 +23,11 @@ Bureaucrat::Bureaucrat(const Bureaucrat& other) :
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
     _name(name), _grade(grade)
 {
-	if (_grade < highest_grade) {
+	if (grade::is_higher(_grade, highest_grade)) {
 		throw GradeTooHighException(
 		    WHERE("constructing Bureaucrat with too high grade"));
 	}
-	if (_grade > lowest_grade) {
+	if (grade::is_lower(_grade, lowest_grade)) {
 		throw GradeTooLowException(
 		    WHERE("constructing Bureaucrat with too low grade"));
 	}
@@ -42,18 +43,22 @@ Bureaucrat& Bureaucrat::operator=(Bureaucrat other)
 
 void Bureaucrat::promote()
 {
-	if (_grade - 1 < highest_grade) {
+	const unsigned int promoted_grade = grade::increment(_grade);
+
+	if (grade::is_higher(promoted_grade, highest_grade)) {
 		throw GradeTooHighException(WHERE("promoting highest possible grade"));
 	}
-	--_grade;
+	_grade = promoted_grade;
 }
 
 void Bureaucrat::demote()
 {
-	if (_grade + 1 > lowest_grade) {
+	const unsigned int demoted_grade = grade::decrement(_grade);
+
+	if (grade::is_lower(demoted_grade, lowest_grade)) {
 		throw GradeTooLowException(WHERE("demoting lowest possible grade"));
 	}
-	++_grade;
+	_grade = demoted_grade;
 }
 
 void Bureaucrat::swap(Bureaucrat& other) { utils::swap(_grade, other._grade); }
