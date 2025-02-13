@@ -41,6 +41,8 @@ Bureaucrat& Bureaucrat::operator=(Bureaucrat other)
 	return *this;
 }
 
+void Bureaucrat::swap(Bureaucrat& other) { utils::swap(_grade, other._grade); }
+
 void Bureaucrat::promote()
 {
 	const unsigned int promoted_grade = grade::increment(_grade);
@@ -60,8 +62,6 @@ void Bureaucrat::demote()
 	}
 	_grade = demoted_grade;
 }
-
-void Bureaucrat::swap(Bureaucrat& other) { utils::swap(_grade, other._grade); }
 
 const std::string& Bureaucrat::getName() const { return _name; }
 

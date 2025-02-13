@@ -22,10 +22,11 @@ public:
 	~Bureaucrat();
 
 	Bureaucrat& operator=(Bureaucrat other);
+	void swap(Bureaucrat& other);
 
 	void promote();
 	void demote();
-	void swap(Bureaucrat& other);
+
 	const std::string& getName() const;
 	unsigned int getGrade() const;
 
