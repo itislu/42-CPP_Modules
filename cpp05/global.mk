@@ -35,10 +35,14 @@ BUILDFILES		:=	Makefile ../global.mk
 
 CXX				:=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
-CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow -Wdocumentation --std=c++98 -pedantic
+CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic
 CXXFLAGS_DBG	:=	-ggdb3
 CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
+# TODO Implement one of the following solutions for -Wdocumentation:
+# 1. Only add the flag if the compiler is clang++.
+# 2. Add a `doc` or `docs` target which checks if the compiler is clang++ and otherwise prints an error.
+CXXFLAGS_DOC	:=	-Wdocumentation	# Only supported by clang++
 CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG)
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIR))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
