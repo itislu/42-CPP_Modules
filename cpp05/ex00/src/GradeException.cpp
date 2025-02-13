@@ -4,5 +4,4 @@
 
 GradeException::GradeException(const std::string& error) :
     std::runtime_error(error)
-{
-}
+{}

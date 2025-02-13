@@ -8,19 +8,16 @@
 Bureaucrat::GradeTooHighException::GradeTooHighException(
     const std::string& error) :
     GradeException(error)
-{
-}
+{}
 
 Bureaucrat::GradeTooLowException::GradeTooLowException(
     const std::string& error) :
     GradeException(error)
-{
-}
+{}
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other) :
     _name(other._name), _grade(other._grade)
-{
-}
+{}
 
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
     _name(name), _grade(grade)
@@ -59,20 +56,11 @@ void Bureaucrat::demote()
 	++_grade;
 }
 
-void Bureaucrat::swap(Bureaucrat& other)
-{
-	utils::swap(_grade, other._grade);
-}
+void Bureaucrat::swap(Bureaucrat& other) { utils::swap(_grade, other._grade); }
 
-const std::string& Bureaucrat::getName() const
-{
-	return _name;
-}
+const std::string& Bureaucrat::getName() const { return _name; }
 
-unsigned int Bureaucrat::getGrade() const
-{
-	return _grade;
-}
+unsigned int Bureaucrat::getGrade() const { return _grade; }
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat)
 {
