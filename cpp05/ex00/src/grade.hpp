@@ -1,5 +1,4 @@
-#ifndef GRADE_HPP
-#define GRADE_HPP
+#pragma once
 
 namespace grade {
 
@@ -9,5 +8,3 @@ unsigned int increment(unsigned int grade);
 unsigned int decrement(unsigned int grade);
 
 } // namespace grade
-
-#endif

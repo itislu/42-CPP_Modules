@@ -1,7 +1,6 @@
 // NOLINTBEGIN(cppcoreguidelines-avoid-const-or-ref-data-members)
 
-#ifndef BUREAUCRAT_HPP
-#define BUREAUCRAT_HPP
+#pragma once
 
 #include "GradeException.hpp"
 #include <ostream>
@@ -41,7 +40,5 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat);
-
-#endif
 
 // NOLINTEND(cppcoreguidelines-avoid-const-or-ref-data-members)
