@@ -3,8 +3,8 @@
 #ifndef IMATERIASOURCE_HPP
 #define IMATERIASOURCE_HPP
 
-#include <string>
 #include "AMateria.hpp"
+#include <string>
 
 class IMateriaSource {
 public:
