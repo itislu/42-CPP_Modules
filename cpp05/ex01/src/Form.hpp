@@ -12,11 +12,11 @@ class Form {
 public:
 	class GradeTooHighException : public GradeException {
 	public:
-		GradeTooHighException(const std::string& error);
+		GradeTooHighException(unsigned int grade, unsigned int required);
 	};
 	class GradeTooLowException : public GradeException {
 	public:
-		GradeTooLowException(const std::string& error);
+		GradeTooLowException(unsigned int grade, unsigned int required);
 	};
 
 	Form(const std::string& name,

@@ -6,12 +6,16 @@
 #include <ostream>
 #include <string>
 
-Form::GradeTooHighException::GradeTooHighException(const std::string& error) :
-    GradeException(error)
+Form::GradeTooHighException::GradeTooHighException(unsigned int grade,
+                                                   unsigned int required) :
+    GradeException("grade too high: " + utils::to_string(grade)
+                   + ", required: " + utils::to_string(required))
 {}
 
-Form::GradeTooLowException::GradeTooLowException(const std::string& error) :
-    GradeException(error)
+Form::GradeTooLowException::GradeTooLowException(unsigned int grade,
+                                                 unsigned int required) :
+    GradeException("grade too low: " + utils::to_string(grade)
+                   + ", required: " + utils::to_string(required))
 {}
 
 Form::Form(const std::string& name,
@@ -43,10 +47,7 @@ void Form::swap(Form& other) { utils::swap(_is_signed, other._is_signed); }
 void Form::beSigned(const Bureaucrat& bureaucrat)
 {
 	if (grade::is_lower(bureaucrat.getGrade(), _grade_to_sign)) {
-		throw GradeTooLowException(bureaucrat.getName() + "'s grade ("
-		                           + utils::to_string(bureaucrat.getGrade())
-		                           + ") is too low, required: "
-		                           + utils::to_string(_grade_to_sign));
+		throw GradeTooLowException(bureaucrat.getGrade(), _grade_to_sign);
 	}
 	_is_signed = true;
 }
