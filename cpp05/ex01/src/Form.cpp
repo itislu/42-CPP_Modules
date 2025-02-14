@@ -43,8 +43,10 @@ void Form::swap(Form& other) { utils::swap(_is_signed, other._is_signed); }
 void Form::beSigned(const Bureaucrat& bureaucrat)
 {
 	if (grade::is_lower(bureaucrat.getGrade(), _grade_to_sign)) {
-		throw GradeTooLowException(bureaucrat.getName()
-		                           + "'s grade is too low");
+		throw GradeTooLowException(bureaucrat.getName() + "'s grade ("
+		                           + utils::to_string(bureaucrat.getGrade())
+		                           + ") is too low, required: "
+		                           + utils::to_string(_grade_to_sign));
 	}
 	_is_signed = true;
 }
