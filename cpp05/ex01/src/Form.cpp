@@ -23,7 +23,8 @@ try :
     _name(name),
     _grade_to_sign(grade_to_sign),
     _grade_to_exec(grade_to_exec),
-    _is_signed(false) {
+    _is_signed(false) //
+{
 	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
 }
 catch (GradeException::AGradeException& e) {

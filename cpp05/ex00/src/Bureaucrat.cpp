@@ -16,7 +16,10 @@ Bureaucrat::GradeTooLowException::GradeTooLowException(
 {}
 
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade)
-try : _name(name), _grade(grade) {
+try :
+    _name(name),
+    _grade(grade) //
+{
 	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
 }
 catch (GradeException::AGradeException& e) {
