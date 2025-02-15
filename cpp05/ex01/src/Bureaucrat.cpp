@@ -26,12 +26,14 @@ Bureaucrat::GradeTooLowException::GradeTooLowException(const std::string& where,
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
     _name(name), _grade(grade)
 {
+	std::cerr << utils::log::info("Constructing bureaucrat " + _name) << '\n';
 	if (grade::is_higher(_grade, highest_grade)) {
 		throw GradeTooHighException(WHERE, _name, _grade);
 	}
 	if (grade::is_lower(_grade, lowest_grade)) {
 		throw GradeTooLowException(WHERE, _name, _grade);
 	}
+	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other) :
@@ -52,10 +54,10 @@ void Bureaucrat::signForm(Form& form) const
 {
 	try {
 		form.beSigned(*this);
-		std::cout << utils::log::ok(_name + " signed " + form.name()) << '\n';
+		std::cerr << utils::log::ok(_name + " signed " + form.name()) << '\n';
 	}
 	catch (const GradeException& e) {
-		std::cout << utils::log::error(_name + " cannot sign form "
+		std::cerr << utils::log::error(_name + " cannot sign form "
 		                               + form.name() + ": " + e.what())
 		          << '\n';
 	}
@@ -65,20 +67,24 @@ void Bureaucrat::promote()
 {
 	const unsigned int promoted_grade = grade::increment(_grade);
 
+	std::cerr << utils::log::info("Promoting ") << *this << '\n';
 	if (grade::is_higher(promoted_grade, highest_grade)) {
 		throw GradeTooHighException(WHERE, _name, promoted_grade);
 	}
 	_grade = promoted_grade;
+	std::cerr << utils::log::ok(*this) << " promoted" << '\n';
 }
 
 void Bureaucrat::demote()
 {
 	const unsigned int demoted_grade = grade::decrement(_grade);
 
+	std::cerr << utils::log::info("Demoting ") << *this << '\n';
 	if (grade::is_lower(demoted_grade, lowest_grade)) {
 		throw GradeTooLowException(WHERE, _name, demoted_grade);
 	}
 	_grade = demoted_grade;
+	std::cerr << utils::log::ok(*this) << " demoted" << '\n';
 }
 
 const std::string& Bureaucrat::getName() const { return _name; }

@@ -10,7 +10,7 @@ int main()
 	const Bureaucrat obelix("Obelix", Bureaucrat::lowest_grade);
 	Form form("Passierschein A38", 19, 76);
 
-	std::cout << form << "\n\n";
+	std::cout << '\n' << form << "\n\n";
 	obelix.signForm(form);
 	std::cout << '\n' << form << "\n\n";
 	asterix.signForm(form);
