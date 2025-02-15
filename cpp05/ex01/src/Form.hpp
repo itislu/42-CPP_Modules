@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Grade.hpp"
 #include "GradeException.hpp"
 #include <ostream>
 #include <string>
@@ -10,13 +11,13 @@ class Bureaucrat;
 
 class Form {
 public:
-	class GradeTooHighException : public GradeException {
+	class GradeTooHighException : public GradeException::GradeTooHighException {
 	public:
-		GradeTooHighException(unsigned int grade, unsigned int required);
+		GradeTooHighException(const GradeException::AGradeException& e);
 	};
-	class GradeTooLowException : public GradeException {
+	class GradeTooLowException : public GradeException::GradeTooLowException {
 	public:
-		GradeTooLowException(unsigned int grade, unsigned int required);
+		GradeTooLowException(const GradeException::AGradeException& e);
 	};
 
 	Form(const std::string& name,
@@ -31,16 +32,16 @@ public:
 	void beSigned(const Bureaucrat& bureaucrat);
 
 	const std::string& name() const;
-	unsigned int grade_to_sign() const;
-	unsigned int grade_to_exec() const;
+	const Grade& grade_to_sign() const;
+	const Grade& grade_to_exec() const;
 	bool is_signed() const;
 
 private:
 	Form();
 
 	const std::string _name;
-	const unsigned int _grade_to_sign;
-	const unsigned int _grade_to_exec;
+	const Grade _grade_to_sign;
+	const Grade _grade_to_exec;
 	bool _is_signed;
 };
 

@@ -1,39 +1,34 @@
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
+#include "Grade.hpp"
 #include "GradeException.hpp"
-#include "grade.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <string>
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(
-    const std::string& where,
-    const std::string& name,
-    unsigned int grade) :
-    GradeException(where + ": bureaucrat " + name + ": grade too high: "
-                   + utils::to_string(grade) + ", highest allowed grade: "
-                   + utils::to_string(highest_grade))
+    const GradeException::AGradeException& e) :
+    GradeException::GradeTooHighException(e)
 {}
 
-Bureaucrat::GradeTooLowException::GradeTooLowException(const std::string& where,
-                                                       const std::string& name,
-                                                       unsigned int grade) :
-    GradeException(where + ": bureaucrat " + name + ": grade too low: "
-                   + utils::to_string(grade) + ", lowest allowed grade: "
-                   + utils::to_string(lowest_grade))
+Bureaucrat::GradeTooLowException::GradeTooLowException(
+    const GradeException::AGradeException& e) :
+    GradeException::GradeTooLowException(e)
 {}
 
-Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
-    _name(name), _grade(grade)
-{
-	std::cerr << utils::log::info("Constructing bureaucrat " + _name) << '\n';
-	if (grade::is_higher(_grade, highest_grade)) {
-		throw GradeTooHighException(WHERE, _name, _grade);
-	}
-	if (grade::is_lower(_grade, lowest_grade)) {
-		throw GradeTooLowException(WHERE, _name, _grade);
-	}
+Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade)
+try : _name(name), _grade(grade) {
 	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
+}
+catch (GradeException::AGradeException& e) {
+	e.set_where(WHERE).set_who(name);
+	if (e.is_too_high()) {
+		throw Bureaucrat::GradeTooHighException(e);
+	}
+	if (e.is_too_low()) {
+		throw Bureaucrat::GradeTooLowException(e);
+	}
+	throw;
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other) :
@@ -56,40 +51,42 @@ void Bureaucrat::signForm(Form& form) const
 		form.beSigned(*this);
 		std::cerr << utils::log::ok(_name + " signed " + form.name()) << '\n';
 	}
-	catch (const GradeException& e) {
+	catch (const GradeException::AGradeException& e) {
 		std::cerr << utils::log::error(_name + " cannot sign form "
-		                               + form.name() + ": " + e.what())
-		          << '\n';
+		                               + form.name())
+		          << utils::log::line(e.what()) << '\n';
 	}
 }
 
 void Bureaucrat::promote()
 {
-	const unsigned int promoted_grade = grade::increment(_grade);
-
 	std::cerr << utils::log::info("Promoting ") << *this << '\n';
-	if (grade::is_higher(promoted_grade, highest_grade)) {
-		throw GradeTooHighException(WHERE, _name, promoted_grade);
+	try {
+		++_grade;
 	}
-	_grade = promoted_grade;
+	catch (GradeException::GradeTooHighException& e) {
+		e.set_where(WHERE).set_who(_name);
+		throw Bureaucrat::GradeTooHighException(e);
+	}
 	std::cerr << utils::log::ok(*this) << " promoted" << '\n';
 }
 
 void Bureaucrat::demote()
 {
-	const unsigned int demoted_grade = grade::decrement(_grade);
-
 	std::cerr << utils::log::info("Demoting ") << *this << '\n';
-	if (grade::is_lower(demoted_grade, lowest_grade)) {
-		throw GradeTooLowException(WHERE, _name, demoted_grade);
+	try {
+		--_grade;
 	}
-	_grade = demoted_grade;
+	catch (GradeException::GradeTooLowException& e) {
+		e.set_where(WHERE).set_who(_name);
+		throw Bureaucrat::GradeTooLowException(e);
+	}
 	std::cerr << utils::log::ok(*this) << " demoted" << '\n';
 }
 
 const std::string& Bureaucrat::getName() const { return _name; }
 
-unsigned int Bureaucrat::getGrade() const { return _grade; }
+const Grade& Bureaucrat::getGrade() const { return _grade; }
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat)
 {

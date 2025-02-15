@@ -2,23 +2,20 @@
 
 #pragma once
 
+#include "Grade.hpp"
 #include "GradeException.hpp"
 #include <ostream>
 #include <string>
 
 class Bureaucrat {
 public:
-	class GradeTooHighException : public GradeException {
+	class GradeTooHighException : public GradeException::GradeTooHighException {
 	public:
-		GradeTooHighException(const std::string& where,
-		                      const std::string& name,
-		                      unsigned int grade);
+		GradeTooHighException(const GradeException::AGradeException& e);
 	};
-	class GradeTooLowException : public GradeException {
+	class GradeTooLowException : public GradeException::GradeTooLowException {
 	public:
-		GradeTooLowException(const std::string& where,
-		                     const std::string& name,
-		                     unsigned int grade);
+		GradeTooLowException(const GradeException::AGradeException& e);
 	};
 
 	Bureaucrat(const std::string& name, unsigned int grade);
@@ -32,16 +29,13 @@ public:
 	void demote();
 
 	const std::string& getName() const;
-	unsigned int getGrade() const;
-
-	static const unsigned int highest_grade = 1;
-	static const unsigned int lowest_grade = 150;
+	const Grade& getGrade() const;
 
 private:
 	Bureaucrat();
 
 	const std::string _name;
-	unsigned int _grade;
+	Grade _grade;
 };
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat);

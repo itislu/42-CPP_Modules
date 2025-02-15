@@ -1,31 +1,41 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
+#include "Grade.hpp"
 #include "GradeException.hpp"
-#include "grade.hpp"
 #include "utils.hpp"
-#include <ostream>
+#include <iostream>
 #include <string>
 
-Form::GradeTooHighException::GradeTooHighException(unsigned int grade,
-                                                   unsigned int required) :
-    GradeException("grade too high: " + utils::to_string(grade)
-                   + ", required: " + utils::to_string(required))
+Form::GradeTooHighException::GradeTooHighException(
+    const GradeException::AGradeException& e) :
+    GradeException::GradeTooHighException(e)
 {}
 
-Form::GradeTooLowException::GradeTooLowException(unsigned int grade,
-                                                 unsigned int required) :
-    GradeException("grade too low: " + utils::to_string(grade)
-                   + ", required: " + utils::to_string(required))
+Form::GradeTooLowException::GradeTooLowException(
+    const GradeException::AGradeException& e) :
+    GradeException::GradeTooLowException(e)
 {}
 
 Form::Form(const std::string& name,
            unsigned int grade_to_sign,
-           unsigned int grade_to_exec) :
+           unsigned int grade_to_exec)
+try :
     _name(name),
     _grade_to_sign(grade_to_sign),
     _grade_to_exec(grade_to_exec),
-    _is_signed(false)
-{}
+    _is_signed(false) {
+	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
+}
+catch (GradeException::AGradeException& e) {
+	e.set_where(WHERE).set_who(name);
+	if (e.is_too_high()) {
+		throw Form::GradeTooHighException(e);
+	}
+	if (e.is_too_low()) {
+		throw Form::GradeTooLowException(e);
+	}
+	throw;
+}
 
 Form::Form(const Form& other) :
     _name(other._name),
@@ -46,17 +56,21 @@ void Form::swap(Form& other) { utils::swap(_is_signed, other._is_signed); }
 
 void Form::beSigned(const Bureaucrat& bureaucrat)
 {
-	if (grade::is_lower(bureaucrat.getGrade(), _grade_to_sign)) {
-		throw GradeTooLowException(bureaucrat.getGrade(), _grade_to_sign);
+	try {
+		bureaucrat.getGrade().test(_grade_to_sign);
+	}
+	catch (GradeException::GradeTooLowException& e) {
+		e.set_where(WHERE).set_who(_name);
+		throw Form::GradeTooLowException(e);
 	}
 	_is_signed = true;
 }
 
 const std::string& Form::name() const { return _name; }
 
-unsigned int Form::grade_to_sign() const { return _grade_to_sign; }
+const Grade& Form::grade_to_sign() const { return _grade_to_sign; }
 
-unsigned int Form::grade_to_exec() const { return _grade_to_exec; }
+const Grade& Form::grade_to_exec() const { return _grade_to_exec; }
 
 bool Form::is_signed() const { return _is_signed; }
 
