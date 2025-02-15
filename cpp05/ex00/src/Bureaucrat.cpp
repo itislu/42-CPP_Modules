@@ -2,30 +2,34 @@
 #include "GradeException.hpp"
 #include "grade.hpp"
 #include "utils.hpp"
-#include <cstring>
-#include <ostream>
+#include <iostream>
 #include <string>
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(
-    const std::string& error) :
-    GradeException(error)
+    const std::string& where,
+    const std::string& name,
+    unsigned int grade) :
+    GradeException(where + ": bureaucrat " + name + ": grade too high: "
+                   + utils::to_string(grade) + ", highest allowed grade: "
+                   + utils::to_string(highest_grade))
 {}
 
-Bureaucrat::GradeTooLowException::GradeTooLowException(
-    const std::string& error) :
-    GradeException(error)
+Bureaucrat::GradeTooLowException::GradeTooLowException(const std::string& where,
+                                                       const std::string& name,
+                                                       unsigned int grade) :
+    GradeException(where + ": bureaucrat " + name + ": grade too low: "
+                   + utils::to_string(grade) + ", lowest allowed grade: "
+                   + utils::to_string(lowest_grade))
 {}
 
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade) :
     _name(name), _grade(grade)
 {
 	if (grade::is_higher(_grade, highest_grade)) {
-		throw GradeTooHighException(
-		    WHERE("constructing Bureaucrat with too high grade"));
+		throw GradeTooHighException(WHERE, _name, _grade);
 	}
 	if (grade::is_lower(_grade, lowest_grade)) {
-		throw GradeTooLowException(
-		    WHERE("constructing Bureaucrat with too low grade"));
+		throw GradeTooLowException(WHERE, _name, _grade);
 	}
 }
 
@@ -48,7 +52,7 @@ void Bureaucrat::promote()
 	const unsigned int promoted_grade = grade::increment(_grade);
 
 	if (grade::is_higher(promoted_grade, highest_grade)) {
-		throw GradeTooHighException(WHERE("promoting highest possible grade"));
+		throw GradeTooHighException(WHERE, _name, promoted_grade);
 	}
 	_grade = promoted_grade;
 }
@@ -58,7 +62,7 @@ void Bureaucrat::demote()
 	const unsigned int demoted_grade = grade::decrement(_grade);
 
 	if (grade::is_lower(demoted_grade, lowest_grade)) {
-		throw GradeTooLowException(WHERE("demoting lowest possible grade"));
+		throw GradeTooLowException(WHERE, _name, demoted_grade);
 	}
 	_grade = demoted_grade;
 }

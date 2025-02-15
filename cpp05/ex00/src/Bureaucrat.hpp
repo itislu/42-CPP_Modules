@@ -10,11 +10,15 @@ class Bureaucrat {
 public:
 	class GradeTooHighException : public GradeException {
 	public:
-		GradeTooHighException(const std::string& error);
+		GradeTooHighException(const std::string& where,
+		                      const std::string& name,
+		                      unsigned int grade);
 	};
 	class GradeTooLowException : public GradeException {
 	public:
-		GradeTooLowException(const std::string& error);
+		GradeTooLowException(const std::string& where,
+		                     const std::string& name,
+		                     unsigned int grade);
 	};
 
 	Bureaucrat(const std::string& name, unsigned int grade);
