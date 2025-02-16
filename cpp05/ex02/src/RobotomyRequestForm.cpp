@@ -1,8 +1,8 @@
 #include "RobotomyRequestForm.hpp"
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
+#include "utils/utils.hpp"
 #include <cstddef>
-#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -31,13 +31,8 @@ void RobotomyRequestForm::execute(Bureaucrat const& executor) const
 	AForm::execute(executor);
 	std::cout << "* DRILLING NOISES *" << '\n';
 
-	std::ifstream urandom;
 	size_t random = 0;
-
-	urandom.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	urandom.open("/dev/urandom", std::ios::binary);
-	urandom.read(reinterpret_cast<char*>(&random), sizeof(random));
-	urandom.close();
+	utils::rand(&random, sizeof(random));
 
 	if (random % 2 == 0) {
 		std::cout << target() << " has been robotomized successfully" << '\n';
