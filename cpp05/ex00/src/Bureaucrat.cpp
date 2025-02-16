@@ -3,7 +3,8 @@
 #include "GradeException/AGradeException.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
-#include "utils.hpp"
+#include "utils/log.hpp"
+#include "utils/utils.hpp"
 #include <iostream>
 #include <string>
 

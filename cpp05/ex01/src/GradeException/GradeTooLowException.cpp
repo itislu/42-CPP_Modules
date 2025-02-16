@@ -1,6 +1,6 @@
 #include "GradeTooLowException.hpp"
 #include "AGradeException.hpp"
-#include "utils.hpp"
+#include "utils/string.hpp"
 #include <string>
 
 namespace GradeException {
@@ -10,9 +10,9 @@ GradeTooLowException::GradeTooLowException(unsigned int grade,
                                            const std::string& where,
                                            const std::string& who)
     : AGradeException(static_cast<long>(grade) - required,
-                      "grade too low: " + utils::to_string(grade)
+                      "grade too low: " + utils::string::to_string(grade)
                           + ", lowest allowed grade: "
-                          + utils::to_string(required),
+                          + utils::string::to_string(required),
                       where,
                       who)
 {}

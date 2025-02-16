@@ -1,7 +1,7 @@
 #include "Grade.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
-#include "utils.hpp"
+#include "utils/utils.hpp"
 #include <ostream>
 
 Grade::Grade(unsigned int grade)

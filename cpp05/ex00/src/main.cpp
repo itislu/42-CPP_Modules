@@ -3,7 +3,7 @@
 #include "Bureaucrat.hpp"
 #include "Grade.hpp"
 #include "GradeException/AGradeException.hpp"
-#include "utils.hpp"
+#include "utils/log.hpp"
 #include <exception>
 #include <iostream>
 
