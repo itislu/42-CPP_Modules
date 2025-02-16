@@ -1,0 +1,54 @@
+// NOLINTBEGIN(cppcoreguidelines-avoid-const-or-ref-data-members)
+
+#pragma once
+
+#include "Grade.hpp"
+#include "GradeException.hpp"
+#include <ostream>
+#include <string>
+
+class Bureaucrat;
+
+class AForm {
+public:
+	class GradeTooHighException : public GradeException::GradeTooHighException {
+	public:
+		GradeTooHighException(const GradeException::AGradeException& e);
+	};
+	class GradeTooLowException : public GradeException::GradeTooLowException {
+	public:
+		GradeTooLowException(const GradeException::AGradeException& e);
+	};
+
+	AForm(const std::string& name,
+	      unsigned int grade_to_sign,
+	      unsigned int grade_to_exec,
+	      const std::string& target);
+	AForm(const AForm& other);
+	virtual ~AForm();
+
+	AForm& operator=(const AForm& other);
+
+	void beSigned(const Bureaucrat& bureaucrat);
+	virtual void execute(Bureaucrat const& executor) const = 0;
+	void swap(AForm& other);
+
+	const std::string& name() const;
+	const Grade& grade_to_sign() const;
+	const Grade& grade_to_exec() const;
+	const std::string& target() const;
+	bool is_signed() const;
+
+private:
+	AForm();
+
+	const std::string _name;
+	const Grade _grade_to_sign;
+	const Grade _grade_to_exec;
+	std::string _target;
+	bool _is_signed;
+};
+
+std::ostream& operator<<(std::ostream& os, const AForm& form);
+
+// NOLINTEND(cppcoreguidelines-avoid-const-or-ref-data-members)
