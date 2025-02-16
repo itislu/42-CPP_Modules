@@ -17,12 +17,13 @@ public:
 	bool is_too_high() const;
 	bool is_too_low() const;
 
+	long delta() const;
 	const std::string& msg() const;
 	const std::string& where() const;
 	const std::string& who() const;
 
 protected:
-	AGradeException(bool is_too_low,
+	AGradeException(long delta,
 	                const std::string& msg,
 	                const std::string& where = "",
 	                const std::string& who = "");
@@ -30,7 +31,7 @@ protected:
 private:
 	void _update_full_msg();
 
-	bool _is_too_low;
+	long _delta;
 	std::string _msg;
 	std::string _where;
 	std::string _who;
