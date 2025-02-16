@@ -6,19 +6,19 @@
 #include <string>
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(
-    const GradeException::AGradeException& e) :
-    GradeException::GradeTooHighException(e)
+    const GradeException::AGradeException& e)
+    : GradeException::GradeTooHighException(e)
 {}
 
 Bureaucrat::GradeTooLowException::GradeTooLowException(
-    const GradeException::AGradeException& e) :
-    GradeException::GradeTooLowException(e)
+    const GradeException::AGradeException& e)
+    : GradeException::GradeTooLowException(e)
 {}
 
 Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade)
-try :
-    _name(name),
-    _grade(grade) //
+try
+    : _name(name),
+      _grade(grade) //
 {
 	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
 }
@@ -33,8 +33,8 @@ catch (GradeException::AGradeException& e) {
 	throw;
 }
 
-Bureaucrat::Bureaucrat(const Bureaucrat& other) :
-    _name(other._name), _grade(other._grade)
+Bureaucrat::Bureaucrat(const Bureaucrat& other)
+    : _name(other._name), _grade(other._grade)
 {}
 
 Bureaucrat::~Bureaucrat() {}

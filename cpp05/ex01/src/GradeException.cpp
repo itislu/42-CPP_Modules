@@ -9,8 +9,8 @@ AGradeException::~AGradeException() throw() {}
 AGradeException::AGradeException(bool is_too_low,
                                  const std::string& msg,
                                  const std::string& who,
-                                 const std::string& where) :
-    _is_too_low(is_too_low), _msg(msg), _who(who), _where(where)
+                                 const std::string& where)
+    : _is_too_low(is_too_low), _msg(msg), _who(who), _where(where)
 {
 	_update_full_msg();
 }
@@ -50,33 +50,39 @@ void AGradeException::_update_full_msg()
 GradeTooHighException::GradeTooHighException(unsigned int grade,
                                              unsigned int required,
                                              const std::string& who,
-                                             const std::string& where) :
-    AGradeException(false,
-                    "grade too high: " + utils::to_string(grade)
-                        + ", highest allowed grade: "
-                        + utils::to_string(required),
-                    who,
-                    where)
+                                             const std::string& where)
+    : AGradeException(false,
+                      "grade too high: " + utils::to_string(grade)
+                          + ", highest allowed grade: "
+                          + utils::to_string(required),
+                      who,
+                      where)
 {}
 
-GradeTooHighException::GradeTooHighException(const AGradeException& other) :
-    AGradeException(other.is_too_low(), other.msg(), other.who(), other.where())
+GradeTooHighException::GradeTooHighException(const AGradeException& other)
+    : AGradeException(other.is_too_low(),
+                      other.msg(),
+                      other.who(),
+                      other.where())
 {}
 
 GradeTooLowException::GradeTooLowException(unsigned int grade,
                                            unsigned int required,
                                            const std::string& who,
-                                           const std::string& where) :
-    AGradeException(true,
-                    "grade too low: " + utils::to_string(grade)
-                        + ", lowest allowed grade: "
-                        + utils::to_string(required),
-                    who,
-                    where)
+                                           const std::string& where)
+    : AGradeException(true,
+                      "grade too low: " + utils::to_string(grade)
+                          + ", lowest allowed grade: "
+                          + utils::to_string(required),
+                      who,
+                      where)
 {}
 
-GradeTooLowException::GradeTooLowException(const AGradeException& other) :
-    AGradeException(other.is_too_low(), other.msg(), other.who(), other.where())
+GradeTooLowException::GradeTooLowException(const AGradeException& other)
+    : AGradeException(other.is_too_low(),
+                      other.msg(),
+                      other.who(),
+                      other.where())
 {}
 
 } // namespace GradeException

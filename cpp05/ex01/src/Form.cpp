@@ -7,23 +7,23 @@
 #include <string>
 
 Form::GradeTooHighException::GradeTooHighException(
-    const GradeException::AGradeException& e) :
-    GradeException::GradeTooHighException(e)
+    const GradeException::AGradeException& e)
+    : GradeException::GradeTooHighException(e)
 {}
 
 Form::GradeTooLowException::GradeTooLowException(
-    const GradeException::AGradeException& e) :
-    GradeException::GradeTooLowException(e)
+    const GradeException::AGradeException& e)
+    : GradeException::GradeTooLowException(e)
 {}
 
 Form::Form(const std::string& name,
            unsigned int grade_to_sign,
            unsigned int grade_to_exec)
-try :
-    _name(name),
-    _grade_to_sign(grade_to_sign),
-    _grade_to_exec(grade_to_exec),
-    _is_signed(false) //
+try
+    : _name(name),
+      _grade_to_sign(grade_to_sign),
+      _grade_to_exec(grade_to_exec),
+      _is_signed(false) //
 {
 	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
 }
@@ -38,11 +38,11 @@ catch (GradeException::AGradeException& e) {
 	throw;
 }
 
-Form::Form(const Form& other) :
-    _name(other._name),
-    _grade_to_sign(other._grade_to_sign),
-    _grade_to_exec(other._grade_to_exec),
-    _is_signed(false)
+Form::Form(const Form& other)
+    : _name(other._name),
+      _grade_to_sign(other._grade_to_sign),
+      _grade_to_exec(other._grade_to_exec),
+      _is_signed(false)
 {}
 
 Form::~Form() {}
