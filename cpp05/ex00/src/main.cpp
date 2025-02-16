@@ -2,7 +2,7 @@
 
 #include "Bureaucrat.hpp"
 #include "Grade.hpp"
-#include "GradeException.hpp"
+#include "GradeException/AGradeException.hpp"
 #include "utils.hpp"
 #include <exception>
 #include <iostream>

@@ -1,7 +1,9 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 #include "Grade.hpp"
-#include "GradeException.hpp"
+#include "GradeException/AGradeException.hpp"
+#include "GradeException/GradeTooHighException.hpp"
+#include "GradeException/GradeTooLowException.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <string>
@@ -75,7 +77,8 @@ void AForm::execute(Bureaucrat const& executor) const
 {
 	if (!_is_signed) {
 		// Subject: "Otherwise, throw an appropriate exception."
-		// throw GradeTooLowException("not signed"); // TODO GradeTooLowException??
+		// throw GradeTooLowException("not signed"); // TODO
+		// GradeTooLowException??
 	}
 	try {
 		executor.getGrade().test(_grade_to_exec);

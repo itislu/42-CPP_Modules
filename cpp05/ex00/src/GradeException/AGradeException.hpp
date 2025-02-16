@@ -38,24 +38,6 @@ private:
 	std::string _full_msg;
 };
 
-class GradeTooHighException : public AGradeException {
-public:
-	GradeTooHighException(unsigned int grade,
-	                      unsigned int required,
-	                      const std::string& where = "",
-	                      const std::string& who = "");
-	GradeTooHighException(const AGradeException& other);
-};
-
-class GradeTooLowException : public AGradeException {
-public:
-	GradeTooLowException(unsigned int grade,
-	                     unsigned int required,
-	                     const std::string& where = "",
-	                     const std::string& who = "");
-	GradeTooLowException(const AGradeException& other);
-};
-
 } // namespace GradeException
 
 // NOLINTEND(cppcoreguidelines-special-member-functions)

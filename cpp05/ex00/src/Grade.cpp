@@ -1,5 +1,6 @@
 #include "Grade.hpp"
-#include "GradeException.hpp"
+#include "GradeException/GradeTooHighException.hpp"
+#include "GradeException/GradeTooLowException.hpp"
 #include "utils.hpp"
 #include <ostream>
 

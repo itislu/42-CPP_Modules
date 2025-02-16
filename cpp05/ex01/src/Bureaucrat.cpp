@@ -1,7 +1,9 @@
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
 #include "Grade.hpp"
-#include "GradeException.hpp"
+#include "GradeException/AGradeException.hpp"
+#include "GradeException/GradeTooHighException.hpp"
+#include "GradeException/GradeTooLowException.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <string>
