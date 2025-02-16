@@ -73,7 +73,7 @@ int main()
 
 	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
 	try {
-		const int repeats = 100000;
+		const int repeats = 1000000;
 		const Bureaucrat asterix("Asterix", Grade::highest_grade);
 		RobotomyRequestForm r("Cleopatra");
 		asterix.signForm(r);
