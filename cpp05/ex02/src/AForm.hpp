@@ -6,6 +6,7 @@
 #include "GradeException/AGradeException.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
+#include "utils/Exception.hpp"
 #include <ostream>
 #include <string>
 
@@ -21,6 +22,12 @@ public:
 	class GradeTooLowException : public GradeException::GradeTooLowException {
 	public:
 		GradeTooLowException(const GradeException::AGradeException& e);
+	};
+
+	class FormNotSignedException : public utils::Exception {
+	public:
+		FormNotSignedException(const std::string& where = "",
+		                       const std::string& who = "");
 	};
 
 	AForm(const std::string& name,

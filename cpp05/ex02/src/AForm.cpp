@@ -4,6 +4,7 @@
 #include "GradeException/AGradeException.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
+#include "utils/Exception.hpp"
 #include "utils/log.hpp"
 #include "utils/utils.hpp"
 #include <iostream>
@@ -17,6 +18,11 @@ AForm::GradeTooHighException::GradeTooHighException(
 AForm::GradeTooLowException::GradeTooLowException(
     const GradeException::AGradeException& e)
     : GradeException::GradeTooLowException(e)
+{}
+
+AForm::FormNotSignedException::FormNotSignedException(const std::string& where,
+                                                      const std::string& who)
+    : utils::Exception("Form not signed", where, who)
 {}
 
 AForm::AForm(const std::string& name,
@@ -77,9 +83,7 @@ void AForm::beSigned(const Bureaucrat& bureaucrat)
 void AForm::execute(Bureaucrat const& executor) const
 {
 	if (!_is_signed) {
-		// Subject: "Otherwise, throw an appropriate exception."
-		// throw GradeTooLowException("not signed"); // TODO
-		// GradeTooLowException??
+		throw FormNotSignedException(WHERE, _name);
 	}
 	try {
 		executor.getGrade().test(_grade_to_exec);
