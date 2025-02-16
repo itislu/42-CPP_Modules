@@ -1,18 +1,11 @@
 #include "PresidentialPardonForm.hpp"
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
-#include "Grade.hpp"
 #include <iostream>
 #include <string>
 
-const Grade PresidentialPardonForm::grade_to_sign(25);
-const Grade PresidentialPardonForm::grade_to_exec(5);
-
 PresidentialPardonForm::PresidentialPardonForm(const std::string& target)
-    : AForm("PresidentialPardonForm",
-            grade_to_sign.get(),
-            grade_to_exec.get(),
-            target)
+    : AForm("PresidentialPardonForm", grade_to_sign, grade_to_exec, target)
 {}
 
 PresidentialPardonForm::PresidentialPardonForm(

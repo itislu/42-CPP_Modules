@@ -1,18 +1,11 @@
 #include "ShrubberyCreationForm.hpp"
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
-#include "Grade.hpp"
 #include <fstream>
 #include <string>
 
-const Grade ShrubberyCreationForm::grade_to_sign(145);
-const Grade ShrubberyCreationForm::grade_to_exec(137);
-
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
-    : AForm("ShrubberyCreationForm",
-            grade_to_sign.get(),
-            grade_to_sign.get(),
-            target)
+    : AForm("ShrubberyCreationForm", grade_to_sign, grade_to_sign, target)
 {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other)

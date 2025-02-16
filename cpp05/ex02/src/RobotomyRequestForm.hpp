@@ -1,13 +1,12 @@
 #pragma once
 
 #include "AForm.hpp"
-#include "Grade.hpp"
 #include <string>
 
 class RobotomyRequestForm : public AForm {
 public:
-	static const Grade grade_to_sign;
-	static const Grade grade_to_exec;
+	static const unsigned int grade_to_sign = 72;
+	static const unsigned int grade_to_exec = 45;
 
 	RobotomyRequestForm(const std::string& target);
 	RobotomyRequestForm(const RobotomyRequestForm& other);

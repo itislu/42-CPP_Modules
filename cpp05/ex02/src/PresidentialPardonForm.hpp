@@ -1,13 +1,12 @@
 #pragma once
 
 #include "AForm.hpp"
-#include "Grade.hpp"
 #include <string>
 
 class PresidentialPardonForm : public AForm {
 public:
-	static const Grade grade_to_sign;
-	static const Grade grade_to_exec;
+	static const unsigned int grade_to_sign = 25;
+	static const unsigned int grade_to_exec = 5;
 
 	PresidentialPardonForm(const std::string& target);
 	PresidentialPardonForm(const PresidentialPardonForm& other);

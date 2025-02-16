@@ -1,20 +1,13 @@
 #include "RobotomyRequestForm.hpp"
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
-#include "Grade.hpp"
 #include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <string>
 
-const Grade RobotomyRequestForm::grade_to_sign(72);
-const Grade RobotomyRequestForm::grade_to_exec(45);
-
 RobotomyRequestForm::RobotomyRequestForm(const std::string& target)
-    : AForm("RobotomyRequestForm",
-            grade_to_sign.get(),
-            grade_to_exec.get(),
-            target)
+    : AForm("RobotomyRequestForm", grade_to_sign, grade_to_exec, target)
 {}
 
 RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other)
