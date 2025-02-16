@@ -16,6 +16,7 @@ public:
 	public:
 		GradeTooHighException(const GradeException::AGradeException& e);
 	};
+
 	class GradeTooLowException : public GradeException::GradeTooLowException {
 	public:
 		GradeTooLowException(const GradeException::AGradeException& e);
