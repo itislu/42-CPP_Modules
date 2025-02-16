@@ -7,6 +7,7 @@
 #include "utils/Exception.hpp"
 #include "utils/log.hpp"
 #include "utils/utils.hpp"
+#include <cstddef>
 #include <iostream>
 #include <string>
 
@@ -34,7 +35,8 @@ try
       _grade_to_sign(grade_to_sign),
       _grade_to_exec(grade_to_exec),
       _target(target),
-      _is_signed(false) //
+      _is_signed(false),
+      _executions() //
 {
 	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
 }
@@ -54,7 +56,8 @@ AForm::AForm(const AForm& other)
       _grade_to_sign(other._grade_to_sign),
       _grade_to_exec(other._grade_to_exec),
       _target(other._target),
-      _is_signed(false)
+      _is_signed(false),
+      _executions(other._executions)
 {}
 
 AForm::~AForm() {}
@@ -92,12 +95,14 @@ void AForm::execute(Bureaucrat const& executor) const
 		e.set_where(WHERE).set_who(_name);
 		throw AForm::GradeTooLowException(e);
 	}
+	++_executions;
 }
 
 void AForm::swap(AForm& other)
 {
 	utils::swap(_target, other._target);
 	utils::swap(_is_signed, other._is_signed);
+	utils::swap(_executions, other._executions);
 }
 
 const std::string& AForm::name() const { return _name; }
@@ -109,6 +114,8 @@ const Grade& AForm::grade_to_exec() const { return _grade_to_exec; }
 const std::string& AForm::target() const { return _target; }
 
 bool AForm::is_signed() const { return _is_signed; }
+
+size_t AForm::executions() const { return _executions; }
 
 std::ostream& operator<<(std::ostream& os, const AForm& form)
 {

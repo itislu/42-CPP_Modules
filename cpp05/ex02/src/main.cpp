@@ -64,6 +64,10 @@ int main()
 		asterix.executeForm(s);
 		asterix.executeForm(r);
 		asterix.executeForm(p);
+		std::cout << '\n';
+		asterix.executeForm(s);
+		asterix.executeForm(s);
+		asterix.executeForm(s);
 	}
 	catch (const std::exception& e) {
 		std::cerr << utils::log::warn(std::string("SHOULD NOT GET HERE - ")

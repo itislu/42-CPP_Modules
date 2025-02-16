@@ -29,7 +29,8 @@ void ShrubberyCreationForm::execute(Bureaucrat const& executor) const
 
 	AForm::execute(executor);
 	file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-	file.open((target() + "_shrubbery").c_str(), std::ios::app);
+	file.open((target() + "_shrubbery").c_str(),
+	          executions() <= 1 ? std::ios::trunc : std::ios::app);
 	file << "\n\
               _{\\ _{\\{\\/}/}/}__\n\
              {/{/\\}{/{/\\}(\\}{/\\} _\n\
@@ -62,5 +63,6 @@ void ShrubberyCreationForm::execute(Bureaucrat const& executor) const
         .      -'\n\
     .       .        .    ' '-.\n";
 
-	std::cout << target() << " got some shrubbery" << '\n';
+	std::cout << target() << " got some" << (executions() > 1 ? " more" : "")
+	          << " shrubbery" << '\n';
 }

@@ -7,6 +7,7 @@
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
 #include "utils/Exception.hpp"
+#include <cstddef>
 #include <ostream>
 #include <string>
 
@@ -48,6 +49,7 @@ public:
 	const Grade& grade_to_exec() const;
 	const std::string& target() const;
 	bool is_signed() const;
+	size_t executions() const;
 
 private:
 	AForm();
@@ -57,6 +59,7 @@ private:
 	const Grade _grade_to_exec;
 	std::string _target;
 	bool _is_signed;
+	mutable size_t _executions;
 };
 
 std::ostream& operator<<(std::ostream& os, const AForm& form);
