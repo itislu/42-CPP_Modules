@@ -23,20 +23,22 @@ RobotomyRequestForm::operator=(const RobotomyRequestForm& other)
 	return *this;
 }
 
+// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
 void RobotomyRequestForm::execute(Bureaucrat const& executor) const
 {
 	static int successes = 0;
 
-	std::ifstream file;
-	size_t random = 0;
-	char* ptr = reinterpret_cast<char*>(&random);
-
 	AForm::execute(executor);
 	std::cout << "* DRILLING NOISES *" << '\n';
-	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	file.open("/dev/urandom");
-	file.read(ptr, sizeof(random));
-	file.close();
+
+	std::ifstream urandom;
+	size_t random = 0;
+
+	urandom.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	urandom.open("/dev/urandom", std::ios::binary);
+	urandom.read(reinterpret_cast<char*>(&random), sizeof(random));
+	urandom.close();
+
 	if (random % 2 == 0) {
 		std::cout << target() << " has been robotomized successfully" << '\n';
 		++successes;
@@ -45,5 +47,7 @@ void RobotomyRequestForm::execute(Bureaucrat const& executor) const
 		std::cout << target() << "'s robotomy failed" << '\n';
 		--successes;
 	}
+
 	std::cerr << "successes: " << successes << '\n';
 }
+// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
