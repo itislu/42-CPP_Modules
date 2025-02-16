@@ -16,6 +16,10 @@ public:
 
 	void execute(Bureaucrat const& executor) const;
 
+	int score() const;
+
 private:
 	RobotomyRequestForm();
+
+	mutable int _score;
 };

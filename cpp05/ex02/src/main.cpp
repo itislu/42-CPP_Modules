@@ -17,6 +17,7 @@ int main()
 
 	// 	for (int i = 0; i < 100000; ++i) {
 	// 		asterix.executeForm(r);
+	// 		std::cerr << "Robotomy score: " << r.score() << '\n';
 	// 	}
 	// 	return 0;
 	// }
