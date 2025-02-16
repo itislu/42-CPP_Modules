@@ -62,7 +62,8 @@ int main()
 		bureaucrat.promote();
 	}
 	catch (const Bureaucrat::GradeTooHighException& e) {
-		std::cerr << "SHOULD NOT GET HERE - grade is too low, not too high!"
+		std::cerr << utils::log::warn(
+		    "SHOULD NOT GET HERE - grade is too low, not too high!")
 		          << '\n';
 	}
 	catch (const Bureaucrat::GradeTooLowException& e) {

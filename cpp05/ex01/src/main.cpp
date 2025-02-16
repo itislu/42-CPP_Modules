@@ -88,9 +88,9 @@ int main()
 		bureaucrat.promote();
 	}
 	catch (const Form::GradeTooLowException& e) {
-		std::cerr
-		    << "SHOULD NOT GET HERE - Bureaucrat exception is thrown, not Form!"
-		    << '\n';
+		std::cerr << utils::log::warn(
+		    "SHOULD NOT GET HERE - Bureaucrat exception is thrown, not Form!")
+		          << '\n';
 	}
 	catch (const Bureaucrat::GradeTooLowException& e) {
 		std::cerr << utils::log::error(e.what()) << '\n';
