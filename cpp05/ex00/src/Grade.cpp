@@ -3,7 +3,8 @@
 #include "utils.hpp"
 #include <ostream>
 
-Grade::Grade(unsigned int grade) : _raw(grade)
+Grade::Grade(unsigned int grade)
+    : _raw(grade)
 {
 	if (*this < lowest_grade) {
 		throw GradeException::GradeTooLowException(_raw, lowest_grade);
@@ -13,7 +14,9 @@ Grade::Grade(unsigned int grade) : _raw(grade)
 	}
 }
 
-Grade::Grade(const Grade& other) : _raw(other._raw) {}
+Grade::Grade(const Grade& other)
+    : _raw(other._raw)
+{}
 
 Grade::~Grade() {}
 

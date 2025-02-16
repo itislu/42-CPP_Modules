@@ -10,7 +10,10 @@ AGradeException::AGradeException(bool is_too_low,
                                  const std::string& msg,
                                  const std::string& who,
                                  const std::string& where)
-    : _is_too_low(is_too_low), _msg(msg), _who(who), _where(where)
+    : _is_too_low(is_too_low),
+      _msg(msg),
+      _who(who),
+      _where(where)
 {
 	_update_full_msg();
 }
