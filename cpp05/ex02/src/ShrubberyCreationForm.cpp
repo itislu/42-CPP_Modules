@@ -2,6 +2,7 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 #include <fstream>
+#include <ios>
 #include <string>
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
@@ -27,8 +28,8 @@ void ShrubberyCreationForm::execute(Bureaucrat const& executor) const
 
 	AForm::execute(executor);
 	file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-	file.open((target() + "_shrubbery").c_str());
-	file << "\
+	file.open((target() + "_shrubbery").c_str(), std::ios::app);
+	file << "\n\
               _{\\ _{\\{\\/}/}/}__\n\
              {/{/\\}{/{/\\}(\\}{/\\} _\n\
             {/{/\\}{/{/\\}(_)\\}{/{/\\}  _\n\
