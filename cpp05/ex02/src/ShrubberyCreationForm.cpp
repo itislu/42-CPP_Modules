@@ -3,6 +3,7 @@
 #include "Bureaucrat.hpp"
 #include <fstream>
 #include <ios>
+#include <iostream>
 #include <string>
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
@@ -60,4 +61,6 @@ void ShrubberyCreationForm::execute(Bureaucrat const& executor) const
    .-' '        '-._______.-'     '  .\n\
         .      -'\n\
     .       .        .    ' '-.\n";
+
+	std::cout << target() << " got some shrubbery" << '\n';
 }
