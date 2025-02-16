@@ -2,25 +2,19 @@
 
 #pragma once
 
-#include <exception>
+#include "utils/Exception.hpp"
 #include <string>
 
 namespace GradeException {
 
-class AGradeException : public std::exception {
+class AGradeException : public utils::Exception {
 public:
 	virtual ~AGradeException() throw() = 0;
 
-	const char* what() const throw();
-	AGradeException& set_where(const std::string& where);
-	AGradeException& set_who(const std::string& who);
 	bool is_too_high() const;
 	bool is_too_low() const;
 
 	long delta() const;
-	const std::string& msg() const;
-	const std::string& where() const;
-	const std::string& who() const;
 
 protected:
 	AGradeException(long delta,
@@ -29,13 +23,7 @@ protected:
 	                const std::string& who = "");
 
 private:
-	void _update_full_msg();
-
 	long _delta;
-	std::string _msg;
-	std::string _where;
-	std::string _who;
-	std::string _full_msg;
 };
 
 } // namespace GradeException
