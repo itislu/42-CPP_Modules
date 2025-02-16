@@ -20,7 +20,7 @@ COLOR_MAKE		?=	STY_GRE
 #	Directories
 
 SRC_DIR			:=	src
-INC_DIR			:=	.
+INC_DIRS		:=	inc $(SRC_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
@@ -44,7 +44,7 @@ CXXFLAGS_OPT	:=	-O3
 # 2. Add a `doc` or `docs` target which checks if the compiler is clang++ and otherwise prints an error.
 CXXFLAGS_DOC	:=	-Wdocumentation	# Only supported by clang++
 CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG)
-CPPFLAGS		+=	$(addprefix -I,$(INC_DIR))
+CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 MAKEFLAGS		+=	-j -s
 
