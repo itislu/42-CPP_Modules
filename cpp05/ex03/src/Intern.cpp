@@ -36,13 +36,15 @@ Intern::UnknownFormException::UnknownFormException(const std::string& form,
 
 void Intern::print_known_forms()
 {
+	std::cout << "The Intern can accept the following forms: " << "\n\n";
 	for (unsigned int i = 0; i < ARRAY_SIZE(_known_forms); ++i) {
 		std::string::size_type start = 0;
 
 		for (std::string::size_type end = _known_forms[i].find('\0', start);
 		     end != std::string::npos;
 		     end = _known_forms[i].find('\0', start)) {
-			std::cout << _known_forms[i].substr(start, end - start) << '\n';
+			std::cout << "  - " << _known_forms[i].substr(start, end - start)
+			          << '\n';
 			start = end + 1;
 		}
 		std::cout << '\n';
