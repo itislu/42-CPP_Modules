@@ -24,6 +24,8 @@ int main()
 	delete form;
 	form = someRandomIntern.makeForm("Presidential Pardon Form", "Bender");
 	delete form;
+	form = someRandomIntern.makeForm("form", "Bender");
+	delete form;
 	form = someRandomIntern.makeForm("", "Bender");
 	delete form;
 }

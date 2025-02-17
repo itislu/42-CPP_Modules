@@ -105,7 +105,11 @@ Intern::Form Intern::_which_form(const std::string& input) const
 		return Unknown;
 	}
 	for (unsigned int type = PresidentialPardonForm; type != Unknown; ++type) {
-		if (_known_forms[type].find(input + '\0') != std::string::npos) {
+		const std::string::size_type pos =
+		    _known_forms[type].find(input + '\0');
+		if (pos == 0
+		    || (pos != std::string::npos
+		        && _known_forms[type][pos - 1] == '\0')) {
 			return static_cast<Form>(type);
 		}
 	}
