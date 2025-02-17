@@ -7,8 +7,8 @@
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
 #include "utils/Exception.hpp"
+#include "utils/common.hpp"
 #include "utils/log.hpp"
-#include "utils/utils.hpp"
 #include <cctype>
 #include <iostream>
 #include <string>
