@@ -7,18 +7,28 @@ class Intern {
 public:
 	static const std::string forms[];
 
-	static AForm* makeForm(const std::string& form, const std::string& target);
 	static void print_known_forms();
 
 	Intern();
 	~Intern();
 
+	AForm* makeForm(const std::string& form, const std::string& target) const;
+
 private:
-	static std::string _known_forms;
+	enum Form {
+		PresidentialPardonForm,
+		RobotomyRequestForm,
+		ShrubberyCreationForm,
+		Unknown
+	};
+
+	static std::string _known_forms[];
+	static bool _is_init;
+
+	static void _init_known_forms();
 
 	Intern(const Intern& other);
 	Intern& operator=(const Intern& other);
 
-	static bool _is_known_form(const std::string& input);
-	static void _init_known_forms();
+	Form _which_form(const std::string& input) const;
 };

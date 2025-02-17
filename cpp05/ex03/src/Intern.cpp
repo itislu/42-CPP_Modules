@@ -1,7 +1,11 @@
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+// NOLINTBEGIN(readability-convert-member-functions-to-static)
 
 #include "Intern.hpp"
 #include "AForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 #include "utils/log.hpp"
 #include "utils/utils.hpp"
 #include <cctype>
@@ -20,45 +24,57 @@ static std::string::size_type next_word(const std::string& words,
 const std::string Intern::forms[] = {"PresidentialPardonForm",
                                      "RobotomyRequestForm",
                                      "ShrubberyCreationForm"};
-std::string Intern::_known_forms;
-
-AForm* Intern::makeForm(const std::string& form, const std::string& target)
-{
-	if (!_is_known_form(form)) {
-		std::cout << utils::log::error("A form named '" + form
-		                               + "' does not exist.")
-		          << '\n';
-		return NULL;
-	}
-	std::cout << utils::log::ok("Found form '" + form + "'!") << '\n';
-	(void)target;
-	return NULL;
-}
+std::string Intern::_known_forms[ARRAY_SIZE(forms)];
+bool Intern::_is_init = false;
 
 void Intern::print_known_forms()
 {
-	std::string::size_type start = 0;
-	std::string::size_type end = 0;
+	for (unsigned int i = 0; i < ARRAY_SIZE(_known_forms); ++i) {
+		std::string::size_type start = 0;
 
-	while (end < _known_forms.length()) {
-		end = _known_forms.find('\0', start);
-		std::cout << _known_forms.substr(start, end - start) << '\n';
-		start = end + 1;
+		for (std::string::size_type end = _known_forms[i].find('\0', start);
+		     end != std::string::npos;
+		     end = _known_forms[i].find('\0', start)) {
+			std::cout << _known_forms[i].substr(start, end - start) << '\n';
+			start = end + 1;
+		}
+		std::cout << '\n';
 	}
 }
 
 Intern::Intern()
 {
-	if (_known_forms.empty()) {
+	if (!_is_init) {
 		_init_known_forms();
 	}
 }
 
 Intern::~Intern() {}
 
-bool Intern::_is_known_form(const std::string& input)
+AForm* Intern::makeForm(const std::string& form,
+                        const std::string& target) const
 {
-	return _known_forms.find(input + '\0') != std::string::npos;
+	AForm* new_form = NULL;
+
+	std::cout << utils::log::info("Intern creates " + form) << '\n';
+
+	switch (_which_form(form)) {
+	case PresidentialPardonForm:
+		new_form = new class PresidentialPardonForm(target);
+		break;
+	case RobotomyRequestForm:
+		new_form = new class RobotomyRequestForm(target);
+		break;
+	case ShrubberyCreationForm:
+		new_form = new class ShrubberyCreationForm(target);
+		break;
+	case Unknown:
+		std::cout << utils::log::error("A form named '" + form
+		                               + "' does not exist.")
+		          << '\n';
+		return NULL;
+	}
+	return new_form;
 }
 
 /**
@@ -67,16 +83,30 @@ bool Intern::_is_known_form(const std::string& input)
  */
 void Intern::_init_known_forms()
 {
+	if (_is_init) {
+		return;
+	}
 	for (unsigned int i = 0; i < ARRAY_SIZE(forms); ++i) {
 		const std::string words(split_words(forms[i]));
 
-		_known_forms.append(
+		_known_forms[i].append(
 		    concat_words(change_capitalization(words, toupper)));
-		_known_forms.append(
+		_known_forms[i].append(
 		    concat_words(change_capitalization(words, tolower)));
-		_known_forms.append(
+		_known_forms[i].append(
 		    concat_words(change_capitalization(words, toupper, true)));
 	}
+	_is_init = true;
+}
+
+Intern::Form Intern::_which_form(const std::string& input) const
+{
+	for (unsigned int type = PresidentialPardonForm; type != Unknown; ++type) {
+		if (_known_forms[type].find(input + '\0') != std::string::npos) {
+			return static_cast<Form>(type);
+		}
+	}
+	return Unknown;
 }
 
 /**
@@ -159,4 +189,5 @@ static std::string::size_type next_word(const std::string& words,
 	return word + 1;
 }
 
+// NOLINTEND(readability-convert-member-functions-to-static)
 // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)

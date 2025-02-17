@@ -7,7 +7,7 @@
 
 int main()
 {
-	Intern someRandomIntern;
+	const Intern someRandomIntern;
 	AForm* rrf;
 	rrf = someRandomIntern.makeForm("robotomy request", "Bender");
 	rrf = someRandomIntern.makeForm("RobotomyRequestForm", "Bender");
