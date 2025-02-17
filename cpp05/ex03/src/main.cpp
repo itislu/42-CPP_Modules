@@ -3,17 +3,21 @@
 #include "AForm.hpp"
 #include "Intern.hpp"
 #include "utils/log.hpp"
+#include <cstddef>
 #include <string>
 
 int main()
 {
 	const Intern someRandomIntern;
-	AForm* rrf;
-	rrf = someRandomIntern.makeForm("robotomy request", "Bender");
-	rrf = someRandomIntern.makeForm("RobotomyRequestForm", "Bender");
-	(void)rrf;
-
 	Intern::print_known_forms();
+
+	AForm* r = NULL;
+	r = someRandomIntern.makeForm("robotomy request", "Bender");
+	delete r;
+	r = someRandomIntern.makeForm("RobotomyRequestForm", "Bender");
+	delete r;
+	r = someRandomIntern.makeForm("", "Bender");
+	delete r;
 }
 
 // NOLINTEND(readability-magic-numbers)

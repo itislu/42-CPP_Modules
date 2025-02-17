@@ -101,6 +101,9 @@ void Intern::_init_known_forms()
 
 Intern::Form Intern::_which_form(const std::string& input) const
 {
+	if (input.empty()) {
+		return Unknown;
+	}
 	for (unsigned int type = PresidentialPardonForm; type != Unknown; ++type) {
 		if (_known_forms[type].find(input + '\0') != std::string::npos) {
 			return static_cast<Form>(type);
