@@ -1,0 +1,117 @@
+#include "Bureaucrat.hpp"
+#include "AForm.hpp"
+#include "Grade.hpp"
+#include "GradeException/AGradeException.hpp"
+#include "GradeException/GradeTooHighException.hpp"
+#include "GradeException/GradeTooLowException.hpp"
+#include "utils/log.hpp"
+#include "utils/utils.hpp"
+#include <exception>
+#include <iostream>
+#include <string>
+
+Bureaucrat::GradeTooHighException::GradeTooHighException(
+    const GradeException::AGradeException& e)
+    : GradeException::GradeTooHighException(e)
+{}
+
+Bureaucrat::GradeTooLowException::GradeTooLowException(
+    const GradeException::AGradeException& e)
+    : GradeException::GradeTooLowException(e)
+{}
+
+Bureaucrat::Bureaucrat(const std::string& name, unsigned int grade)
+try
+    : _name(name),
+      _grade(grade) //
+{
+	std::cerr << utils::log::ok(*this) << " constructed" << '\n';
+}
+catch (GradeException::AGradeException& e) {
+	e.set_where(WHERE).set_who(name);
+	if (e.is_too_high()) {
+		throw Bureaucrat::GradeTooHighException(e);
+	}
+	if (e.is_too_low()) {
+		throw Bureaucrat::GradeTooLowException(e);
+	}
+	throw;
+}
+
+Bureaucrat::Bureaucrat(const Bureaucrat& other)
+    : _name(other._name),
+      _grade(other._grade)
+{}
+
+Bureaucrat::~Bureaucrat() {}
+
+Bureaucrat& Bureaucrat::operator=(Bureaucrat other)
+{
+	swap(other);
+	return *this;
+}
+
+void Bureaucrat::swap(Bureaucrat& other) { utils::swap(_grade, other._grade); }
+
+void Bureaucrat::signForm(AForm& form) const
+{
+	try {
+		form.beSigned(*this);
+		std::cerr << utils::log::ok(_name + " signed " + form.name()) << '\n';
+	}
+	catch (const GradeException::AGradeException& e) {
+		std::cerr << utils::log::error(_name + " cannot sign form "
+		                               + form.name())
+		          << utils::log::line(e.what()) << '\n';
+	}
+}
+
+void Bureaucrat::executeForm(AForm const& form) const
+{
+	try {
+		form.execute(*this);
+		std::cerr << utils::log::ok(_name + " executed " + form.name()) << '\n';
+	}
+	catch (const std::exception& e) {
+		std::cerr << utils::log::error(_name + " cannot execute form "
+		                               + form.name())
+		          << utils::log::line(e.what()) << '\n';
+	}
+}
+
+void Bureaucrat::promote()
+{
+	std::cerr << utils::log::info("Promoting ") << *this << '\n';
+	try {
+		++_grade;
+	}
+	catch (GradeException::GradeTooHighException& e) {
+		e.set_where(WHERE).set_who(_name);
+		throw Bureaucrat::GradeTooHighException(e);
+	}
+	std::cerr << utils::log::ok(*this) << " promoted" << '\n';
+}
+
+void Bureaucrat::demote()
+{
+	std::cerr << utils::log::info("Demoting ") << *this << '\n';
+	try {
+		--_grade;
+	}
+	catch (GradeException::GradeTooLowException& e) {
+		e.set_where(WHERE).set_who(_name);
+		throw Bureaucrat::GradeTooLowException(e);
+	}
+	std::cerr << utils::log::ok(*this) << " demoted" << '\n';
+}
+
+const std::string& Bureaucrat::getName() const { return _name; }
+
+const Grade& Bureaucrat::getGrade() const { return _grade; }
+
+std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat)
+{
+	os << bureaucrat.getName() << ", bureaucrat grade "
+	   << bureaucrat.getGrade();
+	return os;
+}
