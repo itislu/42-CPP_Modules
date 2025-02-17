@@ -1,10 +1,17 @@
 #pragma once
 
 #include "AForm.hpp"
+#include "utils/Exception.hpp"
 #include <string>
 
 class Intern {
 public:
+	class UnknownFormException : public utils::Exception {
+	public:
+		UnknownFormException(const std::string& form,
+		                     const std::string& where = "");
+	};
+
 	static const std::string forms[];
 
 	static void print_known_forms();

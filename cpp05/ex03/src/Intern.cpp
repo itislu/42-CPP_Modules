@@ -6,6 +6,7 @@
 #include "PresidentialPardonForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
+#include "utils/Exception.hpp"
 #include "utils/log.hpp"
 #include "utils/utils.hpp"
 #include <cctype>
@@ -26,6 +27,13 @@ const std::string Intern::forms[] = {"PresidentialPardonForm",
                                      "ShrubberyCreationForm"};
 std::string Intern::_known_forms[ARRAY_SIZE(forms)];
 bool Intern::_is_init = false;
+
+Intern::UnknownFormException::UnknownFormException(const std::string& form,
+                                                   const std::string& where)
+    : utils::Exception("A form named '" + form + "' does not exist",
+                       where,
+                       "Intern")
+{}
 
 void Intern::print_known_forms()
 {
@@ -54,27 +62,21 @@ Intern::~Intern() {}
 AForm* Intern::makeForm(const std::string& form,
                         const std::string& target) const
 {
-	AForm* new_form = NULL;
-
 	std::cout << utils::log::info("Intern creates " + form) << '\n';
 
 	switch (_which_form(form)) {
 	case PresidentialPardonForm:
-		new_form = new class PresidentialPardonForm(target);
+		return new class PresidentialPardonForm(target);
 		break;
 	case RobotomyRequestForm:
-		new_form = new class RobotomyRequestForm(target);
+		return new class RobotomyRequestForm(target);
 		break;
 	case ShrubberyCreationForm:
-		new_form = new class ShrubberyCreationForm(target);
+		return new class ShrubberyCreationForm(target);
 		break;
 	case Unknown:
-		std::cout << utils::log::error("A form named '" + form
-		                               + "' does not exist.")
-		          << '\n';
-		return NULL;
+		throw UnknownFormException(form, WHERE);
 	}
-	return new_form;
 }
 
 /**
