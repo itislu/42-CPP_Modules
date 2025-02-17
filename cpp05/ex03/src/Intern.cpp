@@ -93,8 +93,8 @@ void Intern::_init_known_forms()
 		    concat_words(change_capitalization(words, toupper)));
 		_known_forms[i].append(
 		    concat_words(change_capitalization(words, tolower)));
-		_known_forms[i].append(
-		    concat_words(change_capitalization(words, toupper, true)));
+		_known_forms[i].append(concat_words(change_capitalization(
+		    change_capitalization(words, tolower), toupper, true)));
 	}
 	_is_init = true;
 }

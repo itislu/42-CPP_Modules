@@ -11,13 +11,21 @@ int main()
 	const Intern someRandomIntern;
 	Intern::print_known_forms();
 
-	AForm* r = NULL;
-	r = someRandomIntern.makeForm("robotomy request", "Bender");
-	delete r;
-	r = someRandomIntern.makeForm("RobotomyRequestForm", "Bender");
-	delete r;
-	r = someRandomIntern.makeForm("", "Bender");
-	delete r;
+	AForm* form = NULL;
+	form = someRandomIntern.makeForm("robotomy request", "Bender");
+	delete form;
+	form = someRandomIntern.makeForm("RobotomyRequestForm", "Bender");
+	delete form;
+	form = someRandomIntern.makeForm("shrubbery creation form", "Bender");
+	delete form;
+	form = someRandomIntern.makeForm("shrubbery creation", "Bender");
+	delete form;
+	form = someRandomIntern.makeForm("Shrubbery creation form", "Bender");
+	delete form;
+	form = someRandomIntern.makeForm("Presidential Pardon Form", "Bender");
+	delete form;
+	form = someRandomIntern.makeForm("", "Bender");
+	delete form;
 }
 
 // NOLINTEND(readability-magic-numbers)
