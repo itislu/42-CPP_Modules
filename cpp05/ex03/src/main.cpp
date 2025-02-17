@@ -12,6 +12,8 @@ int main()
 {
 	int test = 0;
 	const Intern someRandomIntern;
+
+	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
 	Intern::print_known_forms();
 
 	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
@@ -34,6 +36,13 @@ int main()
 	}
 
 	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
+	try {
+		AForm* form = someRandomIntern.makeForm("42 privacy policy", "Elidjah");
+		delete form;
+	}
+	catch (const std::exception& e) {
+		std::cerr << utils::log::error(e.what()) << '\n';
+	}
 	try {
 		AForm* form = someRandomIntern.makeForm("form", "Bender");
 		delete form;
@@ -58,7 +67,18 @@ int main()
 	}
 
 	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
-	const Bureaucrat bender("Bender", 42);
+	try {
+		const Bureaucrat marta("Marta", 42);
+		AForm* form = someRandomIntern.makeForm("robotomy-request", "Felix");
+		marta.signForm(*form);
+		marta.executeForm(*form);
+		delete form;
+	}
+	catch (const std::exception& e) {
+		std::cerr << utils::log::error(e.what()) << '\n';
+	}
+
+	std::cout << '\n';
 }
 
 // NOLINTEND(readability-magic-numbers)
