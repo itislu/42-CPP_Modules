@@ -10,7 +10,6 @@
 #include "utils/log.hpp"
 #include "utils/utils.hpp"
 #include <cctype>
-#include <cstddef>
 #include <iostream>
 #include <string>
 
@@ -62,7 +61,7 @@ Intern::~Intern() {}
 AForm* Intern::makeForm(const std::string& form,
                         const std::string& target) const
 {
-	std::cout << utils::log::info("Intern creates " + form) << '\n';
+	std::cout << "Intern creates " << form << '\n';
 
 	switch (_which_form(form)) {
 	case PresidentialPardonForm:
