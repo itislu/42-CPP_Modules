@@ -68,13 +68,13 @@ TERMINAL		?=	$(if $(shell command -v gnome-terminal), gnome-terminal, \
 					$(if $(shell command -v xterm), xterm, \
 					)))
 
-TERMINALTITLE	:=	$(if $(filter val, $(MAKECMDGOALS)), valgrind $(NAME), \
-					$(if $(filter valfd, $(MAKECMDGOALS)), valgrind-fd $(NAME), \
+TERMINALTITLE	:=	$(if $(filter val,$(MAKECMDGOALS)), valgrind $(NAME), \
+					$(if $(filter valfd,$(MAKECMDGOALS)), valgrind-fd $(NAME), \
 					$(NAME)))
 
-TERMINALFLAGS	?=	$(if $(filter gnome-terminal, $(TERMINAL)), --title="$(TERMINALTITLE)" --, \
-					$(if $(filter terminator, $(TERMINAL)), --title="$(TERMINALTITLE)" -x, \
-					$(if $(filter xterm, $(TERMINAL)), -title "$(TERMINALTITLE)" -e, \
+TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)), --title="$(TERMINALTITLE)" --, \
+					$(if $(filter terminator,$(TERMINAL)), --title="$(TERMINALTITLE)" -x, \
+					$(if $(filter xterm,$(TERMINAL)), -title "$(TERMINALTITLE)" -e, \
 					)))
 
 
