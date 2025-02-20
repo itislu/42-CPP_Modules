@@ -1,7 +1,15 @@
 # Table of Contents
 
+- [**💡 Mini Articles**](#-mini-articles)
 - [**📚 Resources**](#-resources)
 - [**⚙️ Automatic Commit Labels**](#%EF%B8%8F-automatic-commit-labels)
+
+---
+
+# 💡 Mini Articles
+
+- ### [Copy-and-Swap Idiom](cpp04#copy-and-swap-idiom)
+- ### [Ever wondered why there is `delete` AND `delete[]`?](cpp04#ever-wondered-why-there-is-delete-and-delete)
 
 ---
 
