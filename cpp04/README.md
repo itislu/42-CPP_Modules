@@ -149,9 +149,9 @@ int main(int argc, char* argv[])
     // delete array;
 
     /* Segmentation fault (no object with destructor at that address) */
-    // delete (array - 1);
+    // delete (reinterpret_cast<size_t*>(array) - 1);
 
     /* No segmentation fault (pure free, no destructor call) */
-    // operator delete(array - 1);
+    // operator delete(reinterpret_cast<size_t*>(array) - 1);
 }
 ```
