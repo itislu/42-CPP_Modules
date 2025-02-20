@@ -40,8 +40,8 @@ CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic
 CXXFLAGS_DBG	:=	-ggdb3
 CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
-CXXFLAGS_DOC	:=	-Wdocumentation	# Only supported by clang
-CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG), $(CXXFLAGS_DOC))
+CXXFLAGS_CLANG	:=	-Wdocumentation	# Only supported by clang
+CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG), $(CXXFLAGS_CLANG))
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 MAKEFLAGS		+=	-j -s
