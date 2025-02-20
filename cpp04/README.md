@@ -11,16 +11,21 @@
 
 ### Copy-and-Swap Idiom
 
-The main benefit of the copy-and-swap idiom is that it provides strong exception guarantee.
-In the copy assignment operator, this means that all operations which could throw an exception (the copying) are made before the object being assigned to gets changed.
+The copy-and-swap idiom elegantly assists the copy assignment operator in achieving two things: avoiding code duplication, and providing a strong exception guarantee.
 
-It also helps to reuse code because assignment essentially boils down to deletion of the original value and copying over the new value.
-This idiom allows us to reuse the copy constructor and the destructor because of that fact.
+```c++
+Class operator=(Class other);
+```
 
-It works by:
-1. Taking the argument by value (which creates a copy using the copy constructor).
-2. Swapping the contents of *this with the parameter (which mustn't throw).
-3. Letting the destructor clean up the old data when the parameter goes out of scope.
+  1. Take the argument by value (which creates a copy using the copy constructor).
+  2. Swap the contents of `*this` with the parameter (which mustn't throw).
+  3. Let the destructor clean up the old data when the parameter goes out of scope.
+
+The main benefit of the copy-and-swap idiom is that it provides strong exception guarantee.<br>
+In the copy assignment operator, this means that all operations, which could throw an exception (the copying), are made before the object being assigned to gets changed.
+
+It also helps to reuse code between the copy constructor and copy assignment operator.<br>
+Since assignment essentially boils down to deletion of the original value and copying over the new value, this idiom allows us to reuse the copy constructor and the destructor.
 
 - [What is the copy-and-swap idiom?](https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom)
 
