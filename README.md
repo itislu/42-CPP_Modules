@@ -1,7 +1,7 @@
 # Table of Contents
 
 - [**📚 Resources**](#-resources)
-- [**⚙️ Automatic labels of your commits for CPP modules monorepo**](#%EF%B8%8F-automatic-labels-of-your-commits-for-cpp-modules-monorepo)
+- [**⚙️ Automatic Commit Labels**](#%EF%B8%8F-automatic-commit-labels)
 
 ---
 
@@ -25,7 +25,7 @@
 
 ---
 
-# ⚙️ Automatic labels of your commits for CPP modules monorepo
+# ⚙️ Automatic Commit Labels
 
 This alias automatically puts the numbers of the current CPP module and the current exercise at the very front as the scope of the commit. The numbers are extracted from the current directory.
 
