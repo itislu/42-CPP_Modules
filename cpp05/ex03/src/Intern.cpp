@@ -35,15 +35,13 @@ void Intern::print_known_forms()
 {
 	std::cout << "The Intern can accept the following forms:" << "\n\n";
 
-	for (unsigned int type = 0; type != Unknown; ++type) {
+	for (FormType type = Unknown; _iter_form_types(type);) {
 		std::string::size_type start = 1;
 
-		for (std::string::size_type end =
-		         _known_forms(Form(type)).find('\0', start);
+		for (std::string::size_type end = _known_forms(type).find('\0', start);
 		     end != std::string::npos;
-		     end = _known_forms(Form(type)).find('\0', start)) {
-			std::cout << "  - "
-			          << _known_forms(Form(type)).substr(start, end - start)
+		     end = _known_forms(type).find('\0', start)) {
+			std::cout << "  - " << _known_forms(type).substr(start, end - start)
 			          << '\n';
 			start = end + 1;
 		}
@@ -83,6 +81,12 @@ AForm* Intern::makeForm(const std::string& form,
 	return new_form;
 }
 
+bool Intern::_iter_form_types(FormType& it)
+{
+	it = FormType((it + 1) % (Unknown + 1));
+	return it != Unknown;
+}
+
 /**
  * Split form names into words by uppercase letters, then generate
  * permutations of form names and save in _known_forms with '\0' as seperator.
@@ -92,37 +96,36 @@ void Intern::_init_known_forms()
 	if (_is_init) {
 		return;
 	}
-	for (unsigned int type = 0; type != Unknown; ++type) {
+	for (FormType type = Unknown; _iter_form_types(type);) {
 		const std::string words(split_words(forms[type]));
 
-		_known_forms(Form(type)) = '\0';
-		_known_forms(Form(type))
-		    .append(concat_words(change_capitalization(words, toupper)));
-		_known_forms(Form(type))
-		    .append(concat_words(change_capitalization(words, tolower)));
-		_known_forms(Form(type))
-		    .append(concat_words(change_capitalization(
-		        change_capitalization(words, tolower), toupper, true)));
+		_known_forms(type) = '\0';
+		_known_forms(type).append(
+		    concat_words(change_capitalization(words, toupper)));
+		_known_forms(type).append(
+		    concat_words(change_capitalization(words, tolower)));
+		_known_forms(type).append(concat_words(change_capitalization(
+		    change_capitalization(words, tolower), toupper, true)));
 	}
 	_is_init = true;
 }
 
-std::string& Intern::_known_forms(Form form)
+std::string& Intern::_known_forms(FormType form)
 {
 	static std::string _known_forms[ARRAY_SIZE(forms)];
 	return _known_forms[form];
 }
 
-Intern::Form Intern::_which_form(const std::string& input) const
+Intern::FormType Intern::_which_form(const std::string& input) const
 {
 	if (input.empty()) {
 		return Unknown;
 	}
-	for (unsigned int type = 0; type != Unknown; ++type) {
+	for (FormType type = Unknown; _iter_form_types(type);) {
 		const std::string::size_type pos =
-		    _known_forms(Form(type)).find('\0' + input + '\0');
+		    _known_forms(type).find('\0' + input + '\0');
 		if (pos != std::string::npos) {
-			return static_cast<Form>(type);
+			return type;
 		}
 	}
 	return Unknown;
@@ -165,8 +168,8 @@ change_capitalization(std::string words, int (*to)(int), bool first_only)
  * - For only first word uppercase:
  *     - For all allowed seperators:
  *         - Concatenate all words.
- *         - Concatenate all but "Form" word.
- *             - Append "Form" word with space.
+ *         - Concatenate all but "form" word.
+ *             - Append "form" word with space.
  */
 static std::string concat_words(const std::string& words)
 {

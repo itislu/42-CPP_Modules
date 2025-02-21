@@ -21,20 +21,21 @@ public:
 	AForm* makeForm(const std::string& form, const std::string& target) const;
 
 private:
-	enum Form {
+	enum FormType {
 		PresidentialPardonForm,
 		RobotomyRequestForm,
 		ShrubberyCreationForm,
 		Unknown
 	};
 
+	static bool _iter_form_types(FormType& it);
 	static void _init_known_forms();
-	static std::string& _known_forms(Form form);
+	static std::string& _known_forms(FormType form);
 
 	static bool _is_init;
 
 	Intern(const Intern& other);
 	Intern& operator=(Intern other);
 
-	Form _which_form(const std::string& input) const;
+	FormType _which_form(const std::string& input) const;
 };
