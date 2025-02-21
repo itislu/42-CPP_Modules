@@ -36,7 +36,7 @@ void Intern::print_known_forms()
 {
 	std::cout << "The Intern can accept the following forms: " << "\n\n";
 	for (unsigned int i = 0; i < ARRAY_SIZE(_known_forms); ++i) {
-		std::string::size_type start = 0;
+		std::string::size_type start = 1;
 
 		for (std::string::size_type end = _known_forms[i].find('\0', start);
 		     end != std::string::npos;
@@ -93,6 +93,7 @@ void Intern::_init_known_forms()
 	for (unsigned int i = 0; i < ARRAY_SIZE(forms); ++i) {
 		const std::string words(split_words(forms[i]));
 
+		_known_forms[i] = '\0';
 		_known_forms[i].append(
 		    concat_words(change_capitalization(words, toupper)));
 		_known_forms[i].append(
@@ -108,12 +109,10 @@ Intern::Form Intern::_which_form(const std::string& input) const
 	if (input.empty()) {
 		return Unknown;
 	}
-	for (unsigned int type = PresidentialPardonForm; type != Unknown; ++type) {
+	for (unsigned int type = 0; type != Unknown; ++type) {
 		const std::string::size_type pos =
-		    _known_forms[type].find(input + '\0');
-		if (pos == 0
-		    || (pos != std::string::npos
-		        && _known_forms[type][pos - 1] == '\0')) {
+		    _known_forms[type].find('\0' + input + '\0');
+		if (pos != std::string::npos) {
 			return static_cast<Form>(type);
 		}
 	}
