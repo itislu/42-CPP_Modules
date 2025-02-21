@@ -12,6 +12,11 @@ AGradeException::AGradeException(long delta,
       _delta(delta)
 {}
 
+AGradeException::AGradeException(const AGradeException& other)
+    : utils::Exception(other),
+      _delta(other._delta)
+{}
+
 AGradeException::~AGradeException() throw() {}
 
 bool AGradeException::is_too_high() const { return _delta < 0; }

@@ -16,9 +16,9 @@ PresidentialPardonForm::PresidentialPardonForm(
 PresidentialPardonForm::~PresidentialPardonForm() {}
 
 PresidentialPardonForm&
-PresidentialPardonForm::operator=(const PresidentialPardonForm& other)
+PresidentialPardonForm::operator=(PresidentialPardonForm other) throw()
 {
-	AForm::operator=(other);
+	swap(other);
 	return *this;
 }
 

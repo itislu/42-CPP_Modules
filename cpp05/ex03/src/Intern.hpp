@@ -34,7 +34,7 @@ private:
 	static void _init_known_forms();
 
 	Intern(const Intern& other);
-	Intern& operator=(const Intern& other);
+	Intern& operator=(Intern other);
 
 	Form _which_form(const std::string& input) const;
 };

@@ -12,7 +12,7 @@ public:
 	RobotomyRequestForm(const RobotomyRequestForm& other);
 	~RobotomyRequestForm();
 
-	RobotomyRequestForm& operator=(const RobotomyRequestForm& other);
+	RobotomyRequestForm& operator=(RobotomyRequestForm other) throw();
 
 	void execute(Bureaucrat const& executor) const;
 

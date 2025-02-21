@@ -31,14 +31,7 @@ public:
 		                       const std::string& who = "");
 	};
 
-	AForm(const std::string& name,
-	      unsigned int grade_to_sign,
-	      unsigned int grade_to_exec,
-	      const std::string& target);
-	AForm(const AForm& other);
 	virtual ~AForm();
-
-	AForm& operator=(const AForm& other);
 
 	void beSigned(const Bureaucrat& bureaucrat);
 	virtual void execute(Bureaucrat const& executor) const = 0;
@@ -50,6 +43,15 @@ public:
 	const std::string& target() const;
 	bool is_signed() const;
 	size_t executions() const;
+
+protected:
+	AForm(const std::string& name,
+	      unsigned int grade_to_sign,
+	      unsigned int grade_to_exec,
+	      const std::string& target);
+	AForm(const AForm& other);
+
+	AForm& operator=(const AForm& other);
 
 private:
 	AForm();

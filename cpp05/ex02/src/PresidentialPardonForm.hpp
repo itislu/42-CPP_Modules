@@ -12,7 +12,7 @@ public:
 	PresidentialPardonForm(const PresidentialPardonForm& other);
 	~PresidentialPardonForm();
 
-	PresidentialPardonForm& operator=(const PresidentialPardonForm& other);
+	PresidentialPardonForm& operator=(PresidentialPardonForm other) throw();
 
 	void execute(Bureaucrat const& executor) const;
 

@@ -18,7 +18,7 @@ GradeTooHighException::GradeTooHighException(unsigned int grade,
 {}
 
 GradeTooHighException::GradeTooHighException(const AGradeException& other)
-    : AGradeException(other.delta(), other.msg(), other.where(), other.who())
+    : AGradeException(other)
 {}
 
 } // namespace GradeException

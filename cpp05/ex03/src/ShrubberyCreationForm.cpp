@@ -17,9 +17,9 @@ ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other)
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
 ShrubberyCreationForm&
-ShrubberyCreationForm::operator=(const ShrubberyCreationForm& other)
+ShrubberyCreationForm::operator=(ShrubberyCreationForm other) throw()
 {
-	AForm::operator=(other);
+	swap(other);
 	return *this;
 }
 

@@ -1,5 +1,3 @@
-// NOLINTBEGIN(cppcoreguidelines-special-member-functions)
-
 #pragma once
 
 #include "utils/Exception.hpp"
@@ -21,11 +19,12 @@ protected:
 	                const std::string& msg,
 	                const std::string& where = "",
 	                const std::string& who = "");
+	AGradeException(const AGradeException& other);
 
 private:
+	AGradeException& operator=(const AGradeException& other);
+
 	long _delta;
 };
 
 } // namespace GradeException
-
-// NOLINTEND(cppcoreguidelines-special-member-functions)

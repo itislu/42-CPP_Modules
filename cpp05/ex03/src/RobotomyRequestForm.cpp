@@ -23,9 +23,9 @@ RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other)
 RobotomyRequestForm::~RobotomyRequestForm() {}
 
 RobotomyRequestForm&
-RobotomyRequestForm::operator=(const RobotomyRequestForm& other)
+RobotomyRequestForm::operator=(RobotomyRequestForm other) throw()
 {
-	AForm::operator=(other);
+	swap(other);
 	utils::swap(_score, other._score);
 	return *this;
 }
