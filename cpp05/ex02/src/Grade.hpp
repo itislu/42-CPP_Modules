@@ -11,8 +11,8 @@ public:
 	Grade(const Grade& other);
 	~Grade();
 
-	Grade& operator=(Grade other);
-	void swap(Grade& other);
+	Grade& operator=(Grade other) throw();
+	void swap(Grade& other) throw();
 
 	Grade& operator++();
 	Grade& operator--();

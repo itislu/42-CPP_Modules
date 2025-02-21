@@ -21,13 +21,13 @@ Grade::Grade(const Grade& other)
 
 Grade::~Grade() {}
 
-Grade& Grade::operator=(Grade other)
+Grade& Grade::operator=(Grade other) throw()
 {
 	swap(other);
 	return *this;
 }
 
-void Grade::swap(Grade& other) { utils::swap(_raw, other._raw); }
+void Grade::swap(Grade& other) throw() { utils::swap(_raw, other._raw); }
 
 Grade& Grade::operator++()
 {

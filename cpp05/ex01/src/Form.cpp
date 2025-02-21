@@ -50,13 +50,16 @@ Form::Form(const Form& other)
 
 Form::~Form() {}
 
-Form& Form::operator=(Form other)
+Form& Form::operator=(Form other) throw()
 {
-	Form::swap(other);
+	swap(other);
 	return *this;
 }
 
-void Form::swap(Form& other) { utils::swap(_is_signed, other._is_signed); }
+void Form::swap(Form& other) throw()
+{
+	utils::swap(_is_signed, other._is_signed);
+}
 
 void Form::beSigned(const Bureaucrat& bureaucrat)
 {

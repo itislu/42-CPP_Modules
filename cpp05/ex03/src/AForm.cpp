@@ -98,9 +98,9 @@ void AForm::execute(Bureaucrat const& executor) const
 	++_executions;
 }
 
-void AForm::swap(AForm& other)
+void AForm::swap(AForm& other) throw()
 {
-	utils::swap(_target, other._target);
+	_target.swap(other._target);
 	utils::swap(_is_signed, other._is_signed);
 	utils::swap(_executions, other._executions);
 }

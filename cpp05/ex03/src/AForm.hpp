@@ -42,7 +42,7 @@ public:
 
 	void beSigned(const Bureaucrat& bureaucrat);
 	virtual void execute(Bureaucrat const& executor) const = 0;
-	void swap(AForm& other);
+	void swap(AForm& other) throw();
 
 	const std::string& name() const;
 	const Grade& grade_to_sign() const;

@@ -43,13 +43,13 @@ Bureaucrat::Bureaucrat(const Bureaucrat& other)
 
 Bureaucrat::~Bureaucrat() {}
 
-Bureaucrat& Bureaucrat::operator=(Bureaucrat other)
+Bureaucrat& Bureaucrat::operator=(Bureaucrat other) throw()
 {
 	swap(other);
 	return *this;
 }
 
-void Bureaucrat::swap(Bureaucrat& other) { utils::swap(_grade, other._grade); }
+void Bureaucrat::swap(Bureaucrat& other) throw() { _grade.swap(other._grade); }
 
 void Bureaucrat::promote()
 {

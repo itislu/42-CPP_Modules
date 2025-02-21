@@ -29,8 +29,8 @@ public:
 	Form(const Form& other);
 	~Form();
 
-	Form& operator=(Form other);
-	void swap(Form& other);
+	Form& operator=(Form other) throw();
+	void swap(Form& other) throw();
 
 	void beSigned(const Bureaucrat& bureaucrat);
 

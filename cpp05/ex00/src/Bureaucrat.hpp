@@ -25,8 +25,8 @@ public:
 	Bureaucrat(const Bureaucrat& other);
 	~Bureaucrat();
 
-	Bureaucrat& operator=(Bureaucrat other);
-	void swap(Bureaucrat& other);
+	Bureaucrat& operator=(Bureaucrat other) throw();
+	void swap(Bureaucrat& other) throw();
 
 	void promote();
 	void demote();
