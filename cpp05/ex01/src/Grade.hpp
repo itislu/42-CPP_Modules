@@ -7,7 +7,7 @@ public:
 	static const unsigned int highest_grade = 1;
 	static const unsigned int lowest_grade = 150;
 
-	Grade(unsigned int grade);
+	explicit Grade(unsigned int grade);
 	Grade(const Grade& other);
 	~Grade();
 

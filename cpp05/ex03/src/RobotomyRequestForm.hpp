@@ -8,7 +8,7 @@ public:
 	static const unsigned int grade_to_sign = 72;
 	static const unsigned int grade_to_exec = 45;
 
-	RobotomyRequestForm(const std::string& target);
+	explicit RobotomyRequestForm(const std::string& target);
 	RobotomyRequestForm(const RobotomyRequestForm& other);
 	~RobotomyRequestForm();
 

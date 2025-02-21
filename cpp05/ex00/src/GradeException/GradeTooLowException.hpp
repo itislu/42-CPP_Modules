@@ -11,7 +11,7 @@ public:
 	                     unsigned int required,
 	                     const std::string& where = "",
 	                     const std::string& who = "");
-	GradeTooLowException(const AGradeException& other);
+	explicit GradeTooLowException(const AGradeException& other);
 };
 
 } // namespace GradeException

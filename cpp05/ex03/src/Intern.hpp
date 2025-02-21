@@ -8,7 +8,7 @@ class Intern {
 public:
 	class UnknownFormException : public utils::Exception {
 	public:
-		UnknownFormException(const std::string& where = "");
+		explicit UnknownFormException(const std::string& where = "");
 	};
 
 	static const std::string forms[];

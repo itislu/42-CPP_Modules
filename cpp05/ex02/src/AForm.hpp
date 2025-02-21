@@ -17,18 +17,19 @@ class AForm {
 public:
 	class GradeTooHighException : public GradeException::GradeTooHighException {
 	public:
-		GradeTooHighException(const GradeException::AGradeException& e);
+		explicit GradeTooHighException(
+		    const GradeException::AGradeException& e);
 	};
 
 	class GradeTooLowException : public GradeException::GradeTooLowException {
 	public:
-		GradeTooLowException(const GradeException::AGradeException& e);
+		explicit GradeTooLowException(const GradeException::AGradeException& e);
 	};
 
 	class FormNotSignedException : public utils::Exception {
 	public:
-		FormNotSignedException(const std::string& where = "",
-		                       const std::string& who = "");
+		explicit FormNotSignedException(const std::string& where = "",
+		                                const std::string& who = "");
 	};
 
 	virtual ~AForm();

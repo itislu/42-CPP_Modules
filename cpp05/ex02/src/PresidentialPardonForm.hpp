@@ -8,7 +8,7 @@ public:
 	static const unsigned int grade_to_sign = 25;
 	static const unsigned int grade_to_exec = 5;
 
-	PresidentialPardonForm(const std::string& target);
+	explicit PresidentialPardonForm(const std::string& target);
 	PresidentialPardonForm(const PresidentialPardonForm& other);
 	~PresidentialPardonForm();
 
