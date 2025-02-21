@@ -1,3 +1,13 @@
+# ******************************* MAKE SETUP ********************************* #
+
+SHELL			:=	/bin/bash
+PWD				:=	$(shell pwd)
+GLOBAL_MK		:=	$(abspath $(lastword $(MAKEFILE_LIST)))
+REPO_ROOT		:=	$(patsubst %/,%,$(dir $(GLOBAL_MK)))
+REPO_ROOT_REL	:=	$(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+REPO_SUBDIR		:=	$(patsubst /%,%,$(subst $(REPO_ROOT),,$(PWD)))
+
+
 # ************************* DEFAULT CONFIGURATION **************************** #
 
 ifeq ($(words $(MAKEFILE_LIST)), 1)
@@ -17,7 +27,7 @@ COLOR_MAKE		?=	STY_GRE
 #	Directories
 
 SRC_DIR			:=	src
-INC_DIR			:=	.
+INC_DIRS		:=	inc $(SRC_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
@@ -25,21 +35,23 @@ DEP_DIR			:=	$(BUILD_DIR)/_dep
 
 #	Dependencies
 
-BUILDFILES		:=	Makefile ../global.mk
+BUILDFILES		:=	Makefile $(GLOBAL_MK)
 
 
 #	Flags
 
 CXX				:=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
-CXXFLAGS_STD	:=	-Wall -Wextra -Werror --std=c++98 -pedantic-errors
+IS_CLANG		:=	$(if $(findstring clang,$(CXX_VERSION)), true)
+CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic
 CXXFLAGS_DBG	:=	-ggdb3
 CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
-CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG)
-CPPFLAGS		+=	$(addprefix -I,$(INC_DIR))
+CXXFLAGS_CLANG	:=	-Wdocumentation	# Only supported by clang
+CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG), $(CXXFLAGS_CLANG))
+CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
-MAKEFLAGS		:=	-j -s
+MAKEFLAGS		+=	-j -s
 
 
 #	Valgrind
@@ -48,7 +60,6 @@ VALGRIND		:=	$(shell which valgrind)
 
 VALGRINDFLAGS	=	--errors-for-leak-kinds=all \
 					--leak-check=full \
-					--read-var-info=yes \
 					--show-error-list=yes \
 					--show-leak-kinds=all \
 					--trace-children=yes \
@@ -59,17 +70,19 @@ VALGRINDFDFLAGS	:=	--track-fds=all
 
 #	Terminal
 
-TERMINAL		:=	$(shell which gnome-terminal 2>/dev/null)
+TERMINAL		?=	$(if $(shell command -v gnome-terminal), gnome-terminal, \
+					$(if $(shell command -v terminator), terminator, \
+					$(if $(shell command -v xterm), xterm, \
+					)))
 
-ifeq (val, $(filter val,$(MAKECMDGOALS)))
-TERMINALTITLE	:=	valgrind $(NAME)
-else ifeq (valfd, $(filter valfd,$(MAKECMDGOALS)))
-TERMINALTITLE	:=	valgrind-fd $(NAME)
-else
-TERMINALTITLE	:=	$(NAME)
-endif
+TERMINALTITLE	:=	$(if $(filter val,$(MAKECMDGOALS)), valgrind $(NAME), \
+					$(if $(filter valfd,$(MAKECMDGOALS)), valgrind-fd $(NAME), \
+					$(NAME)))
 
-TERMINALFLAGS	:=	--title="$(TERMINALTITLE)" -- /bin/sh -c
+TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)), --title="$(TERMINALTITLE)" --, \
+					$(if $(filter terminator,$(TERMINAL)), --title="$(TERMINALTITLE)" -x, \
+					$(if $(filter xterm,$(TERMINAL)), -title "$(TERMINALTITLE)" -e, \
+					)))
 
 
 #	Files
@@ -91,7 +104,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 PHONY_TARGETS	:=	all run opt san val valfd term clear modes re clean fclean ffclean
-ENV_VARIABLES	:=	MODE ARGS
+ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
@@ -127,13 +140,11 @@ endif
 
 ifeq (val, $(filter val,$(MAKECMDGOALS) $(MODE)))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS)
-PATH			:=	/bin:/usr/bin:/usr/sbin:$(PATH)
 RUN				:=	true
 endif
 
 ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
-PATH			:=	/bin:/usr/bin:/usr/sbin:$(PATH)
 NEW_TERM		:=	true
 RUN				:=	true
 endif
@@ -156,24 +167,23 @@ endif
 
 all				:
 					if $(MAKE) --question $(NAME); then \
-						echo -n $(MSG_NO_CHANGE); \
-						echo -n $(MSG_HELP); \
+						echo -e -n $(MSG_NO_CHANGE); \
+						echo -e -n $(MSG_HELP); \
 					else \
-						echo -n $(MSG_MODE); \
-						echo -n " "$(MSG_INFO); \
-						echo -n " "$(MSG_HELP); \
-						echo -n $(MSG_START); \
+						echo -e -n $(MSG_MODE); \
+						echo -e -n " "$(MSG_INFO); \
+						echo -e -n " "$(MSG_HELP); \
+						echo -e -n $(MSG_START); \
 						if $(MAKE) $(NAME); then \
 							echo; \
-							echo -n $(MSG_SUCCESS); \
+							echo -e -n $(MSG_SUCCESS); \
 						else \
 							echo; \
-							echo -n $(MSG_FAILURE); \
+							echo -e -n $(MSG_FAILURE); \
 							exit 42; \
 						fi; \
 					fi; \
-					echo -n $(MSG_USAGE)
-
+					echo -e -n $(MSG_USAGE)
 
 run opt san val valfd term clear: modes
 
@@ -188,14 +198,14 @@ modes			:
 						clear; \
 					fi
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
-						$(TERMINAL) $(TERMINALFLAGS) \
-							"bash --posix -c 'trap \"\" SIGINT; \
+						$(TERMINAL) $(TERMINALFLAGS) bash -c \
+							"trap '' SIGINT; \
 							$(ENV) ./$(NAME) $(ARGS); \
-							exec bash --posix'"; \
+							exec $(shell echo $$SHELL)"; \
 					elif [ "$(RUN)" = "true" ]; then \
 						$(ENV) "./$(NAME)" $(ARGS); \
 					else \
-						echo -n $(MSG_USAGE); \
+						echo -e -n $(MSG_USAGE); \
 					fi
 
 re				:
@@ -224,7 +234,7 @@ $(NAME)			:	$(OBJ)
 
 $(OBJ_DIR)/%.o	:	$(SRC_DIR)/%$(SRC_EXTENSION) $(BUILDFILES) | $(OBJ_SUBDIRS)
 					$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ \
-						&& echo -n $(MSG_PROGRESS)
+						&& echo -e -n $(MSG_PROGRESS)
 
 
 #	Pre-processing and dependency file creation
@@ -243,7 +253,7 @@ $(DEP_SUBDIRS)	:
 # ***************************** CLEAN TARGETS ******************************** #
 
 clean			:
-					echo -n $(MSG_CLEAN)
+					echo -e -n $(MSG_CLEAN)
 					rm -f $(OBJ) $(DEP)
                     ifneq (, $(wildcard $(OBJ_DIR)))
 						-find $(OBJ_DIR) -type d -empty -delete
@@ -251,128 +261,138 @@ clean			:
                     ifneq (, $(wildcard $(DEP_DIR)))
 						-find $(DEP_DIR) -type d -empty -delete
                     endif
-					echo -n $(MSG_SUCCESS)
+					echo -e -n $(MSG_SUCCESS)
 
 fclean			:
-					echo -n $(MSG_FCLEAN)
+					echo -e -n $(MSG_FCLEAN)
 					$(MAKE) clean
 					rm -f $(NAME)
-					echo -n $(MSG_SUCCESS)
+					echo -e -n $(MSG_SUCCESS)
 
 ffclean			:
-					echo -n $(MSG_FFCLEAN)
+					echo -e -n $(MSG_FFCLEAN)
 					$(MAKE) fclean
 					rm -rf $(OBJ_DIR) $(DEP_DIR)
-					echo -n $(MSG_SUCCESS)
+					echo -e -n $(MSG_SUCCESS)
 
 
 # ****************************** HELP TARGETS ******************************** #
 
 help			:
-					echo "Targets:"
-					echo "  all              Build the project (default target)"
-					echo "  run              Build and run the project"
-					echo "  opt              Rebuild the project with optimizations"
-					echo "  san              Rebuild the project with sanitizers"
-					echo "  val              Build and run the project with valgrind"
-					echo "  valfd            Build and run the project with valgrind and file descriptor tracking"
-					echo "  term             Build and run the project in a new terminal window"
-					echo "  clear            Build the project and clear the terminal"
-					echo "  re               Rebuild the project"
-					echo "  clean            Remove build artifacts"
-					echo "  fclean           Remove build artifacts and executable"
-					echo "  ffclean          Remove build artifacts and executable without checking for unknown files"
-					echo "  print-%          Print the value of a Makefile variable (replace % with variable name)"
-					echo "  help             Display this message"
-					echo "  help-% | %-help  Display more information for a specific target (replace % with target name)"
+					echo -e "Targets:"
+					echo -e "  all              Build the project (default target)"
+					echo -e "  run              Build and run the project"
+					echo -e "  opt              Rebuild the project with optimizations"
+					echo -e "  san              Rebuild the project with sanitizers"
+					echo -e "  val              Build and run the project with valgrind"
+					echo -e "  valfd            Build and run the project with valgrind and file descriptor tracking"
+					echo -e "  term             Build and run the project in a new terminal window"
+					echo -e "  clear            Build the project and clear the terminal"
+					echo -e "  re               Rebuild the project"
+					echo -e "  clean            Remove build artifacts"
+					echo -e "  fclean           Remove build artifacts and executable"
+					echo -e "  ffclean          Remove build artifacts and executable without checking for unknown files"
+					echo -e "  print-%          Print the value of a Makefile variable (replace % with variable name)"
+					echo -e "  help             Display this message"
+					echo -e "  help-% | %-help  Display more information for a specific target (replace % with target name)"
 					echo
-					echo "Environment Variables:"
-					echo "  MODE             Build mode to combine multiple targets"
-					echo "  ARGS             If specified, the program will run with those arguments after compilation."
+					echo -e "Environment Variables:"
+					echo -e "  MODE             Build mode to combine multiple targets"
+					echo -e "  ARGS             If specified, the program will run with those arguments after compilation."
+					echo -e "  TERMINAL         Terminal emulator to use for targets opening a new terminal window"
 					echo
-					echo "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\"] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
+					echo -e "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\"] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"] [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>]"
 
 help-all		:
-					echo "Build the project."
-					echo "This is the default target when no target is specified."
+					echo -e "Build the project."
+					echo -e "This is the default target when no target is specified."
 
 help-run		:
-					echo "Build the project and run the executable."
-					echo "Arguments to the program can be passed via the ARGS variable."
+					echo -e "Build the project and run the executable."
+					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo "Usage: make run ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"" #Maybe omit the usage
+					echo -e "Usage: make run [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-opt		:
-					echo "Rebuild the project with the following compiler optimization flags:"
-					echo "  $(CXXFLAGS_OPT)"
+					echo -e "Rebuild the project with the following compiler optimization flags:"
+					echo -e "  $(CXXFLAGS_OPT)"
 
 help-san		:
-					echo "Rebuild the project with the following sanitizer flags:"
-					echo "  $(CXXFLAGS_SAN)"
+					echo -e "Rebuild the project with the following sanitizer flags:"
+					echo -e "  $(CXXFLAGS_SAN)"
 
 help-val		:
-					echo "Build the project and run the executable with valgrind."
-					echo "Arguments to the program can be passed via the ARGS variable."
+					echo -e "Build the project and run the executable with valgrind."
+					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo "The following valgrind flags are used:"
-					echo "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
+					echo -e "The following valgrind flags are used:"
+					echo -e "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo
-					echo "Usage: make val ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make val [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-valfd		:
-					echo "Build the project and run the executable with valgrind and file descriptor tracking."
-					echo "A new terminal window is opened to avoid inheriting open file descriptors."
-					echo "Arguments to the program can be passed via the ARGS variable."
+					echo -e "Build the project and run the executable with valgrind and file descriptor tracking."
+					echo -e "A new terminal window is opened to avoid inheriting open file descriptors."
+					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo "The following valgrind flags are used:"
-					echo "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
-					echo "File descriptor specific flags:"
-					echo "$(VALGRINDFDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
+					echo -e "The following valgrind flags are used:"
+					echo -e "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
+					echo -e "File descriptor specific flags:"
+					echo -e "$(VALGRINDFDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo
-					echo "Usage: make valfd ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make valfd [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-term		:
-					echo "Build the project and run the executable in a new terminal window."
-					echo "Arguments to the program can be passed via the ARGS variable."
+					echo -e "Build the project and run the executable in a new terminal window."
+					echo -e "The terminal emulator used is determined by the TERMINAL variable."
+					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo "Usage: make term ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "The following terminal emulator is used by default:"
+					echo -e "  $(TERMINAL)"
+					echo
+					echo -e "Usage: make term [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\"]"
 
 help-clear		:
-					echo "Build the project and clear the terminal."
+					echo -e "Build the project and clear the terminal."
 
 help-re			:
-					echo "Rebuild the project."
+					echo -e "Rebuild the project."
 
 help-clean		:
-					echo "Remove build artifacts."
+					echo -e "Remove build artifacts."
 
 help-fclean		:
-					echo "Remove build artifacts and the executable."
+					echo -e "Remove build artifacts and the executable."
 
 help-ffclean	:
-					echo "Remove build artifacts and the executable without checking for unknown files."
+					echo -e "Remove build artifacts and the executable without checking for unknown files."
 
 help-print		:
-					echo "Print the value of a Makefile variable by appending the variable name to print-..."
-					echo "Useful for Makefile debugging."
+					echo -e "Print the value of a Makefile variable by appending the variable name to print-..."
+					echo -e "Useful for Makefile debugging."
 					echo
-					echo "Usage: make print-<\\$(STY_UND)variable name\\$(STY_RES)>"
+					echo -e "Usage: make print-<\\$(STY_UND)variable name\\$(STY_RES)>"
 
 help-help		:
-					echo "Display more information for a specific target by appending or prepending help."
+					echo -e "Display more information for a specific target by appending or prepending help."
 					echo
-					echo "Usage: make help-<\\$(STY_UND)target\\$(STY_RES)> | make <\\$(STY_UND)target\\$(STY_RES)>-help"
+					echo -e "Usage: make help-<\\$(STY_UND)target\\$(STY_RES)> | make <\\$(STY_UND)target\\$(STY_RES)>-help"
 
 help-MODE MODE-help:
-					echo "Build mode to combine with other targets."
-					echo "Multiple modes can be combined by separating them with a space."
+					echo -e "Build mode to combine with other targets."
+					echo -e "Multiple modes can be combined by separating them with a space."
 					echo
-					echo "Usage: make <\\$(STY_UND)target\\$(STY_RES)> MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\""
+					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> MODE=\"<\\$(STY_UND)mode1\\$(STY_RES)> [\\$(STY_UND)mode2\\$(STY_RES)] [...]\""
 
 help-ARGS ARGS-help:
-					echo "If specified, the program will run with those arguments after compilation."
+					echo -e "If specified, the program will run with those arguments after compilation."
 					echo
-					echo "Usage: make <\\$(STY_UND)target\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' '[...]'\""
+
+help-TERMINAL TERMINAL-help:
+					echo -e "Override the default terminal emulator for targets opening a new terminal window."
+					echo
+					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>"
 
 %-help:
 					$(MAKE) help-$(subst -help,,$@)
@@ -483,7 +503,7 @@ endif
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 print-%			:
-					echo $* = $($*)
+					echo -e $* = $($*)
 
 
 # ********************************* NOTES ************************************ #
