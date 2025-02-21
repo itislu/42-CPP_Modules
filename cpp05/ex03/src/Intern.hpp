@@ -11,7 +11,7 @@ public:
 		explicit UnknownFormException(const std::string& where = "");
 	};
 
-	static const std::string forms[];
+	static const char* forms[];
 
 	static void print_known_forms();
 
@@ -28,10 +28,10 @@ private:
 		Unknown
 	};
 
-	static std::string _known_forms[];
-	static bool _is_init;
-
 	static void _init_known_forms();
+	static std::string& _known_forms(Form form);
+
+	static bool _is_init;
 
 	Intern(const Intern& other);
 	Intern& operator=(Intern other);

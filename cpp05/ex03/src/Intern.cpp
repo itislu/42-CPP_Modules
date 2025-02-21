@@ -22,10 +22,9 @@ static std::string concat_words(const std::string& words);
 static std::string::size_type next_word(const std::string& words,
                                         std::string::size_type i);
 
-const std::string Intern::forms[] = {"PresidentialPardonForm",
-                                     "RobotomyRequestForm",
-                                     "ShrubberyCreationForm"};
-std::string Intern::_known_forms[ARRAY_SIZE(forms)];
+const char* Intern::forms[] = {"PresidentialPardonForm",
+                               "RobotomyRequestForm",
+                               "ShrubberyCreationForm"};
 bool Intern::_is_init = false;
 
 Intern::UnknownFormException::UnknownFormException(const std::string& where)
@@ -34,14 +33,17 @@ Intern::UnknownFormException::UnknownFormException(const std::string& where)
 
 void Intern::print_known_forms()
 {
-	std::cout << "The Intern can accept the following forms: " << "\n\n";
-	for (unsigned int i = 0; i < ARRAY_SIZE(_known_forms); ++i) {
+	std::cout << "The Intern can accept the following forms:" << "\n\n";
+
+	for (unsigned int type = 0; type != Unknown; ++type) {
 		std::string::size_type start = 1;
 
-		for (std::string::size_type end = _known_forms[i].find('\0', start);
+		for (std::string::size_type end =
+		         _known_forms(Form(type)).find('\0', start);
 		     end != std::string::npos;
-		     end = _known_forms[i].find('\0', start)) {
-			std::cout << "  - " << _known_forms[i].substr(start, end - start)
+		     end = _known_forms(Form(type)).find('\0', start)) {
+			std::cout << "  - "
+			          << _known_forms(Form(type)).substr(start, end - start)
 			          << '\n';
 			start = end + 1;
 		}
@@ -90,18 +92,25 @@ void Intern::_init_known_forms()
 	if (_is_init) {
 		return;
 	}
-	for (unsigned int i = 0; i < ARRAY_SIZE(forms); ++i) {
-		const std::string words(split_words(forms[i]));
+	for (unsigned int type = 0; type != Unknown; ++type) {
+		const std::string words(split_words(forms[type]));
 
-		_known_forms[i] = '\0';
-		_known_forms[i].append(
-		    concat_words(change_capitalization(words, toupper)));
-		_known_forms[i].append(
-		    concat_words(change_capitalization(words, tolower)));
-		_known_forms[i].append(concat_words(change_capitalization(
-		    change_capitalization(words, tolower), toupper, true)));
+		_known_forms(Form(type)) = '\0';
+		_known_forms(Form(type))
+		    .append(concat_words(change_capitalization(words, toupper)));
+		_known_forms(Form(type))
+		    .append(concat_words(change_capitalization(words, tolower)));
+		_known_forms(Form(type))
+		    .append(concat_words(change_capitalization(
+		        change_capitalization(words, tolower), toupper, true)));
 	}
 	_is_init = true;
+}
+
+std::string& Intern::_known_forms(Form form)
+{
+	static std::string _known_forms[ARRAY_SIZE(forms)];
+	return _known_forms[form];
 }
 
 Intern::Form Intern::_which_form(const std::string& input) const
@@ -111,7 +120,7 @@ Intern::Form Intern::_which_form(const std::string& input) const
 	}
 	for (unsigned int type = 0; type != Unknown; ++type) {
 		const std::string::size_type pos =
-		    _known_forms[type].find('\0' + input + '\0');
+		    _known_forms(Form(type)).find('\0' + input + '\0');
 		if (pos != std::string::npos) {
 			return static_cast<Form>(type);
 		}
