@@ -25,6 +25,11 @@ static std::string::size_type next_word(const std::string& words,
 const char* Intern::forms[] = {"PresidentialPardonForm",
                                "RobotomyRequestForm",
                                "ShrubberyCreationForm"};
+AForm* (*const Intern::_factory[])(const std::string&) = {
+    &_makePresidentialPardonForm,
+    &_makeRobotomyRequestForm,
+    &_makeShrubberyCreationForm,
+};
 bool Intern::_is_init = false;
 
 Intern::UnknownFormException::UnknownFormException(const std::string& where)
@@ -63,15 +68,11 @@ AForm* Intern::makeForm(const std::string& form,
 {
 	AForm* new_form = NULL;
 
-	switch (_which_form(form)) {
+	switch (const FormType type = _which_form(form)) {
 	case PresidentialPardonForm:
-		new_form = new class PresidentialPardonForm(target);
-		break;
 	case RobotomyRequestForm:
-		new_form = new class RobotomyRequestForm(target);
-		break;
 	case ShrubberyCreationForm:
-		new_form = new class ShrubberyCreationForm(target);
+		new_form = _factory[type](target);
 		break;
 	case Unknown:
 		std::cout << "A form named '" << form << "' does not exist" << '\n';
@@ -79,6 +80,21 @@ AForm* Intern::makeForm(const std::string& form,
 	}
 	std::cout << "Intern creates " << new_form->name() << '\n';
 	return new_form;
+}
+
+AForm* Intern::_makePresidentialPardonForm(const std::string& target)
+{
+	return new class PresidentialPardonForm(target);
+}
+
+AForm* Intern::_makeRobotomyRequestForm(const std::string& target)
+{
+	return new class RobotomyRequestForm(target);
+}
+
+AForm* Intern::_makeShrubberyCreationForm(const std::string& target)
+{
+	return new class ShrubberyCreationForm(target);
 }
 
 bool Intern::_iter_form_types(FormType& it)
@@ -116,7 +132,7 @@ std::string& Intern::_known_forms(FormType form)
 	return _known_forms[form];
 }
 
-Intern::FormType Intern::_which_form(const std::string& input) const
+Intern::FormType Intern::_which_form(const std::string& input)
 {
 	if (input.empty()) {
 		return Unknown;
