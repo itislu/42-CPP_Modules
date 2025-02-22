@@ -1,7 +1,7 @@
 #include "RobotomyRequestForm.hpp"
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
-#include "utils/common.hpp"
+#include "common.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <string>

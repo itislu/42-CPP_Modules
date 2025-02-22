@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/Exception.hpp"
+#include "Exception.hpp"
 #include <string>
 
 namespace GradeException {

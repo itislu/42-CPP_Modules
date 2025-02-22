@@ -2,11 +2,11 @@
 
 #pragma once
 
+#include "Exception.hpp"
 #include "Grade.hpp"
 #include "GradeException/AGradeException.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
-#include "utils/Exception.hpp"
 #include <cstddef>
 #include <ostream>
 #include <string>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AForm.hpp"
-#include "utils/Exception.hpp"
+#include "Exception.hpp"
 #include <string>
 
 class Intern {

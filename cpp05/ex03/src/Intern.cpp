@@ -2,12 +2,12 @@
 
 #include "Intern.hpp"
 #include "AForm.hpp"
+#include "Exception.hpp"
 #include "PresidentialPardonForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
-#include "utils/Exception.hpp"
-#include "utils/common.hpp"
-#include "utils/log.hpp"
+#include "common.hpp"
+#include "log.hpp"
 #include <cctype>
 #include <cstddef>
 #include <iostream>

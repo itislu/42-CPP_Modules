@@ -1,6 +1,6 @@
 #include "GradeTooHighException.hpp"
 #include "AGradeException.hpp"
-#include "utils/string.hpp"
+#include "string.hpp"
 #include <string>
 
 namespace GradeException {

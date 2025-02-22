@@ -3,11 +3,12 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 #include "Intern.hpp"
-#include "utils/log.hpp"
+#include "log.hpp"
 #include <exception>
 #include <iostream>
 #include <string>
 
+#ifndef TEST
 int main()
 {
 	int test = 0;
@@ -80,5 +81,6 @@ int main()
 
 	std::cout << '\n';
 }
+#endif
 
 // NOLINTEND(readability-magic-numbers)

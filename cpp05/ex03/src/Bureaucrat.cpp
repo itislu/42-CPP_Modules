@@ -4,8 +4,8 @@
 #include "GradeException/AGradeException.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
-#include "utils/common.hpp"
-#include "utils/log.hpp"
+#include "common.hpp"
+#include "log.hpp"
 #include <exception>
 #include <iostream>
 #include <string>

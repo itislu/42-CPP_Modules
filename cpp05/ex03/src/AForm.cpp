@@ -1,12 +1,12 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
+#include "Exception.hpp"
 #include "Grade.hpp"
 #include "GradeException/AGradeException.hpp"
 #include "GradeException/GradeTooHighException.hpp"
 #include "GradeException/GradeTooLowException.hpp"
-#include "utils/Exception.hpp"
-#include "utils/common.hpp"
-#include "utils/log.hpp"
+#include "common.hpp"
+#include "log.hpp"
 #include <cstddef>
 #include <iostream>
 #include <string>

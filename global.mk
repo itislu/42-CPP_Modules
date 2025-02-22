@@ -6,7 +6,7 @@ GLOBAL_MK		:=	$(abspath $(lastword $(MAKEFILE_LIST)))
 REPO_ROOT		:=	$(patsubst %/,%,$(dir $(GLOBAL_MK)))
 REPO_ROOT_REL	:=	$(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 REPO_SUBDIR		:=	$(patsubst /%,%,$(subst $(REPO_ROOT),,$(PWD)))
-
+IS_LIB			:=	$(if $(filter .a,$(suffix $(NAME))),true)
 
 # ************************* DEFAULT CONFIGURATION **************************** #
 
@@ -31,12 +31,16 @@ INC_DIRS		:=	inc $(SRC_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
+LIB_DIR			:=	..
 DOC_DIR			:=	docs
 DOCKER_DIR		:=	$(REPO_ROOT_REL)/docker
 
 
 #	Dependencies
 
+LIBRARIES		:=	$(LIB_DIR)/utils
+LIBRARIES_EXT	:=	
+LIB_INCLUDES	:=	$(LIB_DIR)/utils/inc
 BUILDFILES		:=	Makefile $(GLOBAL_MK)
 
 
@@ -51,8 +55,10 @@ CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
 CXXFLAGS_CLANG	:=	-Wdocumentation	# Only supported by clang
 CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG), $(CXXFLAGS_CLANG))
-CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
+CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS) $(LIB_INCLUDES))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
+LDFLAGS			:=	$(addprefix -L,$(LIBRARIES))
+LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(LIBRARIES) $(LIBRARIES_EXT))))
 MAKEFLAGS		+=	-j -s
 
 
@@ -105,7 +111,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
-BUILD_TARGETS	:=	all run val valfd term clear modes
+BUILD_TARGETS	:=	all run val valfd term clear modes build lib waitforlib
 REBUILD_TARGETS	:=	opt san re
 DOC_TARGETS		:=	bear doxygen uml
 CLEAN_TARGETS	:=	clean fclean ffclean
@@ -229,10 +235,37 @@ ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,a
 endif
 
 
-#	Executable linkage
+#	Library dependency management
 
+ifeq ($(IS_LIB),true)
+build			:	$(NAME)
+else
+ifeq (4.4, $(firstword $(sort $(MAKE_VERSION) 4.4)))
+build			:	lib .WAIT $(NAME)
+else
+build			:	waitforlib
+					$(MAKE) $(NAME)
+endif
+endif
+
+
+#	Library compilation
+
+lib				:
+					$(MAKE) -C $(LIBRARIES)
+
+waitforlib		:	lib
+
+
+#	Linkage
+
+ifeq ($(IS_LIB),true)
 $(NAME)			:	$(OBJ)
-					$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+					ar rcs $(NAME) $(OBJ)
+else
+$(NAME)			:	$(LIBRARIES) $(OBJ)
+					$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
+endif
 
 
 #	Source file compilation
