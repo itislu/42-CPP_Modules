@@ -13,6 +13,8 @@
 
 class Bureaucrat;
 
+typedef class AForm Form;
+
 class AForm {
 public:
 	class GradeTooHighException : public GradeException::GradeTooHighException {
