@@ -1,5 +1,4 @@
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
-// NOLINTBEGIN(readability-convert-member-functions-to-static)
 
 #include "Intern.hpp"
 #include "AForm.hpp"
@@ -63,6 +62,7 @@ Intern::Intern()
 
 Intern::~Intern() {}
 
+// NOLINTNEXTLINE(readability-convert-member-functions-to-static)
 AForm* Intern::makeForm(const std::string& form,
                         const std::string& target) const
 {
@@ -227,5 +227,4 @@ static std::string::size_type next_word(const std::string& words,
 	return word + 1;
 }
 
-// NOLINTEND(readability-convert-member-functions-to-static)
 // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)

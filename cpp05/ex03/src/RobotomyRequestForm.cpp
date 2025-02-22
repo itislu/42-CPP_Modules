@@ -30,7 +30,6 @@ RobotomyRequestForm::operator=(RobotomyRequestForm other) throw()
 	return *this;
 }
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
 void RobotomyRequestForm::execute(Bureaucrat const& executor) const
 {
 	AForm::execute(executor);
@@ -45,6 +44,5 @@ void RobotomyRequestForm::execute(Bureaucrat const& executor) const
 		--_score;
 	}
 }
-// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
 
 int RobotomyRequestForm::score() const { return _score; }
