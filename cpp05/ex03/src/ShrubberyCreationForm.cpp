@@ -7,7 +7,7 @@
 #include <string>
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
-    : AForm("ShrubberyCreationForm", grade_to_sign, grade_to_sign, target)
+    : AForm("ShrubberyCreationForm", grade_to_sign, grade_to_exec, target)
 {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other)
