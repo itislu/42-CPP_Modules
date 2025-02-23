@@ -73,6 +73,9 @@ Since assignment essentially boils down to deletion of the original value and co
 
 - [What are the steps of new?](https://isocpp.org/wiki/faq/freestore-mgmt#new-doesnt-leak-if-ctor-throws)
 
+
+https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors
+
 ---
 
 # Ever wondered why there is `delete` AND `delete[]`?

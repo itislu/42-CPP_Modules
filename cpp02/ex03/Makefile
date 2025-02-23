@@ -10,7 +10,7 @@ CPPFLAGS		:=
 endif
 
 MSG_PROGRESS	:=	"📐"
-MSG_USAGE		?=	"\nUsage: ./$(NAME) <x> <y> (in unit triangle: 📐)\n"
+MSG_USAGE		?=	"Usage: ./$(NAME) <x> <y> (in unit triangle: 📐)\n"
 COLOR_MAKE		:=	STY_YEL
 
 include				$(shell git rev-parse --show-toplevel)/global.mk
