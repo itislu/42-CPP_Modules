@@ -2,7 +2,7 @@
 
 NAME			:=	horde
 MSG_PROGRESS	:=	"🧟"
-MSG_USAGE		?=	"Usage: ./$(NAME) [number] [name]\n"
+MSG_USAGE		?=	"Usage: ./$(NAME) [number] [name]"
 COLOR_MAKE		:=	STY_GRE
 
 include				$(shell git rev-parse --show-toplevel)/global.mk
