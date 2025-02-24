@@ -1,3 +1,6 @@
+include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
+
+
 # ***************************** CONFIGURATION ******************************** #
 
 NAME			:=	bsp
@@ -13,4 +16,5 @@ MSG_PROGRESS	:=	"📐"
 MSG_USAGE		?=	"Usage: ./$(NAME) <x> <y> (in unit triangle: 📐)"
 COLOR_MAKE		:=	STY_YEL
 
-include				$(shell git rev-parse --show-toplevel)/Makefiles/global.mk
+
+include				$(MAKEFILES_DIR)/global.mk
