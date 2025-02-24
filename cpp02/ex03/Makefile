@@ -17,4 +17,5 @@ MSG_USAGE		?=	"Usage: ./$(NAME) <x> <y> (in unit triangle: 📐)"
 COLOR_MAKE		:=	STY_YEL
 
 
-include				$(MAKEFILES_DIR)/global.mk
+include				$(MAKEFILES_DIR)/config.mk
+include				$(MAKEFILES_DIR)/build.mk

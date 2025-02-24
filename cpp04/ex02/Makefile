@@ -9,4 +9,5 @@ MSG_USAGE		?=	"Usage: ./$(NAME) [animal_count (default: 10)]"
 COLOR_MAKE		:=	STY_WHI
 
 
-include				$(MAKEFILES_DIR)/global.mk
+include				$(MAKEFILES_DIR)/config.mk
+include				$(MAKEFILES_DIR)/build.mk

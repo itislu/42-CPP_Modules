@@ -9,4 +9,5 @@ MSG_USAGE		?=	"Usage: ./$(NAME) \"[message]\" \"[...]\""
 COLOR_MAKE		:=	STY_WHI
 
 
-include				$(MAKEFILES_DIR)/global.mk
+include				$(MAKEFILES_DIR)/config.mk
+include				$(MAKEFILES_DIR)/build.mk
