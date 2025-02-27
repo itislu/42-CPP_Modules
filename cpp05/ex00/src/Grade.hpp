@@ -20,8 +20,12 @@ public:
 	Grade operator--(int);
 	bool operator>(const Grade& other) const;
 	bool operator<(const Grade& other) const;
+	bool operator>=(const Grade& other) const;
+	bool operator<=(const Grade& other) const;
 	bool operator>(unsigned int other) const;
 	bool operator<(unsigned int other) const;
+	bool operator>=(unsigned int other) const;
+	bool operator<=(unsigned int other) const;
 
 	void test(const Grade& min) const;
 	unsigned int get() const;

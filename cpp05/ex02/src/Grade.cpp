@@ -31,19 +31,19 @@ void Grade::swap(Grade& other) throw() { utils::swap(_raw, other._raw); }
 
 Grade& Grade::operator++()
 {
-	--_raw;
-	if (*this > highest_grade) {
-		throw GradeException::GradeTooHighException(_raw, highest_grade);
+	if (*this >= highest_grade) {
+		throw GradeException::GradeTooHighException(_raw - 1, highest_grade);
 	}
+	--_raw;
 	return *this;
 }
 
 Grade& Grade::operator--()
 {
-	++_raw;
-	if (*this < lowest_grade) {
-		throw GradeException::GradeTooLowException(_raw, lowest_grade);
+	if (*this <= lowest_grade) {
+		throw GradeException::GradeTooLowException(_raw + 1, lowest_grade);
 	}
+	++_raw;
 	return *this;
 }
 
@@ -65,9 +65,17 @@ bool Grade::operator>(const Grade& other) const { return _raw < other._raw; }
 
 bool Grade::operator<(const Grade& other) const { return _raw > other._raw; }
 
+bool Grade::operator>=(const Grade& other) const { return _raw <= other._raw; }
+
+bool Grade::operator<=(const Grade& other) const { return _raw >= other._raw; }
+
 bool Grade::operator>(unsigned int other) const { return _raw < other; }
 
 bool Grade::operator<(unsigned int other) const { return _raw > other; }
+
+bool Grade::operator>=(unsigned int other) const { return _raw <= other; }
+
+bool Grade::operator<=(unsigned int other) const { return _raw >= other; }
 
 void Grade::test(const Grade& min) const
 {

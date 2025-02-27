@@ -70,6 +70,30 @@ int main()
 		std::cerr << utils::log::error(e.what()) << '\n';
 	}
 
+	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
+	{
+		Bureaucrat bureaucrat("George", Grade::highest_grade);
+		try {
+			bureaucrat.promote();
+		}
+		catch (const std::exception& e) {
+			std::cerr << utils::log::error(e.what()) << '\n';
+		}
+		std::cout << bureaucrat << '\n';
+	}
+
+	std::cout << "\n---------------- " << ++test << " ----------------" << '\n';
+	{
+		Bureaucrat bureaucrat("George", Grade::lowest_grade);
+		try {
+			bureaucrat.demote();
+		}
+		catch (const std::exception& e) {
+			std::cerr << utils::log::error(e.what()) << '\n';
+		}
+		std::cout << bureaucrat << '\n';
+	}
+
 	std::cout << '\n';
 }
 
