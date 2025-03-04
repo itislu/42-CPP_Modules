@@ -23,6 +23,7 @@ void Harl::complain(std::string level) // NOLINT
 		break;
 	default:
 		std::cout << "I cannot complain about THAT..." << '\n';
+		break;
 	}
 }
 
