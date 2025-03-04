@@ -9,3 +9,7 @@
 | [ex04](ex04) | 📄 sed        | - `string` methods, <br> - `string` performance optimization, <br> - File streams |
 | [ex05](ex05) | 😡 Harl       |                                                                                   |
 | [ex06](ex06) | 🤬 HarlFilter | - `switch` statement                                                              |
+
+# Resources
+
+- [Labels are conventionally not indented](https://www.learncpp.com/cpp-tutorial/switch-statement-basics/#:~:text=Labels%20are%20conventionally%20not%20indented)
