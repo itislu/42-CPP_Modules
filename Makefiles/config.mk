@@ -54,7 +54,7 @@ DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 #	Files
 
 SRC_EXTENSION	:=	.cpp
-SRC				:=	$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)" -printf "%P\n")
+SRC				:=	$(patsubst $(SRC_DIR)/%,%,$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)")) #macos compatiblity
 
 
 #	Valgrind
