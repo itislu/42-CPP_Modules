@@ -7,7 +7,7 @@
 namespace utils {
 
 template <typename T>
-void swap(T& a, T& b) throw()
+void swap(T& a, T& b)
 {
 	T tmp = a;
 	a = b;

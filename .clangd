@@ -20,6 +20,7 @@ Diagnostics:
         bugprone-easily-swappable-parameters,
         cppcoreguidelines-avoid-magic-numbers,
         hicpp-avoid-goto,
+        hicpp-explicit-conversions,
         hicpp-special-member-functions,
         hicpp-use-nullptr,
         misc-non-private-member-variables-in-classes,

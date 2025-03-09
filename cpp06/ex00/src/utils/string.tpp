@@ -102,10 +102,8 @@ OutputIterator transform(InputIterator first,
                          OutputIterator result,
                          UnaryOperator op)
 {
-	while (first != last) {
+	for (; first != last; ++result, ++first) {
 		*result = op(*first);
-		++result;
-		++first;
 	}
 	return result;
 }

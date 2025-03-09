@@ -7,6 +7,8 @@ include				$(MAKEFILES_DIR)/print.mk
 
 # ****************************** HELP TARGETS ******************************** #
 
+#TODO help-% works, but %-help does not
+
 help			:
 					echo -e "Targets:"
 					echo -e "  all              Build the project (default target)"
