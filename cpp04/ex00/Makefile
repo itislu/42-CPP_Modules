@@ -6,7 +6,7 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 NAME			:=	animal
 MSG_PROGRESS	:=	"🐾"
 MSG_USAGE		?=	"Usage: ./$(NAME)"
-COLOR_MAKE		:=	STY_BLU
+COLOR_MAKE		=	$(STY_BLU)
 
 
 include				$(MAKEFILES_DIR)/config.mk

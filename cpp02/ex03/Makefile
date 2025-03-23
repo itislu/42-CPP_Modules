@@ -14,7 +14,7 @@ endif
 
 MSG_PROGRESS	:=	"📐"
 MSG_USAGE		?=	"Usage: ./$(NAME) <x> <y> (in unit triangle: 📐)"
-COLOR_MAKE		:=	STY_YEL
+COLOR_MAKE		=	$(STY_YEL)
 
 
 include				$(MAKEFILES_DIR)/config.mk

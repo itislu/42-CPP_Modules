@@ -6,7 +6,7 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 NAME			:=	horde
 MSG_PROGRESS	:=	"🧟"
 MSG_USAGE		?=	"Usage: ./$(NAME) [number] [name]"
-COLOR_MAKE		:=	STY_GRE
+COLOR_MAKE		=	$(STY_GRE)
 
 
 include				$(MAKEFILES_DIR)/config.mk
