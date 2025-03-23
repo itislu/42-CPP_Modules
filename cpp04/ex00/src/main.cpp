@@ -7,6 +7,9 @@
 #include "WrongCat.hpp"
 #include <iostream>
 
+static void call_makeSound(Animal& animal);
+static void call_makeSound_wrong(WrongAnimal& animal);
+
 int main()
 {
 	{
@@ -56,6 +59,27 @@ int main()
 		delete wrong_animal;
 		delete wrong_cat;
 	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "POLYMORPHISM WITH REFERENCE:\n" << '\n';
+		Cat cat;
+		Dog dog;
+		call_makeSound(cat);
+		call_makeSound(dog);
+
+		WrongCat wrong_cat;
+		call_makeSound_wrong(wrong_cat);
+	}
+}
+
+static void call_makeSound(Animal& animal)
+{
+	animal.makeSound();
+}
+
+static void call_makeSound_wrong(WrongAnimal& animal)
+{
+	animal.makeSound();
 }
 
 // NOLINTEND

@@ -10,6 +10,7 @@
 static unsigned int ft_atoui(char* str);
 static void fill_array(Animal**& animals, unsigned int size);
 static void delete_array(Animal**& animals, unsigned int size);
+static void call_makeSound(Animal& animal);
 
 int main(int argc, char* argv[])
 {
@@ -63,6 +64,14 @@ int main(int argc, char* argv[])
 		std::cout << *cat2.brain();
 		std::cout << '\n';
 	}
+	std::cout << "\n\n--------------------------------------------\n\n" << '\n';
+	{
+		std::cout << "POLYMORPHISM WITH REFERENCE:\n" << '\n';
+		Cat cat;
+		Dog dog;
+		call_makeSound(cat);
+		call_makeSound(dog);
+	}
 }
 
 static unsigned int ft_atoui(char* str)
@@ -92,6 +101,11 @@ static void delete_array(Animal**& animals, unsigned int size)
 		delete animals[i];
 	}
 	delete[] animals;
+}
+
+static void call_makeSound(Animal& animal)
+{
+	animal.makeSound();
 }
 
 // NOLINTEND
