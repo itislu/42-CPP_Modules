@@ -3,12 +3,9 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 # ***************************** CONFIGURATION ******************************** #
 
-NAME			:=	convert
-MSG_PROGRESS	:=	"🔀"
-MSG_USAGE		?=	"Usage: ./$(NAME)"
-COLOR_MAKE		:=	STY_YEL
-LIBRARIES		=	$(LIB_DIR)/libftpp
-
+NAME			:=	libftpp.a
+MSG_PROGRESS	:=	"📦"
+COLOR_MAKE		:=	STY_WHI
 
 include				$(MAKEFILES_DIR)/config.mk
 include				$(MAKEFILES_DIR)/build.mk
