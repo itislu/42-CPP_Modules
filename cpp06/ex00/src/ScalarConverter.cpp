@@ -95,8 +95,12 @@ void ScalarConverter::convert(const std::string& str)
 
 static ft::Optional<Type> detect_type(const std::string& str)
 {
+	if (str.empty()) {
+		return ft::nullopt;
+	}
+
 	// Single character, except digits
-	if (str.empty() || (str.length() == 1 && !std::isdigit(str[0]))) {
+	if (str.length() == 1 && !std::isdigit(str[0])) {
 		return Char;
 	}
 
