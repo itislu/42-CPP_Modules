@@ -1,3 +1,6 @@
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+// NOLINTBEGIN(readability-implicit-bool-conversion)
+
 #include "ScalarConverter.hpp"
 #include "libftpp/Expected.hpp"
 #include "libftpp/Optional.hpp"
@@ -24,6 +27,7 @@ static const char* const impossible_msg = "impossible";
 static const char* const non_displayable_msg = "Non displayable";
 
 static ft::Optional<Type> detect_type(const std::string& str);
+static ft::Optional<Type> detect_type_experimental(const std::string& str);
 template <typename To, typename From>
 static ft::Expected<To, std::string> do_convert(From from);
 static void display(const ft::Expected<char, std::string>& c);
@@ -131,6 +135,40 @@ static ft::Optional<Type> detect_type(const std::string& str)
 		return Double;
 	}
 
+	return detect_type_experimental(str);
+}
+
+/**
+ * Detection of other bases and scientific notation.
+ * Not perfect, cannot deal with leading zeros f.e.
+ */
+static ft::Optional<Type> detect_type_experimental(const std::string& str)
+{
+	// int in hexadecimal or octal notation
+	if (ft::to_string(ft::from_string<int>(str),
+	                  std::ios::hex | std::ios::showbase)
+	        == str
+	    || ft::to_string(ft::from_string<int>(str),
+	                     std::ios::oct | std::ios::showbase)
+	           == str) {
+		return Int;
+	}
+
+	// float in scientific notation
+	if (ft::to_string(ft::from_string<float>(str)) + 'f' == str
+	    || ft::to_string(ft::from_string<float>(str), std::ios::scientific)
+	               + 'f'
+	           == str) {
+		return Float;
+	}
+
+	// double in scientific notation
+	if (ft::to_string(ft::from_string<double>(str)) == str
+	    || ft::to_string(ft::from_string<double>(str), std::ios::scientific)
+	           == str) {
+		return Double;
+	}
+
 	return ft::nullopt;
 }
 
@@ -219,3 +257,6 @@ static std::string format_floating_point(float f)
 {
 	return format_floating_point<float>(f) + 'f';
 }
+
+// NOLINTEND(readability-implicit-bool-conversion)
+// NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
