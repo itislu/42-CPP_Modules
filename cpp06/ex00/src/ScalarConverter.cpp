@@ -130,7 +130,8 @@ static ft::Optional<Type> detect_type(const std::string& str)
 	}
 
 	// Allowed: 1.0, .0, 1.
-	if ((nbrstr.find_first_not_of("0123456789.") == std::string::npos
+	if ((nbrstr.find_first_of("0123456789") != std::string::npos
+	     && nbrstr.find_first_not_of("0123456789.") == std::string::npos
 	     && ft::count(nbrstr.begin(), nbrstr.end(), '.') == 1)
 	    || nbrstr == "nan" || nbrstr == "inf") {
 		return Double;
