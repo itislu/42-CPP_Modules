@@ -109,9 +109,9 @@ static ft::Optional<Type> detect_type(const std::string& str)
 		return Char;
 	}
 
-	// Skip sign at index 0
-	const std::string nbrstr(
-	    str.substr((str[0] == '-' || str[0] == '+') ? 1 : 0));
+	// Skip sign at index 0 and make lowercase
+	std::string nbrstr(str.substr((str[0] == '-' || str[0] == '+') ? 1 : 0));
+	ft::transform(nbrstr.begin(), nbrstr.end(), nbrstr.begin(), tolower);
 
 	// Digits only
 	if (nbrstr.find_first_not_of("0123456789") == std::string::npos) {

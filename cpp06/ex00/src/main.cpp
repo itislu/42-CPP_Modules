@@ -37,6 +37,9 @@ int main(int argc, const char* argv[])
 		    "*",
 		    "42",
 		    "42.0f",
+		    "42.F",
+		    "42.0F",
+		    "0.F",
 		    "42.0",
 		    "500.",
 		    ".",
@@ -98,7 +101,18 @@ int main(int argc, const char* argv[])
 	}
 
 	{
-		const std::string special_values[] = {"nanf", "nan", "inff", "inf"};
+		const std::string special_values[] = {"nanf",
+		                                      "nan",
+		                                      "inff",
+		                                      "inf",
+		                                      "NANF",
+		                                      "NAN",
+		                                      "INFF",
+		                                      "INF",
+		                                      "NaNf",
+		                                      "NaN",
+		                                      "Inff",
+		                                      "Inf"};
 		test_array(
 		    special_values, ARRAY_SIZE(special_values), "Special Values");
 	}
