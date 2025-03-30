@@ -180,8 +180,16 @@ int main(int argc, const char* argv[])
 	{
 		const std::string scientific_notation[] = {"1.000000e-02",
 		                                           "1e-05",
+		                                           "1.e-05",
+		                                           "1.0e-05",
+		                                           "1.00e-05",
+		                                           "1.000e-05",
+		                                           "1.0000e-05",
+		                                           "1.00000e-05",
 		                                           "1.000000e-02f",
 		                                           "1e-05f",
+		                                           "1.e-05f",
+		                                           "1.0e-05f",
 		                                           "1.000000E-02f",
 		                                           "1E-05f"};
 		test_array(scientific_notation,

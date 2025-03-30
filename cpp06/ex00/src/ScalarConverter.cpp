@@ -143,8 +143,9 @@ static ft::Optional<Type> detect_type(const std::string& str)
 /**
  * Detection of other bases and scientific notation.
  * Not perfect:
- * - Cannot deal with leading zeros
- * - Hexadecimal floating-points are not supported
+ * - Cannot deal with leading zeros.
+ * - Hexadecimal floating-points are not supported.
+ * - Scientific notation needs to have a period.
  */
 static ft::Optional<Type> detect_type_experimental(const std::string& str)
 {
@@ -167,8 +168,10 @@ static ft::Optional<Type> detect_type_experimental(const std::string& str)
 	const ft::Optional<float> maybe_float =
 	    ft::from_string<float>(str, std::nothrow);
 	if (maybe_float) {
-		if (ft::to_string(*maybe_float) + 'f' == str_lower
-		    || ft::to_string(*maybe_float, std::ios::scientific) + 'f'
+		if (ft::to_string(*maybe_float, std::ios::showpoint) + 'f' == str_lower
+		    || ft::to_string(*maybe_float,
+		                     std::ios::showpoint | std::ios::scientific)
+		               + 'f'
 		           == str_lower) {
 			return Float;
 		}
@@ -178,8 +181,9 @@ static ft::Optional<Type> detect_type_experimental(const std::string& str)
 	const ft::Optional<double> maybe_double =
 	    ft::from_string<double>(str, std::nothrow);
 	if (maybe_double) {
-		if (ft::to_string(*maybe_double) == str_lower
-		    || ft::to_string(*maybe_double, std::ios::scientific)
+		if (ft::to_string(*maybe_double, std::ios::showpoint) == str_lower
+		    || ft::to_string(*maybe_double,
+		                     std::ios::showpoint | std::ios::scientific)
 		           == str_lower) {
 			return Double;
 		}
