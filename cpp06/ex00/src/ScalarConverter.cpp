@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <new>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -145,28 +146,33 @@ static ft::Optional<Type> detect_type(const std::string& str)
 static ft::Optional<Type> detect_type_experimental(const std::string& str)
 {
 	// int in hexadecimal or octal notation
-	if (ft::to_string(ft::from_string<int>(str),
-	                  std::ios::hex | std::ios::showbase)
-	        == str
-	    || ft::to_string(ft::from_string<int>(str),
-	                     std::ios::oct | std::ios::showbase)
-	           == str) {
-		return Int;
+	const ft::Optional<int> maybe_int = ft::from_string<int>(str, std::nothrow);
+	if (maybe_int) {
+		if (ft::to_string(*maybe_int, std::ios::hex | std::ios::showbase) == str
+		    || ft::to_string(*maybe_int, std::ios::oct | std::ios::showbase)
+		           == str) {
+			return Int;
+		}
 	}
 
 	// float in scientific notation
-	if (ft::to_string(ft::from_string<float>(str)) + 'f' == str
-	    || ft::to_string(ft::from_string<float>(str), std::ios::scientific)
-	               + 'f'
-	           == str) {
-		return Float;
+	const ft::Optional<float> maybe_float =
+	    ft::from_string<float>(str, std::nothrow);
+	if (maybe_float) {
+		if (ft::to_string(*maybe_float) + 'f' == str
+		    || ft::to_string(*maybe_float, std::ios::scientific) + 'f' == str) {
+			return Float;
+		}
 	}
 
 	// double in scientific notation
-	if (ft::to_string(ft::from_string<double>(str)) == str
-	    || ft::to_string(ft::from_string<double>(str), std::ios::scientific)
-	           == str) {
-		return Double;
+	const ft::Optional<double> maybe_double =
+	    ft::from_string<double>(str, std::nothrow);
+	if (maybe_double) {
+		if (ft::to_string(*maybe_double) == str
+		    || ft::to_string(*maybe_double, std::ios::scientific) == str) {
+			return Double;
+		}
 	}
 
 	return ft::nullopt;
