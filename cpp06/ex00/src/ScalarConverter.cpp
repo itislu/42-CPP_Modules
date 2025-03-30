@@ -141,7 +141,9 @@ static ft::Optional<Type> detect_type(const std::string& str)
 
 /**
  * Detection of other bases and scientific notation.
- * Not perfect, cannot deal with leading zeros f.e.
+ * Not perfect:
+ * - Cannot deal with leading zeros
+ * - Hexadecimal floating-points are not supported
  */
 static ft::Optional<Type> detect_type_experimental(const std::string& str)
 {
