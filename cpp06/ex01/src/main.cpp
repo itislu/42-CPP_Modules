@@ -7,6 +7,8 @@
 #include "Serializer.hpp"
 #include "libftpp/common.hpp"
 #include "libftpp/log.hpp"
+#include <bitset>
+#include <climits>
 #include <cstddef>
 #include <exception>
 #include <iomanip>
@@ -129,9 +131,7 @@ static void print_binary(T val)
 	std::string binary;
 
 	for (unsigned int byte = 0; byte < sizeof(T); ++byte) {
-		for (unsigned int i = 0; i < 8; ++i) {
-			binary.insert(0, 1, (((*ptr >> i) & 1) ? '1' : '0'));
-		}
+		binary.insert(0, std::bitset<CHAR_BIT>(*ptr).to_string());
 		++ptr;
 	}
 	std::cout << "0b" + binary << '\n';
