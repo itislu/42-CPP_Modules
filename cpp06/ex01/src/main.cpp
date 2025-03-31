@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <ios>
 #include <iostream>
+#include <new> // IWYU pragma: keep
 #include <sstream>
 #include <stdint.h>
 #include <string>
@@ -21,6 +22,7 @@ static void bytefield_example();
 static void float_example();
 template <typename T>
 static void print_binary(T val);
+static void delete_example();
 
 int main()
 {
@@ -55,10 +57,11 @@ int main()
 	}
 	std::cout << '\n'
 	          << BOLD("--------------------------------------------") << "\n\n";
-	std::cout << BOLD("REINTERPRET_CAST EXAMPLES:") << '\n';
 
+	std::cout << BOLD("REINTERPRET_CAST EXAMPLES:") << '\n';
 	bytefield_example();
 	float_example();
+	delete_example();
 }
 
 template <typename T>
@@ -124,6 +127,45 @@ static void print_binary(T val)
 	}
 	std::cout << std::dec << "0b" << oss.str() << '\n';
 }
+
+// NOLINTBEGIN
+static void delete_example()
+{
+	std::cout << '\n' << BOLD("operator delete[]:") << '\n';
+
+	class A {
+	public:
+		A()
+		    : _ptr(new char[42])
+		{}
+		~A() { delete[] _ptr; }
+
+	private:
+		char* _ptr;
+	};
+
+	const unsigned int amount = 10;
+	A* array = new A[amount];
+
+	std::cout << "newed size: " << *(reinterpret_cast<size_t*>(array) - 1)
+	          << '\n';
+
+	/* Correct */
+	delete[] array;
+
+	/* Invalid free */
+	// delete array;
+
+	/* Segmentation fault (no object with destructor at that address) */
+	// delete (reinterpret_cast<size_t*>(array) - 1);
+
+	/* No segmentation fault (manual operator delete[]) */
+	// for (unsigned int i = 0; i < amount; ++i) {
+	// 	array[i].~A();
+	// }
+	// operator delete(reinterpret_cast<size_t*>(array) - 1);
+}
+// NOLINTEND
 
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
 // NOLINTEND(hicpp-signed-bitwise)
