@@ -1,6 +1,7 @@
-// NOLINTBEGIN(readability-magic-numbers)
-// NOLINTBEGIN(hicpp-signed-bitwise)
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
+// NOLINTBEGIN(hicpp-signed-bitwise)
+// NOLINTBEGIN(readability-magic-numbers)
 
 #include "Data.hpp"
 #include "Serializer.hpp"
@@ -12,7 +13,6 @@
 #include <ios>
 #include <iostream>
 #include <new> // IWYU pragma: keep
-#include <sstream>
 #include <stdint.h>
 #include <string>
 
@@ -25,6 +25,7 @@ static void float_example();
 template <typename T>
 static void print_binary(T val);
 static void delete_example();
+static size_t unsafe_get_array_cookie(void* ptr);
 
 int main()
 try {
@@ -124,14 +125,16 @@ static void float_example()
 template <typename T>
 static void print_binary(T val)
 {
-	const uintptr_t ptr = *reinterpret_cast<uintptr_t*>(&val);
-	const unsigned int bits = sizeof(T) * 8;
+	const unsigned char* ptr = reinterpret_cast<const unsigned char*>(&val);
+	std::string binary;
 
-	std::ostringstream oss;
-	for (unsigned int i = 0; i < bits; ++i) {
-		oss << ((ptr >> (bits - i - 1)) & 1);
+	for (unsigned int byte = 0; byte < sizeof(T); ++byte) {
+		for (unsigned int i = 0; i < 8; ++i) {
+			binary.insert(0, 1, (((*ptr >> i) & 1) ? '1' : '0'));
+		}
+		++ptr;
 	}
-	std::cout << std::dec << "0b" << oss.str() << '\n';
+	std::cout << "0b" + binary << '\n';
 }
 
 // NOLINTBEGIN
@@ -156,8 +159,7 @@ static void delete_example()
 	A* array = new A[amount];
 
 	std::cout << "size of A: " << sizeof(A) << '\n';
-	std::cout << "newed size: " << *(reinterpret_cast<size_t*>(array) - 1)
-	          << '\n';
+	std::cout << "newed size: " << unsafe_get_array_cookie(array) << '\n';
 
 	/* Correct */
 	delete[] array;
@@ -176,6 +178,15 @@ static void delete_example()
 }
 // NOLINTEND
 
-// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
-// NOLINTEND(hicpp-signed-bitwise)
+static size_t unsafe_get_array_cookie(void* ptr)
+#if defined(__clang__)
+    __attribute__((no_sanitize("address")))
+#endif
+{
+	return *(reinterpret_cast<size_t*>(ptr) - 1);
+}
+
 // NOLINTEND(readability-magic-numbers)
+// NOLINTEND(hicpp-signed-bitwise)
+// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
