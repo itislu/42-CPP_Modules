@@ -142,17 +142,20 @@ static void delete_example()
 	class A {
 	public:
 		A()
-		    : _ptr(new char[42])
+		    : _ptr(new char[42]),
+		      _i()
 		{}
-		~A() { delete[] _ptr; }
+		~A() { (void)_i, delete[] _ptr; }
 
 	private:
 		char* _ptr;
+		int _i;
 	};
 
 	const unsigned int amount = 10;
 	A* array = new A[amount];
 
+	std::cout << "size of A: " << sizeof(A) << '\n';
 	std::cout << "newed size: " << *(reinterpret_cast<size_t*>(array) - 1)
 	          << '\n';
 
