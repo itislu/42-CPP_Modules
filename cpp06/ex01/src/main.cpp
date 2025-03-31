@@ -9,15 +9,18 @@
 #include <iomanip>
 #include <ios>
 #include <iostream>
+#include <sstream>
 #include <stdint.h>
 #include <string>
 
 template <typename T>
-static void
-print_labeled(const std::string& label,
-              const T& value,
-              std::ios_base::fmtflags fmt = std::ios_base::fmtflags());
-static void reinterpret_cast_example();
+static void print_labeled(const std::string& label,
+                          const T& value,
+                          std::ios::fmtflags fmt = std::ios::fmtflags());
+static void bytefield_example();
+static void float_example();
+template <typename T>
+static void print_binary(T val);
 
 int main()
 {
@@ -39,7 +42,7 @@ int main()
 		const uintptr_t raw = Serializer::serialize(&data);
 		const Data* ptr = Serializer::deserialize(raw);
 
-		print_labeled("Raw", raw, std::ios_base::hex | std::ios_base::showbase);
+		print_labeled("Raw", raw, std::ios::hex | std::ios::showbase);
 		print_labeled("Ptr", ptr);
 		print_labeled("Data", *ptr);
 	}
@@ -50,19 +53,20 @@ int main()
 		print_labeled("NULL",
 		              Serializer::deserialize(Serializer::serialize(NULL)));
 	}
-	std::cout << "\n--------------------------------------------\n" << '\n';
+	std::cout << '\n'
+	          << BOLD("--------------------------------------------") << "\n\n";
+	std::cout << BOLD("REINTERPRET_CAST EXAMPLES:") << '\n';
 
-	std::cout << BOLD("reinterpret_cast example:") << '\n';
-	reinterpret_cast_example();
+	bytefield_example();
+	float_example();
 }
 
 template <typename T>
-static void print_labeled(const std::string& label,
-                          const T& value,
-                          std::ios_base::fmtflags fmt)
+static void
+print_labeled(const std::string& label, const T& value, std::ios::fmtflags fmt)
 {
 	const int label_width = 8;
-	const std::ios_base::fmtflags fmt_backup = std::cout.flags();
+	const std::ios::fmtflags fmt_backup = std::cout.flags();
 
 	std::cout << std::setw(label_width) << std::left << label + ": ";
 	std::cout.flags(fmt);
@@ -71,8 +75,10 @@ static void print_labeled(const std::string& label,
 	std::cout << '\n';
 }
 
-static void reinterpret_cast_example()
+static void bytefield_example()
 {
+	std::cout << '\n' << BOLD("Bytefield:") << '\n';
+
 	struct Bytefield {
 		unsigned char byte0;
 		unsigned char byte1;
@@ -87,8 +93,36 @@ static void reinterpret_cast_example()
 	          << ",  byte2: " << static_cast<int>(bytefield.byte2)
 	          << ",  byte3: " << static_cast<int>(bytefield.byte3) << '\n';
 
-	std::cout << "Bytefield -> unsigned int: "
-	          << *reinterpret_cast<unsigned int*>(&bytefield) << '\n';
+	const unsigned int i = *reinterpret_cast<unsigned int*>(&bytefield);
+	std::cout << "Bytefield -> unsigned int: " << i << '\n';
+	std::cout << "in binary: ", print_binary(i);
+}
+
+static void float_example()
+{
+	std::cout << '\n' << BOLD("Float Representation:") << '\n';
+
+	const float f = 2.5;
+
+	const int sc = static_cast<int>(f);
+	const int rc = *reinterpret_cast<const int*>(&f);
+
+	std::cout << "static_cast:      " << sc << '\n';
+	std::cout << "reinterpret_cast: " << rc << '\n';
+	std::cout << "float in binary:  ", print_binary(f);
+}
+
+template <typename T>
+static void print_binary(T val)
+{
+	const uintptr_t ptr = *reinterpret_cast<uintptr_t*>(&val);
+	const unsigned int bits = sizeof(T) * 8;
+
+	std::ostringstream oss;
+	for (unsigned int i = 0; i < bits; ++i) {
+		oss << ((ptr >> (bits - i - 1)) & 1);
+	}
+	std::cout << std::dec << "0b" << oss.str() << '\n';
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
