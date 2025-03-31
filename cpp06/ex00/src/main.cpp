@@ -5,7 +5,9 @@
 
 #include "ScalarConverter.hpp"
 #include "libftpp/common.hpp"
+#include "libftpp/log.hpp"
 #include "libftpp/string.hpp"
+#include <exception>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -27,7 +29,7 @@ test_array(T array[], unsigned int amount, const std::string& group_name = "");
 static void print_seperator(const std::string& title);
 
 int main(int argc, const char* argv[])
-{
+try {
 	if (argc > 1) {
 		test_array(&argv[1], argc - 1);
 		return 0;
@@ -48,6 +50,10 @@ int main(int argc, const char* argv[])
 	test_hex_values();
 	test_oct_values();
 	test_scientific_notation();
+}
+catch (const std::exception& e) {
+	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
+	return 1;
 }
 
 void test_basic_values()

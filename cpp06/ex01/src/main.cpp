@@ -5,7 +5,9 @@
 #include "Data.hpp"
 #include "Serializer.hpp"
 #include "libftpp/common.hpp"
+#include "libftpp/log.hpp"
 #include <cstddef>
+#include <exception>
 #include <iomanip>
 #include <ios>
 #include <iostream>
@@ -25,7 +27,7 @@ static void print_binary(T val);
 static void delete_example();
 
 int main()
-{
+try {
 	// Serializer serializer; // Not instantiable
 	Data data = {"hello world", NULL, 42.42, 100};
 
@@ -62,6 +64,10 @@ int main()
 	bytefield_example();
 	float_example();
 	delete_example();
+}
+catch (const std::exception& e) {
+	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
+	return 1;
 }
 
 template <typename T>

@@ -6,8 +6,8 @@
 #include "C.hpp"
 #include "libftpp/common.hpp"
 #include "libftpp/log.hpp"
-#include <cassert>
 #include <cstddef>
+#include <exception>
 #include <iostream>
 #include <string>
 
@@ -16,7 +16,7 @@ static void identifiy(Base* p);
 static void identifiy(Base& p);
 
 int main()
-{
+try {
 	Base* p = generate();
 
 	identifiy(p);
@@ -31,6 +31,10 @@ int main()
 	identifiy(b);
 
 	delete p;
+}
+catch (const std::exception& e) {
+	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
+	return 1;
 }
 
 static Base* generate()
