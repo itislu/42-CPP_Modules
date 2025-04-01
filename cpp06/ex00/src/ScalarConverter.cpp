@@ -262,8 +262,10 @@ static std::string format_floating_point(Fp fp)
 	   << std::fixed << fp;
 	std::string str(ss.str());
 
-	// Trim trailing 0s
-	if (*str.rbegin() != '0' || str.find('e') != std::string::npos) {
+	/* Trim trailing 0s */
+
+	// No need to trim
+	if (*str.rbegin() != '0') {
 		return str;
 	}
 	// Keep at least one 0 after decimal point
