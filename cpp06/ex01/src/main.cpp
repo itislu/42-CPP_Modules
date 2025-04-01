@@ -26,7 +26,7 @@ static void bytefield_example();
 static void float_example();
 template <typename T>
 static void print_binary(T val);
-static void delete_example();
+static void array_cookie_example();
 static size_t unsafe_get_array_cookie(void* ptr);
 
 int main()
@@ -66,7 +66,7 @@ try {
 	std::cout << BOLD("REINTERPRET_CAST EXAMPLES:") << '\n';
 	bytefield_example();
 	float_example();
-	delete_example();
+	array_cookie_example();
 }
 catch (const std::exception& e) {
 	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
@@ -138,9 +138,9 @@ static void print_binary(T val)
 }
 
 // NOLINTBEGIN
-static void delete_example()
+static void array_cookie_example()
 {
-	std::cout << '\n' << BOLD("operator delete[]:") << '\n';
+	std::cout << '\n' << BOLD("Array Cookie:") << '\n';
 
 	class A {
 	public:
