@@ -6,6 +6,7 @@
 #include "C.hpp"
 #include "libftpp/common.hpp"
 #include "libftpp/log.hpp"
+#include "libftpp/utility.hpp"
 #include <cstddef>
 #include <exception>
 #include <iostream>
