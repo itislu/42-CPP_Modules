@@ -90,6 +90,8 @@ static void swap_test(T& a, T& b)
 
 	const clock_t start = clock();
 	for (unsigned int i = 0; i < 10; ++i) {
+		std::cerr << ft::log::info(BOLD("swap #" + ft::to_string(i + 1) + ":"))
+		          << '\n';
 		swap(a, b);
 	}
 	const clock_t end = clock();
