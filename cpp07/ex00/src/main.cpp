@@ -1,5 +1,5 @@
-
 #include "Fast.hpp"
+#include "IntWithId.hpp"
 #include "Slow.hpp"
 #include "libftpp/common.hpp"
 #include "libftpp/log.hpp"
@@ -10,6 +10,7 @@
 #include <string>
 
 static void test_subject();
+static void test_min_max();
 static void benchmark_swap();
 template <typename T>
 static void swap_test(T& a, T& b);
@@ -18,6 +19,7 @@ static void print_seperator(const std::string& title);
 int main()
 {
 	test_subject();
+	test_min_max();
 	benchmark_swap();
 }
 
@@ -40,6 +42,19 @@ static void test_subject()
 	std::cout << "c = " << c << ", d = " << d << '\n';
 	std::cout << "min( c, d ) = " << ::min(c, d) << '\n';
 	std::cout << "max( c, d ) = " << ::max(c, d) << '\n';
+}
+
+static void test_min_max()
+{
+	print_seperator("Min/Max Test");
+
+	const IntWithId a(100);
+	const IntWithId b(100);
+
+	std::cout << BOLD("a: ") << a << '\n';
+	std::cout << BOLD("b: ") << b << '\n';
+	std::cout << BOLD("min(a, b): ") << min(a, b) << '\n';
+	std::cout << BOLD("max(a, b): ") << max(a, b) << '\n';
 }
 
 static void benchmark_swap()
@@ -75,7 +90,7 @@ static void swap_test(T& a, T& b)
 
 	const clock_t start = clock();
 	for (unsigned int i = 0; i < 10; ++i) {
-		::swap(a, b);
+		swap(a, b);
 	}
 	const clock_t end = clock();
 
