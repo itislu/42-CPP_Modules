@@ -7,6 +7,7 @@
 #include "libftpp/common.hpp"
 #include "libftpp/log.hpp"
 #include "libftpp/string.hpp"
+#include "libftpp/utility.hpp"
 #include <exception>
 #include <iomanip>
 #include <iostream>
@@ -79,7 +80,7 @@ void test_basic_values()
 	    ",",
 	    "126",
 	    "100000000000000000000000000000000000000.0000000000000000000000000000000000000000000000000000000000000000000009f"};
-	test_array(basic_values, ARRAY_SIZE(basic_values), "Basic Values");
+	test_array(basic_values, COUNTOF(basic_values), "Basic Values");
 }
 
 void test_signs()
@@ -108,7 +109,7 @@ void test_signs()
 	    "-126",
 	    "+100000000000000000000000000000000000000.0000000000000000000000000000000000000000000000000000000000000000000009f",
 	    "-100000000000000000000000000000000000000.0000000000000000000000000000000000000000000000000000000000000000000009f"};
-	test_array(signs, ARRAY_SIZE(signs), "Plus / Minus Signs");
+	test_array(signs, COUNTOF(signs), "Plus / Minus Signs");
 }
 
 void test_zeros()
@@ -125,14 +126,14 @@ void test_zeros()
 	                             "1000.0000000f",
 	                             "100000000000.00000000000000f",
 	                             "100000000000.00000000000000"};
-	test_array(zeros, ARRAY_SIZE(zeros), "Leading / Trailing Zeros");
+	test_array(zeros, COUNTOF(zeros), "Leading / Trailing Zeros");
 }
 
 void test_lonely_periods()
 {
 	const std::string lonely_periods[] = {
 	    ".5", "5.", "5.f", "000100.", ".000100", "+.09f", "-.09f"};
-	test_array(lonely_periods, ARRAY_SIZE(lonely_periods), "Lonely Periods");
+	test_array(lonely_periods, COUNTOF(lonely_periods), "Lonely Periods");
 }
 
 void test_special_values()
@@ -149,7 +150,7 @@ void test_special_values()
 	                                      "NaN",
 	                                      "Inff",
 	                                      "Inf"};
-	test_array(special_values, ARRAY_SIZE(special_values), "Special Values");
+	test_array(special_values, COUNTOF(special_values), "Special Values");
 }
 
 void test_invalid_formats()
@@ -164,7 +165,7 @@ void test_invalid_formats()
 	    "+f",         "-f",       "+.",    "-.",    "+.f",    "-.f",
 	    "42f",        "+42f",     "-42f",  "42.ff", "42.0ff", "0.ff",
 	    "42.g",       "42.0g",    "0.g",   "++42",  "+-42",   "--42"};
-	test_array(invalid_formats, ARRAY_SIZE(invalid_formats), "Invalid Formats");
+	test_array(invalid_formats, COUNTOF(invalid_formats), "Invalid Formats");
 }
 
 void test_min_max_values()
@@ -202,20 +203,20 @@ void test_min_max_values()
 	        + 'f',
 	    ft::to_string(-std::numeric_limits<long double>::max(), std::ios::fixed)
 	        + 'f'};
-	test_array(min_max, ARRAY_SIZE(min_max), "Min/Max Values");
+	test_array(min_max, COUNTOF(min_max), "Min/Max Values");
 }
 
 void test_hex_values()
 {
 	const std::string hex_values[] = {
 	    "0x100", "0X100", "0x100f", "0X100f", "0x100.", "0X100.", "0x000100"};
-	test_array(hex_values, ARRAY_SIZE(hex_values), "Hexadecimal Format");
+	test_array(hex_values, COUNTOF(hex_values), "Hexadecimal Format");
 }
 
 void test_oct_values()
 {
 	const std::string oct_values[] = {"0100", "00100", "000100"};
-	test_array(oct_values, ARRAY_SIZE(oct_values), "Octal Format");
+	test_array(oct_values, COUNTOF(oct_values), "Octal Format");
 }
 
 void test_scientific_notation()
@@ -235,7 +236,7 @@ void test_scientific_notation()
 	                                           "1.000000E-02f",
 	                                           "1E-05f"};
 	test_array(scientific_notation,
-	           ARRAY_SIZE(scientific_notation),
+	           COUNTOF(scientific_notation),
 	           "Scientific Notation");
 }
 
