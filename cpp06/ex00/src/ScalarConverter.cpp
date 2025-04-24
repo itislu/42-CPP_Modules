@@ -5,7 +5,7 @@
 #include "libftpp/Expected.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/algorithm.hpp"
-#include "libftpp/log.hpp"
+#include "libftpp/format.hpp"
 #include "libftpp/numeric.hpp"
 #include "libftpp/string.hpp"
 #include <cctype>

@@ -2,7 +2,6 @@
 #include "IntWithId.hpp"
 #include "Slow.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/log.hpp"
 #include "libftpp/string.hpp"
 #include "whatever.hpp"
 #include <ctime>

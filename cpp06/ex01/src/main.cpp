@@ -6,7 +6,6 @@
 #include "Data.hpp"
 #include "Serializer.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/log.hpp"
 #include <bitset>
 #include <climits>
 #include <cstddef>

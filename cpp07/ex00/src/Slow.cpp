@@ -1,5 +1,5 @@
 #include "Slow.hpp"
-#include "libftpp/log.hpp"
+#include "libftpp/format.hpp"
 #include <cstddef>
 #include <iostream>
 

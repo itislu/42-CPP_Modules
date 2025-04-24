@@ -1,6 +1,6 @@
 #include "Fast.hpp"
 #include "Slow.hpp"
-#include "libftpp/log.hpp"
+#include "libftpp/format.hpp"
 #include <iostream>
 
 Fast::Fast() {}

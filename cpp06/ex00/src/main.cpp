@@ -5,7 +5,6 @@
 
 #include "ScalarConverter.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/log.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/utility.hpp"
 #include <exception>
