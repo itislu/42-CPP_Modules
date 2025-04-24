@@ -4,7 +4,7 @@
 #include "B.hpp"
 #include "Base.hpp"
 #include "C.hpp"
-#include "libftpp/common.hpp"
+#include "libftpp/format.hpp"
 #include "libftpp/log.hpp"
 #include "libftpp/random.hpp"
 #include "libftpp/utility.hpp"

@@ -4,7 +4,7 @@
 // NOLINTBEGIN(misc-use-internal-linkage)
 
 #include "ScalarConverter.hpp"
-#include "libftpp/common.hpp"
+#include "libftpp/format.hpp"
 #include "libftpp/log.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/utility.hpp"
