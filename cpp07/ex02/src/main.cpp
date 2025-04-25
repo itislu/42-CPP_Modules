@@ -1,3 +1,4 @@
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 // NOLINTBEGIN(readability-magic-numbers)
 
 #include "Array.hpp"
@@ -9,22 +10,32 @@
 #include <iostream>
 #include <string>
 
+extern void ft_array();
 static int test_provided();
 static void test_zero_sized();
 static void test_assignment();
 static void test_const_array();
-static void print_seperator(const std::string& title);
+extern void print_seperator(const std::string& title);
 
-int main()
+int main(int argc, char* argv[])
 try {
-	test_provided();
-	test_zero_sized();
-	test_assignment();
-	test_const_array();
+	if (argc == 1) {
+		test_provided();
+		test_zero_sized();
+		test_assignment();
+		test_const_array();
+	}
+	else if (argc == 2 && argv[1] == std::string("ft")) {
+		ft_array();
+	}
+	else {
+		std::cerr << "Usage: " << argv[0] << " [ft]" << '\n';
+		return 1;
+	}
 }
 catch (const std::exception& e) {
 	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
-	return 1;
+	return 2;
 }
 
 // clang-format off
@@ -147,7 +158,7 @@ static void test_const_array()
 	std::cout << '\n' << BOLD("const_array_copy:") << '\n' << const_array_copy;
 }
 
-static void print_seperator(const std::string& title)
+extern void print_seperator(const std::string& title)
 {
 	const unsigned int width = 60;
 	const unsigned int padding = 2;
@@ -163,3 +174,4 @@ static void print_seperator(const std::string& title)
 }
 
 // NOLINTEND(readability-magic-numbers)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

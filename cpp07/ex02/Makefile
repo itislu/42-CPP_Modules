@@ -5,7 +5,7 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 NAME			:=	array
 MSG_PROGRESS	:=	"🆕"
-MSG_USAGE		?=	"Usage: ./$(NAME)"
+MSG_USAGE		?=	"Usage: ./$(NAME) [ft]"
 COLOR_MAKE		=	$(STY_BLU)
 LIBRARIES		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
