@@ -1,88 +1,26 @@
-// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-
 #pragma once
 
-#include "libftpp/algorithm.hpp"
 #include "libftpp/type_traits.hpp"
 #include <cstddef>
 
-// Allows only arrays and pointers
-// template <typename F, typename Array>
-// typename ft::enable_if<ft::is_array<Array>::value>::type
-// iter(Array& array, std::size_t size, F func)
-// {
-// 	for (std::size_t i = 0; i < size; ++i) {
-// 		func(array[i]);
-// 	}
-// }
+/* Arrays of known bound */
+template <typename FuncRet, typename FuncArg, typename ArrayOf, std::size_t N>
+void iter(ArrayOf (&array)[N], std::size_t size, FuncRet (*func)(FuncArg));
 
-template <typename F, typename Array>
-void iter(Array& array, std::size_t size, F func)
-{
-	for (std::size_t i = 0; i < size; ++i) {
-		func(array[i]);
-	}
-}
+/* Arrays of unknown bound */
+template <typename FuncRet, typename FuncArg, typename Array>
+typename ft::enable_if<ft::is_unbounded_array<Array>::value>::type
+iter(Array& array, std::size_t size, FuncRet (*func)(FuncArg));
 
-template <typename F, typename Array>
-void iter(Array*& array, std::size_t size, F func)
-{
-	if (array == NULL) {
-		return;
-	}
-	for (std::size_t i = 0; i < size; ++i) {
-		func(array[i]);
-	}
-}
+/* Dynamic arrays */
+template <typename FuncRet, typename FuncArg, typename Ptr>
+typename ft::enable_if<ft::is_pointer<Ptr>::value>::type
+iter(Ptr& ptr, std::size_t size, FuncRet (*func)(FuncArg));
 
-template <typename F, typename T, std::size_t N>
-void iter(T (&array)[N], std::size_t size, F func)
-{
-	std::size_t end = MIN(size, N);
-	for (std::size_t i = 0; i < end; ++i) {
-		func(array[i]);
-	}
-}
+/* Complex types - comment out if not wished to support complex types */
+template <typename FuncRet, typename FuncArg, typename Complex>
+typename ft::enable_if<!ft::is_array<Complex>::value
+                       && !ft::is_pointer<Complex>::value>::type
+iter(Complex& complex, std::size_t size, FuncRet (*func)(FuncArg));
 
-// template <typename FuncRet, typename Array>
-// void iter(Array& array,
-//           std::size_t size,
-//           FuncRet (*func)(typename ft::remove_extent<Array>::type&))
-// {
-// 	for (std::size_t i = 0; i < size; ++i) {
-// 		func(array[i]);
-// 	}
-// }
-
-// template <typename FuncRet, typename Array>
-// void iter(Array& array,
-//           std::size_t size,
-//           FuncRet (*func)(const typename ft::remove_extent<Array>::type&))
-// {
-// 	for (std::size_t i = 0; i < size; ++i) {
-// 		func(array[i]);
-// 	}
-// }
-
-// template <typename FuncRet, typename Array>
-// void iter(Array& array,
-//           std::size_t size,
-//           FuncRet (*func)(volatile typename ft::remove_extent<Array>::type&))
-// {
-// 	for (std::size_t i = 0; i < size; ++i) {
-// 		func(array[i]);
-// 	}
-// }
-
-// template <typename FuncRet, typename Array>
-// void iter(Array& array,
-//           std::size_t size,
-//           FuncRet (*func)(const volatile typename
-//           ft::remove_extent<Array>::type&))
-// {
-// 	for (std::size_t i = 0; i < size; ++i) {
-// 		func(array[i]);
-// 	}
-// }
-
-// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+#include "iter.tpp" // IWYU pragma: export
