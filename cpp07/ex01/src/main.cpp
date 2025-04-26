@@ -2,6 +2,7 @@
 
 #include "iter.hpp"
 #include "libftpp/Array.hpp"
+#include "libftpp/algorithm.hpp"
 #include "libftpp/format.hpp"
 #include "libftpp/random.hpp"
 #include <cctype>
@@ -12,6 +13,7 @@
 
 static void test_array_known_bound();
 static void test_array_unknown_bound();
+static void test_multidimensional_array();
 static void test_dynamic_array();
 static void test_complex_types();
 static void print_seperator(const std::string& title);
@@ -20,6 +22,7 @@ int main()
 try {
 	test_array_known_bound();
 	test_array_unknown_bound();
+	test_multidimensional_array();
 	test_dynamic_array();
 	test_complex_types();
 }
@@ -53,10 +56,30 @@ void init<std::string>(std::string& value)
 	value = tmp;
 }
 
+template <typename ArrayOf, std::size_t N>
+static void init(ArrayOf (&value)[N])
+{
+	static ArrayOf count = 0;
+	ft::fill_n(static_cast<ArrayOf*>(value), N, count++);
+}
+
 template <typename T>
 static void print(const T& value)
 {
 	std::cout << value << " ";
+}
+
+template <typename ArrayOf, std::size_t N>
+static void print(ArrayOf (&value)[N])
+{
+	std::cout << "[";
+	for (std::size_t i = 0; i < N; ++i) {
+		std::cout << value[i];
+		if (i < N - 1) {
+			std::cout << ",";
+		}
+	}
+	std::cout << "] ";
 }
 
 template <typename Integral>
@@ -69,6 +92,14 @@ template <>
 void modify<char>(char& value)
 {
 	value = static_cast<char>(std::toupper(value));
+}
+
+template <typename ArrayOf, std::size_t N>
+static void modify(ArrayOf (&value)[N])
+{
+	for (std::size_t i = 0; i < N; ++i) {
+		modify(value[i]);
+	}
 }
 
 template <typename Integral>
@@ -213,6 +244,31 @@ static void test_array_unknown_bound()
 
 		iter(cv_unknown_bound, unknown_bound_size, print<volatile int>),
 		    std::cout << '\n';
+	}
+}
+
+static void test_multidimensional_array()
+{
+	{
+		print_seperator("2D Array");
+
+		const std::size_t rows = 3;
+		const std::size_t cols = 4;
+		int array[rows][cols];
+
+		iter(array, rows, init<int, cols>);
+		iter(array, rows, print<int, cols>), std::cout << '\n';
+		iter(array, rows, modify<int, cols>);
+		iter(array, rows, print<int, cols>), std::cout << '\n';
+	}
+	{
+		print_seperator("Const 2D Array");
+
+		const std::size_t rows = 2;
+		const std::size_t cols = 5;
+		const int array[rows][cols] = {{0, 1, 2, 3, 4}, {5, 6, 7, 8, 9}};
+
+		iter(array, rows, print<const int, cols>), std::cout << '\n';
 	}
 }
 
