@@ -47,13 +47,15 @@ static void test_min_max()
 {
 	print_seperator("Min/Max Test");
 
-	const IntWithId a(100);
-	const IntWithId b(100);
+	IntWithId a(42);
+	IntWithId b(42);
 
 	std::cout << BOLD("a: ") << a << '\n';
 	std::cout << BOLD("b: ") << b << '\n';
 	std::cout << BOLD("min(a, b): ") << min(a, b) << '\n';
 	std::cout << BOLD("max(a, b): ") << max(a, b) << '\n';
+	std::cout << BOLD("min(a, b) = 0: ") << (min(a, b) = 0) << '\n';
+	std::cout << BOLD("max(a, b): ") << (max(a, b)) << '\n';
 }
 
 static void benchmark_swap()
