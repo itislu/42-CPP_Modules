@@ -4,6 +4,7 @@
 #include "libftpp/format.hpp"
 #include "libftpp/string.hpp"
 #include "whatever.hpp"
+#include <climits>
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -47,15 +48,25 @@ static void test_min_max()
 {
 	print_seperator("Min/Max Test");
 
+	std::cout << BOLD("IntWithId") << '\n';
 	IntWithId a(42);
 	IntWithId b(42);
-
 	std::cout << BOLD("a: ") << a << '\n';
 	std::cout << BOLD("b: ") << b << '\n';
 	std::cout << BOLD("min(a, b): ") << min(a, b) << '\n';
 	std::cout << BOLD("max(a, b): ") << max(a, b) << '\n';
 	std::cout << BOLD("min(a, b) = 0: ") << (min(a, b) = 0) << '\n';
 	std::cout << BOLD("max(a, b): ") << (max(a, b)) << '\n';
+
+	std::cout << '\n' << BOLD("Integer Literal") << '\n';
+	std::cout << BOLD("min(1, 2): ") << min(1, 2) << '\n';
+	std::cout << BOLD("max(1, 2): ") << max(1, 2) << '\n';
+
+	std::cout << '\n' << BOLD("Const Volatile Integer") << '\n';
+	const volatile int x = INT_MAX;
+	const volatile int y = INT_MIN;
+	std::cout << BOLD("min(x, y): ") << min(x, y) << '\n';
+	std::cout << BOLD("max(x, y): ") << max(x, y) << '\n';
 }
 
 static void benchmark_swap()
