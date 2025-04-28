@@ -4,6 +4,7 @@
 #include "libftpp/numeric.hpp"
 #include "libftpp/random.hpp"
 #include "libftpp/string.hpp"
+#include "libftpp/type_traits.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <deque>
@@ -33,13 +34,13 @@ try {
 	const std::size_t size =
 	    argc == 2 ? ft::from_string<std::size_t>(argv[1]) : 64;
 
-	print_seperator("Vector");
+	print_seperator("Vector of char");
 	test_find_shuffled<std::vector<char> >(size);
 
-	print_seperator("Deque");
-	test_find_shuffled<std::deque<char> >(size);
+	print_seperator("Deque of int");
+	test_find_shuffled<std::deque<int> >(size);
 
-	print_seperator("List");
+	print_seperator("List of char");
 	test_find_shuffled<std::list<char> >(size);
 }
 catch (const std::exception& e) {
@@ -72,14 +73,15 @@ static void find_shuffled(std::size_t size, std::size_t target_amount)
 		return;
 	}
 
-	const char dflt = '.';
-	const char target = 'O';
-	const char found = 'X';
+	typedef typename C::value_type Elem;
+	const Elem dflt = ft::is_same<Elem, char>::value ? '.' : 0;
+	const Elem target = ft::is_same<Elem, char>::value ? 'O' : 1;
+	const Elem found = ft::is_same<Elem, char>::value ? 'X' : 2;
 
 	C container;
 	{
 		// Shuffle
-		std::vector<typename C::value_type> vec(size - target_amount, dflt);
+		std::vector<Elem> vec(size - target_amount, dflt);
 		vec.insert(vec.end(), target_amount, target);
 		std::srand(ft::urandom<unsigned int>());
 		std::random_shuffle(vec.begin(), vec.end());
