@@ -1,11 +1,13 @@
 #include "easyfind.hpp"
 #include "libftpp/format.hpp"
 #include "libftpp/functional.hpp"
+#include "libftpp/numeric.hpp"
 #include "libftpp/random.hpp"
 #include "libftpp/string.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <deque>
+#include <exception>
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -13,34 +15,48 @@
 #include <vector>
 
 template <typename C>
-static void test_find_shuffled();
+static void test_find_shuffled(std::size_t size);
 template <typename C>
 static void find_shuffled(std::size_t size, std::size_t target_amount);
 template <typename C>
 static void print_container(const C& container);
 static void print_seperator(const std::string& title);
 
-int main()
-{
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+int main(int argc, char* argv[])
+try {
+	if (argc > 2) {
+		std::cerr << "Usage: " << argv[0] << " [container_size]" << '\n';
+		return 1;
+	}
+
+	const std::size_t size =
+	    argc == 2 ? ft::from_string<std::size_t>(argv[1]) : 64;
+
 	print_seperator("Vector");
-	test_find_shuffled<std::vector<char> >();
+	test_find_shuffled<std::vector<char> >(size);
 
 	print_seperator("Deque");
-	test_find_shuffled<std::deque<char> >();
+	test_find_shuffled<std::deque<char> >(size);
 
 	print_seperator("List");
-	test_find_shuffled<std::list<char> >();
+	test_find_shuffled<std::list<char> >(size);
 }
+catch (const std::exception& e) {
+	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
+	return 2;
+}
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
 template <typename C>
-static void test_find_shuffled()
+static void test_find_shuffled(std::size_t size)
 {
-	find_shuffled<C>(64, 1);
-	find_shuffled<C>(64, 2);
-	find_shuffled<C>(64, 16);
-	find_shuffled<C>(64, 63);
-	find_shuffled<C>(64, 64);
-	find_shuffled<C>(64, 0);
+	find_shuffled<C>(size, 1);
+	find_shuffled<C>(size, 2);
+	find_shuffled<C>(size, size / 4);
+	find_shuffled<C>(size, ft::sub_sat<std::size_t>(size, 1));
+	find_shuffled<C>(size, size);
+	find_shuffled<C>(size, 0);
 	find_shuffled<C>(0, 0);
 }
 
