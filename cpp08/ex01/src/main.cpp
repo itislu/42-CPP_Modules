@@ -37,6 +37,7 @@ print_addNumber(Span& sp, const InputIt& first, const InputIt& last);
 static void print_spans(const Span& sp);
 static void print_seperator(const std::string& title);
 static std::string format_with_thousands_sep(unsigned int value);
+static bool running_on_valgrind();
 
 int main(int argc, char* argv[])
 try {
@@ -307,6 +308,12 @@ static void add_many_intervaled(unsigned int amount, unsigned int intervals)
 {
 	std::cout << '\n'
 	          << BOLD(UNDERLINE(format_with_thousands_sep(amount))) << '\n';
+	if (amount > 100000 && running_on_valgrind()) {
+		std::cout << ft::log::info(
+		    GRAY("Skipping larger tests when running under Valgrind"))
+		          << "\n";
+		return;
+	}
 
 	std::vector<int> range(amount);
 	std::srand(ft::urandom<unsigned int>());
@@ -330,6 +337,12 @@ static void add_many_timed(unsigned int amount)
 	std::cout << '\n'
 	          << BOLD(UNDERLINE(format_with_thousands_sep(amount) + " (timed)"))
 	          << '\n';
+	if (amount > 100000 && running_on_valgrind()) {
+		std::cout << ft::log::info(
+		    GRAY("Skipping larger tests when running under Valgrind"))
+		          << "\n";
+		return;
+	}
 
 	std::vector<int> range(amount);
 	std::srand(ft::urandom<unsigned int>());
@@ -461,6 +474,11 @@ static std::string format_with_thousands_sep(unsigned int value)
 		result.insert(pos, ",");
 	}
 	return result;
+}
+
+static bool running_on_valgrind()
+{
+	return std::getenv("RUNNING_ON_VALGRIND") != NULL;
 }
 
 // NOLINTEND(readability-magic-numbers)
