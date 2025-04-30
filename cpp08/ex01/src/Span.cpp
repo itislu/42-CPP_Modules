@@ -39,8 +39,8 @@ void Span::swap(Span& other)
 void Span::addNumber(int nbr)
 {
 	if (_elems.size() == _max_size) {
-		throw std::runtime_error("Trying to addNumber(" + ft::to_string(nbr)
-		                         + ") to already full Span ("
+		throw std::runtime_error("Trying to add " + ft::to_string(nbr)
+		                         + " to already full Span ("
 		                         + ft::to_string(_max_size) + ")");
 	}
 	const std::multiset<int>::iterator pos = _elems.insert(nbr);
