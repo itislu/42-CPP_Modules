@@ -4,7 +4,8 @@
 #include <stack>
 
 template <typename T, typename Container>
-MutantStack<T, Container>::MutantStack()
+MutantStack<T, Container>::MutantStack(const Container& cont)
+    : std::stack<T, Container>(cont)
 {}
 
 template <typename T, typename Container>

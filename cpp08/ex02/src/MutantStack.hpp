@@ -11,7 +11,7 @@ public:
 	typedef typename Container::reverse_iterator reverse_iterator;
 	typedef typename Container::const_reverse_iterator const_reverse_iterator;
 
-	MutantStack();
+	explicit MutantStack(const Container& cont = Container());
 	MutantStack(const MutantStack& other);
 	MutantStack& operator=(const MutantStack& other);
 	~MutantStack();
