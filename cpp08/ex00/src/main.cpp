@@ -44,7 +44,8 @@ try {
 	test_find_shuffled<std::list<char> >(size);
 }
 catch (const std::exception& e) {
-	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
+	std::cerr << ft::log::error(BOLD("Unexpected exception: ") + e.what())
+	          << '\n';
 	return 2;
 }
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
