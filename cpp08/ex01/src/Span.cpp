@@ -86,4 +86,4 @@ unsigned int Span::longestSpan() const
 	return _longest_span;
 }
 
-void swap(Span& a, Span& b) { a.swap(b); }
+void swap(Span& lhs, Span& rhs) { lhs.swap(rhs); }

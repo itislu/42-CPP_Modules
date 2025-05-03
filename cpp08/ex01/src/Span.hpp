@@ -26,6 +26,6 @@ private:
 	unsigned int _longest_span;
 };
 
-void swap(Span& a, Span& b);
+void swap(Span& lhs, Span& rhs);
 
 #include "Span.tpp" // IWYU pragma: export
