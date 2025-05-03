@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Csv.hpp"
-#include "libftpp/Array.hpp"
 #include "libftpp/format.hpp"
 #include "libftpp/string.hpp"
 #include <algorithm>
@@ -11,6 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 template <std::size_t Columns>
 Csv<Columns>::Csv(const std::string& filename,
@@ -48,7 +48,7 @@ typename Csv<Columns>::iterator Csv<Columns>::begin()
 	_file.seekg(0);
 	_line_nbr = 0;
 	if (_has_header) {
-		ft::Array<std::string, Columns> header;
+		typename iterator::value_type header;
 		_process_next_line(header);
 	}
 	return iterator(*this);
@@ -61,8 +61,7 @@ typename Csv<Columns>::iterator Csv<Columns>::end()
 }
 
 template <std::size_t Columns>
-bool
-Csv<Columns>::_process_next_line(ft::Array<std::string, Columns>& out_fields)
+bool Csv<Columns>::_process_next_line(typename iterator::value_type& out_fields)
 {
 	while (true) {
 		std::string line;
@@ -78,9 +77,10 @@ Csv<Columns>::_process_next_line(ft::Array<std::string, Columns>& out_fields)
 				++cur_pos;
 			}
 			std::string::size_type next_pos = line.find(_delim, cur_pos);
-			out_fields[col] = line.substr(cur_pos, next_pos - cur_pos);
+			out_fields[col] = std::make_pair(
+			    line.substr(cur_pos, next_pos - cur_pos), _line_nbr);
 			if (_trim_whitespace) {
-				ft::trim(out_fields[col]);
+				ft::trim(out_fields[col].first);
 			}
 			cur_pos = next_pos;
 			++col;

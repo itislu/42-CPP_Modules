@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iterator>
 #include <string>
+#include <utility>
 
 /**
  * Lazy iteration over a filestream.
@@ -17,7 +18,10 @@ public:
 	class iterator {
 	public:
 		typedef std::input_iterator_tag iterator_category;
-		typedef ft::Array<std::string, Columns> value_type;
+		typedef ft::Array<
+		    std::pair<std::string /*field*/, std::size_t /*line number*/>,
+		    Columns>
+		    value_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef const value_type* pointer;
 		typedef const value_type& reference;
@@ -65,7 +69,7 @@ private:
 	Csv(const Csv& other);
 	Csv& operator=(Csv other);
 
-	bool _process_next_line(ft::Array<std::string, Columns>& out_fields);
+	bool _process_next_line(typename iterator::value_type& out_fields);
 
 	std::ifstream _file;
 	std::string _filename;

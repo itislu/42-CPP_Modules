@@ -36,7 +36,8 @@ try {
 	Csv<2> csv(argv[1], '|');
 	for (Csv<2>::iterator cur = csv.begin(), end = csv.end(); cur != end;
 	     ++cur) {
-		std::cout << (*cur)[0] << ", " << (*cur)[1] << '\n';
+		std::cout << (*cur)[0].second << ": " << (*cur)[0].first << ", "
+		          << (*cur)[1].first << '\n';
 	}
 }
 catch (const std::exception& e) {
