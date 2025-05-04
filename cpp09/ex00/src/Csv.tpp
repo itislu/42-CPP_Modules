@@ -48,7 +48,7 @@ typename Csv<Columns>::iterator Csv<Columns>::begin()
 	_file.seekg(0);
 	_line_nbr = 0;
 	if (_has_header) {
-		typename iterator::value_type header;
+		value_type header;
 		_process_next_line(header);
 	}
 	return iterator(*this);
@@ -61,7 +61,7 @@ typename Csv<Columns>::iterator Csv<Columns>::end()
 }
 
 template <std::size_t Columns>
-bool Csv<Columns>::_process_next_line(typename iterator::value_type& out_fields)
+bool Csv<Columns>::_process_next_line(value_type& out_fields)
 {
 	while (true) {
 		std::string line;

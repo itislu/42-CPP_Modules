@@ -15,6 +15,18 @@
 template <std::size_t Columns>
 class Csv {
 public:
+	class iterator;
+
+	typedef typename iterator::value_type value_type;
+	typedef std::size_t size_type;
+	typedef typename iterator::difference_type difference_type;
+	typedef typename iterator::reference reference;
+	typedef typename iterator::reference const_reference;
+	typedef typename iterator::pointer pointer;
+	typedef typename iterator::pointer const_pointer;
+	typedef iterator iterator;
+	typedef iterator const_iterator;
+
 	class iterator {
 	public:
 		typedef std::input_iterator_tag iterator_category;
@@ -69,7 +81,7 @@ private:
 	Csv(const Csv& other);
 	Csv& operator=(Csv other);
 
-	bool _process_next_line(typename iterator::value_type& out_fields);
+	bool _process_next_line(value_type& out_fields);
 
 	std::ifstream _file;
 	std::string _filename;
