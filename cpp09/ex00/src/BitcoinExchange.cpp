@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include "Date.hpp"
+#include "libftpp/Optional.hpp"
 #include <algorithm>
 #include <ctime>
 #include <map>
@@ -20,14 +21,19 @@ BitcoinExchange& BitcoinExchange::operator=(BitcoinExchange other)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-void BitcoinExchange::insert(std::time_t date, double value)
+ft::Optional<double> BitcoinExchange::insert(std::time_t date, double value)
 {
 	if (value < 0) {
 		throw std::invalid_argument("Negative value");
 	}
-	if (!_db.insert(std::make_pair(date, value)).second) {
-		throw std::invalid_argument("Duplicate date");
+	const std::pair<std::map<std::time_t, double>::iterator, bool> result =
+	    _db.insert(std::make_pair(date, value));
+	if (!result.second /*inserted?*/) {
+		const double prev_value = (*result.first /*entry*/).second /*value*/;
+		(*result.first).second = value;
+		return prev_value;
 	}
+	return ft::nullopt;
 }
 
 double BitcoinExchange::find(std::time_t date) const

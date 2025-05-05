@@ -1,6 +1,7 @@
 #include "BitcoinExchange.hpp"
 #include "Csv.hpp"
 #include "Date.hpp"
+#include "libftpp/Optional.hpp"
 #include "libftpp/format.hpp"
 #include <cstddef>
 #include <ctime>
@@ -79,7 +80,18 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 		const std::string& value_str = (*cur)[1].data;
 
 		try {
-			btc.insert(parse_date(date_str), parse_value<double>(value_str));
+			const std::time_t date = parse_date(date_str);
+			const double value = parse_value<double>(value_str);
+			const ft::Optional<double> prev_value = btc.insert(date, value);
+
+			if (prev_value) {
+				std::cerr << ft::log::warn() << data_file << ":" << line_nbr
+				          << ": Duplicate entry for " << date_str
+				          << (*prev_value != value
+				                  ? " - replaced with new value"
+				                  : "")
+				          << '\n';
+			}
 		}
 		catch (const std::logic_error& e) {
 			std::cerr << ft::log::warn() << data_file << ":" << line_nbr << ": "

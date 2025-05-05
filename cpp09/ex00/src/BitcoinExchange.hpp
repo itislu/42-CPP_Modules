@@ -1,5 +1,6 @@
 #pragma once
 
+#include "libftpp/Optional.hpp"
 #include <ctime>
 #include <map>
 
@@ -12,9 +13,11 @@ public:
 
 	/**
 	 * @throws std::invalid_argument When trying to insert a negative value
-	 * @throws std::invalid_argument When an entry with that date already exists
+	 *
+	 * @returns A `ft::Optional<double>` containing the replaced value, or an
+	 * empty `ft::Optional` if no previous value existed for that date
 	 */
-	void insert(std::time_t date, double value);
+	ft::Optional<double> insert(std::time_t date, double value);
 	/**
 	 * @throws std::out_of_range When the database is empty or `date` is before
 	 * the first entry in the database
