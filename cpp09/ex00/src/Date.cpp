@@ -13,13 +13,13 @@ const char* const Date::default_format = "%Y-%m-%d";
  *   2. Use `std::mktime()` to validate and serialize date to `std::time_t`.
  */
 std::time_t Date::serialize(const std::string& str,
-                            std::string::size_type& endpos,
+                            std::string::size_type* endpos_out,
                             const char* format)
 {
 	std::tm tm = {};
 	const char* endptr = strptime(str.c_str(), format, &tm);
 	if (endptr == NULL) {
-		throw std::invalid_argument("Invalid date format");
+		throw std::invalid_argument("Invalid date format: " + str);
 	}
 
 	const int year = tm.tm_year;
@@ -30,10 +30,12 @@ std::time_t Date::serialize(const std::string& str,
 	const std::time_t time = std::mktime(&tm);
 	if (time == -1 || tm.tm_year != year || tm.tm_mon != month
 	    || tm.tm_mday != day) {
-		throw std::out_of_range("Impossible date");
+		throw std::out_of_range("Impossible date: " + str);
 	}
 
-	endpos = endptr - str.c_str();
+	if (endpos_out) {
+		*endpos_out = endptr - str.c_str();
+	}
 	return time;
 }
 

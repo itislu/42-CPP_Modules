@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iterator>
 #include <string>
-#include <utility>
 
 /**
  * Lazy iteration over a filestream.
@@ -16,6 +15,7 @@ template <std::size_t Columns>
 class Csv {
 public:
 	class iterator;
+	struct Field;
 
 	typedef typename iterator::value_type value_type;
 	typedef std::size_t size_type;
@@ -30,10 +30,7 @@ public:
 	class iterator {
 	public:
 		typedef std::input_iterator_tag iterator_category;
-		typedef ft::Array<
-		    std::pair<std::string /*field*/, std::size_t /*line number*/>,
-		    Columns>
-		    value_type;
+		typedef ft::Array<Field, Columns> value_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef const value_type* pointer;
 		typedef const value_type& reference;
@@ -66,6 +63,11 @@ public:
 		Throw
 	};
 
+	struct Field { // NOLINT(cppcoreguidelines-pro-type-member-init)
+		std::string data;
+		std::size_t line_nbr;
+	};
+
 	Csv(const std::string& filename,
 	    char delim = ',',
 	    bool has_header = true,
@@ -76,16 +78,18 @@ public:
 	iterator begin();
 	iterator end();
 
+	std::size_t cur_line_nbr() const throw();
+
 private:
 	Csv();
 	Csv(const Csv& other);
 	Csv& operator=(Csv other);
 
-	bool _process_next_line(value_type& out_fields);
+	bool _process_next_line(value_type& fields_out);
 
 	std::ifstream _file;
 	std::string _filename;
-	std::size_t _line_nbr;
+	std::size_t _cur_line_nbr;
 	OnRowError _on_row_error;
 	char _delim;
 	bool _has_header;

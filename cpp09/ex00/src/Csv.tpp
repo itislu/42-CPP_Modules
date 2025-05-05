@@ -10,7 +10,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <utility>
 
 template <std::size_t Columns>
 Csv<Columns>::Csv(const std::string& filename,
@@ -19,20 +18,20 @@ Csv<Columns>::Csv(const std::string& filename,
                   bool trim_whitespace,
                   OnRowError on_row_error)
     : _filename(filename),
-      _line_nbr(0),
+      _cur_line_nbr(0),
       _on_row_error(on_row_error),
       _delim(delim),
       _has_header(has_header),
       _trim_whitespace(trim_whitespace)
 {
 	if (!ft::ends_with(_filename, ".csv")) {
-		std::cerr << ft::log::warn("Csv: filename does not end with \".csv\"")
+		std::cerr << ft::log::warn("Csv: Filename does not end with \".csv\"")
 		          << '\n';
 	}
 	_file.exceptions(std::ifstream::badbit);
 	_file.open(_filename.c_str());
 	if (!_file.is_open()) {
-		throw std::runtime_error("Csv: failed to open file \"" + _filename
+		throw std::runtime_error("Csv: Failed to open file \"" + _filename
 		                         + "\"");
 	}
 }
@@ -46,7 +45,7 @@ typename Csv<Columns>::iterator Csv<Columns>::begin()
 {
 	_file.clear();
 	_file.seekg(0);
-	_line_nbr = 0;
+	_cur_line_nbr = 0;
 	if (_has_header) {
 		value_type header;
 		_process_next_line(header);
@@ -61,14 +60,20 @@ typename Csv<Columns>::iterator Csv<Columns>::end()
 }
 
 template <std::size_t Columns>
-bool Csv<Columns>::_process_next_line(value_type& out_fields)
+std::size_t Csv<Columns>::cur_line_nbr() const throw()
+{
+	return _cur_line_nbr;
+}
+
+template <std::size_t Columns>
+bool Csv<Columns>::_process_next_line(value_type& fields_out)
 {
 	while (true) {
 		std::string line;
 		if (!std::getline(_file, line)) {
 			return false;
 		}
-		++_line_nbr;
+		++_cur_line_nbr;
 
 		std::size_t col = 0;
 		std::string::size_type cur_pos = 0;
@@ -77,22 +82,24 @@ bool Csv<Columns>::_process_next_line(value_type& out_fields)
 				++cur_pos;
 			}
 			std::string::size_type next_pos = line.find(_delim, cur_pos);
-			out_fields[col] = std::make_pair(
-			    line.substr(cur_pos, next_pos - cur_pos), _line_nbr);
+			fields_out[col].data = line.substr(cur_pos, next_pos - cur_pos);
 			if (_trim_whitespace) {
-				ft::trim(out_fields[col].first);
+				ft::trim(fields_out[col].data);
 			}
+			fields_out[col].line_nbr = _cur_line_nbr;
 			cur_pos = next_pos;
 			++col;
 		}
 
 		if (col < Columns || cur_pos != std::string::npos) {
-			const std::string msg = _filename + ":" + ft::to_string(_line_nbr)
+			const std::string msg = _filename + ":"
+			                        + ft::to_string(_cur_line_nbr)
 			                        + (col < Columns ? ": Not enough columns"
 			                                         : ": Too many columns");
 			switch (_on_row_error) {
 			case Skip:
-				std::cerr << ft::log::warn(msg) << '\n';
+				std::cerr << ft::log::warn(msg) << " - skipping line "
+				          << _cur_line_nbr << '\n';
 				continue;
 			case Stop:
 				std::cerr << ft::log::error(msg) << '\n';

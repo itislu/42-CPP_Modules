@@ -14,7 +14,7 @@ public:
 	 * @throws std::out_of_range When impossible date
 	 */
 	static std::time_t serialize(const std::string& str,
-	                             std::string::size_type& endpos,
+	                             std::string::size_type* endpos_out = NULL,
 	                             const char* format = default_format);
 	/**
 	 * @brief Converts seconds since the Unix epoch to a formatted string
