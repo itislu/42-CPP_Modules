@@ -10,7 +10,7 @@ public:
 	/**
 	 * @brief Converts a formatted string to seconds since the Unix epoch
 	 *
-	 * @throws std::invalid_argument When str does not match the format
+	 * @throws std::invalid_argument When `str` does not match the format
 	 * @throws std::out_of_range When impossible date
 	 */
 	static std::time_t serialize(const std::string& str,

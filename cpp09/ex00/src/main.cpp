@@ -1,10 +1,8 @@
 #include "BitcoinExchange.hpp"
 #include "Csv.hpp"
-#include "Date.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/string.hpp"
-#include "libftpp/type_traits.hpp"
+#include "parse.hpp"
 #include <cstddef>
 #include <ctime>
 #include <exception>
@@ -17,11 +15,6 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file);
 static void query_exchange(BitcoinExchange& btc, const std::string& query_file);
 template <std::size_t Columns>
 static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv);
-static std::time_t parse_date(const std::string& str);
-static double parse_rate(const std::string& str);
-static float parse_amount(const std::string& str);
-template <typename To>
-static To parse_field(const std::string& str, const std::string& field_name);
 template <std::size_t Columns>
 static std::ostream& log_line_warning(Csv<Columns>& csv);
 
@@ -115,7 +108,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 			const std::string& amount_str = (*cur)->fields[1];
 
 			const std::time_t date = parse_date(date_str);
-			const float amount = parse_amount(amount_str);
+			const float amount = parse_amount(amount_str, max_query_amount);
 			const double value = btc.find(date) * amount;
 
 			std::cout << ft::log::ok() << date_str << ": BTC " << amount_str
@@ -159,50 +152,6 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 	}
 
 	return ++cur;
-}
-
-static std::time_t parse_date(const std::string& str)
-{
-	return parse_field<std::time_t>(str, "date");
-}
-
-static double parse_rate(const std::string& str)
-{
-	return parse_field<double>(str, "exchange rate");
-}
-
-static float parse_amount(const std::string& str)
-{
-	const float amount = parse_field<float>(str, "query amount");
-	if (amount < 0) {
-		throw std::invalid_argument("Negative query amount");
-	}
-	if (amount > max_query_amount) {
-		throw std::invalid_argument("Too large query amount");
-	}
-	return amount;
-}
-
-template <typename To>
-static To parse_field(const std::string& str, const std::string& field_name)
-{
-	if (str.empty()) {
-		throw std::invalid_argument("Empty " + field_name + " field");
-	}
-	To result;
-	std::string::size_type endpos = 0;
-
-	if (ft::is_same<To, std::time_t>::value) {
-		result = Date::serialize(str, &endpos);
-	}
-	else {
-		result = ft::from_string<To>(str, &endpos);
-	}
-	if (endpos != str.length()) {
-		throw std::invalid_argument("Excess characters in " + field_name
-		                            + " field");
-	}
-	return result;
 }
 
 template <std::size_t Columns>
