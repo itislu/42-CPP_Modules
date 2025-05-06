@@ -3,6 +3,7 @@
 #include "Date.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/format.hpp"
+#include "libftpp/string.hpp"
 #include <cstddef>
 #include <ctime>
 #include <exception>
@@ -158,7 +159,18 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 	}
 
 	if (cur->has_value()) {
-		std::cout << ft::log::info("Skipping header") << '\n';
+		try {
+			(void)parse_date((*cur)->fields[0]);
+			(void)parse_rate<double>((*cur)->fields[1]);
+			// Valid fields, so not a header
+			return cur;
+		}
+		catch (const std::logic_error&) {
+			// REASON: Parse tests not successful
+			// Valid row but not valid fields
+		}
+		std::cout << ft::log::info("Skipping header: \"") << (*cur)->line
+		          << "\"" << '\n';
 	}
 	else {
 		log_line_warning(csv) << cur->error() << " - invalid header" << '\n';
