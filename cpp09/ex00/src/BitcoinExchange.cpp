@@ -21,16 +21,16 @@ BitcoinExchange& BitcoinExchange::operator=(BitcoinExchange other)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-ft::Optional<double> BitcoinExchange::insert(std::time_t date, double value)
+ft::Optional<double> BitcoinExchange::insert(std::time_t date, double rate)
 {
-	if (value < 0) {
-		throw std::invalid_argument("Negative value");
+	if (rate < 0) {
+		throw std::invalid_argument("Negative exchange rate");
 	}
 	const std::pair<std::map<std::time_t, double>::iterator, bool> result =
-	    _db.insert(std::make_pair(date, value));
+	    _db.insert(std::make_pair(date, rate));
 	if (!result.second /*inserted?*/) {
-		const double prev_value = (*result.first /*entry*/).second /*value*/;
-		(*result.first).second = value;
+		const double prev_value = (*result.first /*entry*/).second /*rate*/;
+		(*result.first).second = rate;
 		return prev_value;
 	}
 	return ft::nullopt;

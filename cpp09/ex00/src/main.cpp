@@ -36,7 +36,7 @@ template <std::size_t Columns>
 static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv);
 static std::time_t parse_date(const std::string& str);
 template <typename T>
-static T parse_value(const std::string& str);
+static T parse_rate(const std::string& str);
 template <typename T>
 static T parse_amount(const std::string& str);
 template <std::size_t Columns>
@@ -84,17 +84,18 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 				throw std::invalid_argument(cur->error());
 			}
 			const std::string& date_str = (*cur)->fields[0];
-			const std::string& value_str = (*cur)->fields[1];
+			const std::string& rate_str = (*cur)->fields[1];
 
 			const std::time_t date = parse_date(date_str);
-			const double value = parse_value<double>(value_str);
-			const ft::Optional<double> prev_value = btc.insert(date, value);
+			const double rate = parse_rate<double>(rate_str);
+			const ft::Optional<double> prev_rate = btc.insert(date, rate);
 
-			if (prev_value) {
+			if (prev_rate) {
 				log_line_warning(csv)
 				    << ": Duplicate entry for " << date_str
-				    << (*prev_value != value ? " - replaced with new value"
-				                             : "")
+				    << (*prev_rate != rate
+				            ? " - replaced with new exchange rate"
+				            : "")
 				    << '\n';
 			}
 		}
@@ -177,20 +178,21 @@ static std::time_t parse_date(const std::string& str)
 }
 
 template <typename T>
-static T parse_value(const std::string& str)
+static T parse_rate(const std::string& str)
 {
 	std::string::size_type endpos = 0;
-	const T value = ft::from_string<T>(str, &endpos);
+	const T rate = ft::from_string<T>(str, &endpos);
 	if (endpos != str.length()) {
-		throw std::invalid_argument("Excess characters in value column");
+		throw std::invalid_argument(
+		    "Excess characters in exchange rate column");
 	}
-	return value;
+	return rate;
 }
 
 template <typename T>
 static T parse_amount(const std::string& str)
 {
-	const T amount = parse_value<T>(str);
+	const T amount = parse_rate<T>(str);
 	if (amount < 0) {
 		throw std::invalid_argument("Negative query amount");
 	}
