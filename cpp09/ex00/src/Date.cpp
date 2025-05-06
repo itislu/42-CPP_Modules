@@ -19,7 +19,7 @@ std::time_t Date::serialize(const std::string& str,
 	std::tm tm = {};
 	const char* endptr = strptime(str.c_str(), format, &tm);
 	if (endptr == NULL) {
-		throw std::invalid_argument("Invalid date format: " + str);
+		throw std::invalid_argument("Invalid date format: \"" + str + "\"");
 	}
 
 	const int year = tm.tm_year;

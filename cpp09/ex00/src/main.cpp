@@ -12,34 +12,13 @@
 #include <stdexcept>
 #include <string>
 
-// What if duplicate date in data.csv? - Quit with a detailed error message.
-
-/*
-I would like to mostly use the same parsing for data.csv and input.
-
-I want warning if ...
-- header missing
-  - (take format of first data line)
-- different header than subject
-- data format mismatch with header
-- invalid date
-- invalid date format
-- invalid value (string)
-- negative value
-- too large value
-
-Any warning should skip that line.
-*/
-
 static void fill_exchange(BitcoinExchange& btc, const std::string& data_file);
 static void query_exchange(BitcoinExchange& btc, const std::string& query_file);
 template <std::size_t Columns>
 static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv);
 static std::time_t parse_date(const std::string& str);
-template <typename T>
-static T parse_rate(const std::string& str);
-template <typename T>
-static T parse_amount(const std::string& str);
+static double parse_rate(const std::string& str);
+static float parse_amount(const std::string& str);
 template <std::size_t Columns>
 static std::ostream& log_line_warning(Csv<Columns>& csv);
 
@@ -88,7 +67,7 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 			const std::string& rate_str = (*cur)->fields[1];
 
 			const std::time_t date = parse_date(date_str);
-			const double rate = parse_rate<double>(rate_str);
+			const double rate = parse_rate(rate_str);
 			const ft::Optional<double> prev_rate = btc.insert(date, rate);
 
 			if (prev_rate) {
@@ -133,7 +112,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 			const std::string& amount_str = (*cur)->fields[1];
 
 			const std::time_t date = parse_date(date_str);
-			const float amount = parse_amount<float>(amount_str);
+			const float amount = parse_amount(amount_str);
 			const double value = btc.find(date) * amount;
 
 			std::cout << ft::log::ok() << date_str << ": BTC " << amount_str
@@ -161,7 +140,7 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 	if (cur->has_value()) {
 		try {
 			(void)parse_date((*cur)->fields[0]);
-			(void)parse_rate<double>((*cur)->fields[1]);
+			(void)parse_rate((*cur)->fields[1]);
 			// Valid fields, so not a header
 			return cur;
 		}
@@ -189,11 +168,10 @@ static std::time_t parse_date(const std::string& str)
 	return date;
 }
 
-template <typename T>
-static T parse_rate(const std::string& str)
+static double parse_rate(const std::string& str)
 {
 	std::string::size_type endpos = 0;
-	const T rate = ft::from_string<T>(str, &endpos);
+	const double rate = ft::from_string<double>(str, &endpos);
 	if (endpos != str.length()) {
 		throw std::invalid_argument(
 		    "Excess characters in exchange rate column");
@@ -201,10 +179,13 @@ static T parse_rate(const std::string& str)
 	return rate;
 }
 
-template <typename T>
-static T parse_amount(const std::string& str)
+static float parse_amount(const std::string& str)
 {
-	const T amount = parse_rate<T>(str);
+	std::string::size_type endpos = 0;
+	const float amount = ft::from_string<float>(str, &endpos);
+	if (endpos != str.length()) {
+		throw std::invalid_argument("Excess characters in query amount column");
+	}
 	if (amount < 0) {
 		throw std::invalid_argument("Negative query amount");
 	}
