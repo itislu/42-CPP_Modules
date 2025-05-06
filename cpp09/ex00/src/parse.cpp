@@ -3,6 +3,7 @@
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
 #include <ctime>
+#include <ios>
 #include <stdexcept>
 #include <string>
 
@@ -44,7 +45,7 @@ static To parse_field(const std::string& str, const std::string& field_name)
 		result = Date::serialize(str, &endpos);
 	}
 	else {
-		result = ft::from_string<To>(str, &endpos);
+		result = ft::from_string<To>(str, std::ios::fixed, &endpos);
 	}
 	if (endpos != str.length()) {
 		throw std::invalid_argument("Excess characters in " + field_name
