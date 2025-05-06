@@ -32,11 +32,15 @@ Any warning should skip that line.
 
 static void fill_exchange(BitcoinExchange& btc, const std::string& data_file);
 static void query_exchange(BitcoinExchange& btc, const std::string& query_file);
+template <std::size_t Columns>
+static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv);
 static std::time_t parse_date(const std::string& str);
 template <typename T>
 static T parse_value(const std::string& str);
 template <typename T>
 static T parse_amount(const std::string& str);
+template <std::size_t Columns>
+static std::ostream& log_line_warning(Csv<Columns>& csv);
 
 static const char* const default_data_file = "data.csv";
 static const float max_query_amount = 1000;
@@ -73,34 +77,38 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 
 	Csv<2> csv(data_file);
 
-	for (Csv<2>::iterator cur = csv.begin(), end = csv.end(); cur != end;
+	for (Csv<2>::iterator cur = skip_header(csv), end = csv.end(); cur != end;
 	     ++cur) {
-		const std::size_t line_nbr = (*cur)[0].line_nbr;
-		const std::string& date_str = (*cur)[0].data;
-		const std::string& value_str = (*cur)[1].data;
-
 		try {
+			if (!cur->has_value()) {
+				throw std::invalid_argument(cur->error());
+			}
+			const std::string& date_str = (*cur)->fields[0];
+			const std::string& value_str = (*cur)->fields[1];
+
 			const std::time_t date = parse_date(date_str);
 			const double value = parse_value<double>(value_str);
 			const ft::Optional<double> prev_value = btc.insert(date, value);
 
 			if (prev_value) {
-				std::cerr << ft::log::warn() << data_file << ":" << line_nbr
-				          << ": Duplicate entry for " << date_str
-				          << (*prev_value != value
-				                  ? " - replaced with new value"
-				                  : "")
-				          << '\n';
+				log_line_warning(csv)
+				    << ": Duplicate entry for " << date_str
+				    << (*prev_value != value ? " - replaced with new value"
+				                             : "")
+				    << '\n';
 			}
 		}
 		catch (const std::logic_error& e) {
-			std::cerr << ft::log::warn() << data_file << ":" << line_nbr << ": "
-			          << e.what() << " - skipping line " << line_nbr << '\n';
+			log_line_warning(csv) << e.what() << " - skipping line "
+			                      << csv.cur_line_nbr() << '\n';
 		}
 	}
 
 	if (csv.cur_line_nbr() == 0) {
 		std::cerr << ft::log::warn(data_file + " is empty") << '\n';
+	}
+	else {
+		std::cout << ft::log::ok("Done") << '\n';
 	}
 }
 
@@ -113,13 +121,15 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 	Csv<2> csv(query_file, '|');
 	std::cout << std::fixed << std::setprecision(2);
 
-	for (Csv<2>::iterator cur = csv.begin(), end = csv.end(); cur != end;
+	for (Csv<2>::iterator cur = skip_header(csv), end = csv.end(); cur != end;
 	     ++cur) {
-		const std::size_t line_nbr = (*cur)[0].line_nbr;
-		const std::string& date_str = (*cur)[0].data;
-		const std::string& amount_str = (*cur)[1].data;
-
 		try {
+			if (!cur->has_value()) {
+				throw std::invalid_argument(cur->error());
+			}
+			const std::string& date_str = (*cur)->fields[0];
+			const std::string& amount_str = (*cur)->fields[1];
+
 			const std::time_t date = parse_date(date_str);
 			const float amount = parse_amount<float>(amount_str);
 			const double value = btc.find(date) * amount;
@@ -128,18 +138,32 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 			          << " = " << value << '\n';
 		}
 		catch (const std::logic_error& e) {
-			std::cerr << ft::log::warn() << query_file << ":" << line_nbr
-			          << ": " << e.what() << " - skipping line " << line_nbr
-			          << '\n';
+			log_line_warning(csv) << e.what() << " - skipping line "
+			                      << csv.cur_line_nbr() << '\n';
 		}
 	}
 
 	if (csv.cur_line_nbr() == 0) {
 		std::cerr << ft::log::warn(query_file + " is empty") << '\n';
 	}
-	else {
-		std::cout << ft::log::ok("Done") << '\n';
+}
+
+template <std::size_t Columns>
+static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
+{
+	typename Csv<Columns>::iterator cur = csv.begin();
+	if (cur == csv.end()) {
+		return cur;
 	}
+
+	if (cur->has_value()) {
+		std::cout << ft::log::info("Skipping header") << '\n';
+	}
+	else {
+		log_line_warning(csv) << cur->error() << " - invalid header" << '\n';
+	}
+
+	return ++cur;
 }
 
 static std::time_t parse_date(const std::string& str)
@@ -174,4 +198,11 @@ static T parse_amount(const std::string& str)
 		throw std::invalid_argument("Too large query amount");
 	}
 	return amount;
+}
+
+template <std::size_t Columns>
+static std::ostream& log_line_warning(Csv<Columns>& csv)
+{
+	return std::cerr << ft::log::warn() << csv.filename() << ":"
+	                 << csv.cur_line_nbr() << ": ";
 }

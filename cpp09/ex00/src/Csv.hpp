@@ -1,6 +1,7 @@
 #pragma once
 
 #include "libftpp/Array.hpp"
+#include "libftpp/Expected.hpp"
 #include <cstddef>
 #include <fstream>
 #include <iterator>
@@ -10,12 +11,13 @@
  * Lazy iteration over a filestream.
  * Does not support quoting of fields.
  * Iterator loosely follows design of `std::istream_iterator`.
+ * `++begin()` is guaranteed to be comparable to allow skipping a header.
  */
 template <std::size_t Columns>
 class Csv {
 public:
 	class iterator;
-	struct Field;
+	struct Row;
 
 	typedef typename iterator::value_type value_type;
 	typedef std::size_t size_type;
@@ -30,15 +32,15 @@ public:
 	class iterator {
 	public:
 		typedef std::input_iterator_tag iterator_category;
-		typedef ft::Array<Field, Columns> value_type;
+		typedef ft::Expected<Row, std::string> value_type;
 		typedef std::ptrdiff_t difference_type;
-		typedef const value_type* pointer;
 		typedef const value_type& reference;
+		typedef const value_type* pointer;
 
-		iterator();
+		iterator() throw();
 		iterator(Csv& csv);
-		iterator(const iterator& other);
-		iterator& operator=(iterator other);
+		iterator(const iterator& other) throw();
+		iterator& operator=(iterator other) throw();
 		~iterator();
 
 		reference operator*() const throw();
@@ -48,36 +50,31 @@ public:
 		bool operator==(const iterator& other) const throw();
 		bool operator!=(const iterator& other) const throw();
 
-		void swap(iterator& other);
+		void swap(iterator& other) throw();
 
 	private:
-		void _store_next_row();
+		void _request_next_row();
 
-		Csv* _csv;
-		value_type _cur_row;
+		Csv* _csv_ptr;
+		value_type* _cur_row_ptr;
+		bool _is_eof;
 	};
 
-	enum OnRowError {
-		Skip,
-		Stop,
-		Throw
-	};
-
-	struct Field { // NOLINT(cppcoreguidelines-pro-type-member-init)
-		std::string data;
+	struct Row { // NOLINT(cppcoreguidelines-pro-type-member-init)
+		ft::Array<std::string, Columns> fields;
+		std::string line;
 		std::size_t line_nbr;
 	};
 
 	Csv(const std::string& filename,
 	    char delim = ',',
-	    bool has_header = true,
-	    bool trim_whitespace = true,
-	    OnRowError on_row_error = Skip);
+	    bool trim_whitespace = true);
 	~Csv();
 
 	iterator begin();
-	iterator end();
+	iterator end() const throw();
 
+	const std::string& filename() const throw();
 	std::size_t cur_line_nbr() const throw();
 
 private:
@@ -85,14 +82,15 @@ private:
 	Csv(const Csv& other);
 	Csv& operator=(Csv other);
 
-	bool _process_next_line(value_type& fields_out);
+	bool _process_next_line();
 
 	std::ifstream _file;
 	std::string _filename;
+	value_type _cur_row;
+	value_type _cur_row_error;
 	std::size_t _cur_line_nbr;
-	OnRowError _on_row_error;
+	bool _is_eof;
 	char _delim;
-	bool _has_header;
 	bool _trim_whitespace;
 };
 
@@ -101,6 +99,6 @@ class Csv<0>;
 
 template <std::size_t Columns>
 void swap(typename Csv<Columns>::iterator& lhs,
-          typename Csv<Columns>::iterator& rhs);
+          typename Csv<Columns>::iterator& rhs) throw();
 
 #include "Csv.tpp" // IWYU pragma: export

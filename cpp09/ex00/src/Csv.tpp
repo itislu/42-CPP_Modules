@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Csv.hpp"
+#include "libftpp/Expected.hpp"
+#include "libftpp/algorithm.hpp"
 #include "libftpp/format.hpp"
 #include "libftpp/string.hpp"
-#include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <fstream>
@@ -12,16 +13,13 @@
 #include <string>
 
 template <std::size_t Columns>
-Csv<Columns>::Csv(const std::string& filename,
-                  char delim,
-                  bool has_header,
-                  bool trim_whitespace,
-                  OnRowError on_row_error)
+Csv<Columns>::Csv(const std::string& filename, char delim, bool trim_whitespace)
     : _filename(filename),
+      _cur_row(),
+      _cur_row_error(ft::unexpect),
       _cur_line_nbr(0),
-      _on_row_error(on_row_error),
+      _is_eof(false),
       _delim(delim),
-      _has_header(has_header),
       _trim_whitespace(trim_whitespace)
 {
 	if (!ft::ends_with(_filename, ".csv")) {
@@ -46,17 +44,20 @@ typename Csv<Columns>::iterator Csv<Columns>::begin()
 	_file.clear();
 	_file.seekg(0);
 	_cur_line_nbr = 0;
-	if (_has_header) {
-		value_type header;
-		_process_next_line(header);
-	}
+	_is_eof = false;
 	return iterator(*this);
 }
 
 template <std::size_t Columns>
-typename Csv<Columns>::iterator Csv<Columns>::end()
+typename Csv<Columns>::iterator Csv<Columns>::end() const throw()
 {
 	return iterator();
+}
+
+template <std::size_t Columns>
+const std::string& Csv<Columns>::filename() const throw()
+{
+	return _filename;
 }
 
 template <std::size_t Columns>
@@ -66,75 +67,64 @@ std::size_t Csv<Columns>::cur_line_nbr() const throw()
 }
 
 template <std::size_t Columns>
-bool Csv<Columns>::_process_next_line(value_type& fields_out)
+bool Csv<Columns>::_process_next_line()
 {
-	while (true) {
-		std::string line;
-		if (!std::getline(_file, line)) {
-			return false;
-		}
-		++_cur_line_nbr;
-
-		std::size_t col = 0;
-		std::string::size_type cur_pos = 0;
-		while (col < Columns && cur_pos != std::string::npos) {
-			if (col > 0) {
-				++cur_pos;
-			}
-			std::string::size_type next_pos = line.find(_delim, cur_pos);
-			fields_out[col].data = line.substr(cur_pos, next_pos - cur_pos);
-			if (_trim_whitespace) {
-				ft::trim(fields_out[col].data);
-			}
-			fields_out[col].line_nbr = _cur_line_nbr;
-			cur_pos = next_pos;
-			++col;
-		}
-
-		if (col < Columns || cur_pos != std::string::npos) {
-			const std::string msg = _filename + ":"
-			                        + ft::to_string(_cur_line_nbr)
-			                        + (col < Columns ? ": Not enough columns"
-			                                         : ": Too many columns");
-			switch (_on_row_error) {
-			case Skip:
-				std::cerr << ft::log::warn(msg) << " - skipping line "
-				          << _cur_line_nbr << '\n';
-				continue;
-			case Stop:
-				std::cerr << ft::log::error(msg) << '\n';
-				return false;
-			case Throw:
-				throw std::runtime_error(msg);
-			}
-		}
-		return true;
+	std::string& line = _cur_row->line;
+	if (!std::getline(_file, line)) {
+		_is_eof = true;
+		return false;
 	}
+	_cur_row->line_nbr = ++_cur_line_nbr;
+
+	std::size_t col = 0;
+	std::string::size_type cur_pos = 0;
+	while (col < Columns && cur_pos != std::string::npos) {
+		if (col > 0) {
+			++cur_pos;
+		}
+		std::string::size_type next_pos = line.find(_delim, cur_pos);
+		_cur_row->fields[col] = line.substr(cur_pos, next_pos - cur_pos);
+		if (_trim_whitespace) {
+			ft::trim(_cur_row->fields[col]);
+		}
+		cur_pos = next_pos;
+		++col;
+	}
+
+	if (col < Columns || cur_pos != std::string::npos) {
+		_cur_row_error.error() =
+		    col < Columns ? "Not enough columns" : "Too many columns";
+		return false;
+	}
+	return true;
 }
 
 template <std::size_t Columns>
-Csv<Columns>::iterator::iterator()
-    : _csv(NULL),
-      _cur_row()
+Csv<Columns>::iterator::iterator() throw()
+    : _csv_ptr(NULL),
+      _cur_row_ptr(),
+      _is_eof(true)
 {}
 
 template <std::size_t Columns>
 Csv<Columns>::iterator::iterator(Csv& csv)
-    : _csv(&csv),
-      _cur_row()
+    : _csv_ptr(&csv),
+      _cur_row_ptr(&csv._cur_row),
+      _is_eof(csv._is_eof)
 {
-	_store_next_row();
+	_request_next_row();
 }
 
 template <std::size_t Columns>
-Csv<Columns>::iterator::iterator(const iterator& other)
-    : _csv(other._csv),
-      _cur_row(other._cur_row)
+Csv<Columns>::iterator::iterator(const iterator& other) throw()
+    : _csv_ptr(other._csv_ptr),
+      _cur_row_ptr(other._cur_row_ptr),
+      _is_eof(other._is_eof)
 {}
 
 template <std::size_t Columns>
 typename Csv<Columns>::iterator&
-Csv<Columns>::iterator::operator=(iterator other)
+Csv<Columns>::iterator::operator=(iterator other) throw()
 {
 	swap(other);
 	return *this;
@@ -148,20 +138,21 @@ template <std::size_t Columns>
 typename Csv<Columns>::iterator::reference
 Csv<Columns>::iterator::operator*() const throw()
 {
-	return _cur_row;
+	assert(_cur_row_ptr != NULL);
+	return *_cur_row_ptr;
 }
 
 template <std::size_t Columns>
 typename Csv<Columns>::iterator::pointer
 Csv<Columns>::iterator::operator->() const throw()
 {
-	return &_cur_row;
+	return _cur_row_ptr;
 }
 
 template <std::size_t Columns>
 typename Csv<Columns>::iterator& Csv<Columns>::iterator::operator++()
 {
-	_store_next_row();
+	_request_next_row();
 	return *this;
 }
 
@@ -176,7 +167,7 @@ typename Csv<Columns>::iterator Csv<Columns>::iterator::operator++(int)
 template <std::size_t Columns>
 bool Csv<Columns>::iterator::operator==(const iterator& other) const throw()
 {
-	return _csv == other._csv;
+	return _csv_ptr == other._csv_ptr && _is_eof == other._is_eof;
 }
 
 template <std::size_t Columns>
@@ -186,25 +177,33 @@ bool Csv<Columns>::iterator::operator!=(const iterator& other) const throw()
 }
 
 template <std::size_t Columns>
-void Csv<Columns>::iterator::swap(iterator& other)
+void Csv<Columns>::iterator::swap(iterator& other) throw()
 {
-	using std::swap;
-	swap(_csv, other._csv);
-	swap(_cur_row, other._cur_row);
+	ft::swap(_csv_ptr, other._csv_ptr);
+	ft::swap(_cur_row_ptr, other._cur_row_ptr);
+	ft::swap(_is_eof, other._is_eof);
 }
 
 template <std::size_t Columns>
-void Csv<Columns>::iterator::_store_next_row()
+void Csv<Columns>::iterator::_request_next_row()
 {
-	assert(_csv != NULL);
-	if (!_csv->_process_next_line(_cur_row)) {
-		_csv = NULL;
+	if (_is_eof) {
+		return;
+	}
+	if (_csv_ptr->_process_next_line()) {
+		_cur_row_ptr = &_csv_ptr->_cur_row;
+		return;
+	}
+	_cur_row_ptr = &_csv_ptr->_cur_row_error;
+	if (_csv_ptr->_is_eof) {
+		_is_eof = true;
+		_csv_ptr = NULL;
 	}
 }
 
 template <std::size_t Columns>
 void swap(typename Csv<Columns>::iterator& lhs,
-          typename Csv<Columns>::iterator& rhs)
+          typename Csv<Columns>::iterator& rhs) throw()
 {
 	lhs.swap(rhs);
 }

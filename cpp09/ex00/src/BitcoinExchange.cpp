@@ -1,7 +1,7 @@
 #include "BitcoinExchange.hpp"
 #include "Date.hpp"
 #include "libftpp/Optional.hpp"
-#include <algorithm>
+#include "libftpp/algorithm.hpp"
 #include <ctime>
 #include <map>
 #include <stdexcept>
@@ -55,8 +55,4 @@ double BitcoinExchange::find(std::time_t date) const
 	return (--it)->second;
 }
 
-void BitcoinExchange::swap(BitcoinExchange& other)
-{
-	using std::swap;
-	swap(_db, other._db);
-}
+void BitcoinExchange::swap(BitcoinExchange& other) { ft::swap(_db, other._db); }
