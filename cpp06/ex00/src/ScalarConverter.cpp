@@ -197,7 +197,7 @@ static ft::Expected<To, std::string> do_convert(From from)
 	try {
 		return ft::numeric_cast<To>(from);
 	}
-	catch (const ft::BadNumericCast&) {
+	catch (const ft::NumericCastException&) {
 		return ft::Unexpected<std::string>(impossible_msg);
 	}
 }
