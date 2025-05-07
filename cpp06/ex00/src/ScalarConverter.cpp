@@ -153,7 +153,8 @@ static ft::Optional<Type> detect_type_experimental(const std::string& str)
 	    str_lower.begin(), str_lower.end(), str_lower.begin(), tolower);
 
 	// int in hexadecimal or octal notation
-	const ft::Optional<int> maybe_int = ft::from_string<int>(str, std::nothrow);
+	const ft::Expected<int, ft::FromStringException> maybe_int =
+	    ft::from_string<int>(str, std::nothrow);
 	if (maybe_int) {
 		if (ft::to_string(*maybe_int, std::ios::hex | std::ios::showbase)
 		        == str_lower
@@ -164,7 +165,7 @@ static ft::Optional<Type> detect_type_experimental(const std::string& str)
 	}
 
 	// float in scientific notation
-	const ft::Optional<float> maybe_float =
+	const ft::Expected<int, ft::FromStringException> maybe_float =
 	    ft::from_string<float>(str, std::nothrow);
 	if (maybe_float) {
 		if (ft::to_string(*maybe_float, std::ios::showpoint) + 'f' == str_lower
@@ -177,7 +178,7 @@ static ft::Optional<Type> detect_type_experimental(const std::string& str)
 	}
 
 	// double in scientific notation
-	const ft::Optional<double> maybe_double =
+	const ft::Expected<int, ft::FromStringException> maybe_double =
 	    ft::from_string<double>(str, std::nothrow);
 	if (maybe_double) {
 		if (ft::to_string(*maybe_double, std::ios::showpoint) == str_lower
