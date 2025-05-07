@@ -14,7 +14,6 @@
 #include <limits>
 #include <new>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 
 enum Type {
@@ -83,7 +82,7 @@ void ScalarConverter::convert(const std::string& str)
 			break;
 		}
 	}
-	catch (const std::out_of_range& e) {
+	catch (const ft::FromStringRangeException& e) {
 		std::cerr << ft::log::error(
 		    type_strings[*type]
 		    + " detected, but argument would exceed the type's range")

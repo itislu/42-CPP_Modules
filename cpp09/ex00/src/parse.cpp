@@ -34,7 +34,7 @@ float parse_amount(const std::string& str, float max_query_amount)
 
 template <typename To>
 static To parse_field(const std::string& str, const std::string& field_name)
-{
+try {
 	if (str.empty()) {
 		throw std::invalid_argument("Empty " + field_name + " field");
 	}
@@ -52,4 +52,10 @@ static To parse_field(const std::string& str, const std::string& field_name)
 		                            + " field");
 	}
 	return result;
+}
+catch (const ft::FromStringRangeException& e) {
+	throw std::out_of_range(e.what());
+}
+catch (const ft::FromStringInvalidException& e) {
+	throw std::invalid_argument(e.what());
 }
