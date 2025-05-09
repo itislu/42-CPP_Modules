@@ -13,7 +13,7 @@ static void test_subject();
 static void test_min_max();
 static void benchmark_swap();
 template <typename T>
-static void swap_test(T& a, T& b);
+static void swap_timed(T& a, T& b);
 static void print_seperator(const std::string& title);
 
 int main()
@@ -85,15 +85,15 @@ static void benchmark_swap()
 	std::cerr << ft::log::ok(BOLD("Done!")) << '\n';
 	std::cout << '\n';
 
-	std::cout << BOLD("Using Forwarding Swap:") << '\n';
-	swap_test(fast1, fast2);
-
 	std::cout << BOLD("Using Standard Swap:") << '\n';
-	swap_test(slow1, slow2);
+	swap_timed(slow1, slow2);
+
+	std::cout << BOLD("Using Forwarding Swap:") << '\n';
+	swap_timed(fast1, fast2);
 }
 
 template <typename T>
-static void swap_test(T& a, T& b)
+static void swap_timed(T& a, T& b)
 {
 	std::cout << "Press Enter to start the benchmark... ";
 	std::string dummy;
@@ -104,7 +104,7 @@ static void swap_test(T& a, T& b)
 	for (unsigned int i = 0; i < 10; ++i) {
 		std::cerr << ft::log::info(BOLD("swap #" + ft::to_string(i + 1) + ":"))
 		          << '\n';
-		swap(a, b);
+		swap(a, b); // ADL
 	}
 	const clock_t end = clock();
 
