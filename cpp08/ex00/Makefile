@@ -7,7 +7,7 @@ NAME			:=	easyfind
 MSG_PROGRESS	:=	"🔎"
 MSG_USAGE		?=	"Usage: ./$(NAME) [container_size]"
 COLOR_MAKE		=	$(STY_BLU)
-LIBRARIES		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
+LIBS_LOCAL		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
 
 include				$(MAKEFILES_DIR)/config.mk

@@ -7,7 +7,7 @@ NAME			:=	convert
 MSG_PROGRESS	:=	"🔀"
 MSG_USAGE		?=	"Usage: ./$(NAME) [str] [...]"
 COLOR_MAKE		=	$(STY_YEL)
-LIBRARIES		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
+LIBS_LOCAL		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
 
 include				$(MAKEFILES_DIR)/config.mk

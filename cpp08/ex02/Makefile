@@ -7,7 +7,7 @@ NAME			:=	MutantStack
 MSG_PROGRESS	:=	"🧬"
 MSG_USAGE		?=	"Usage: ./$(NAME)"
 COLOR_MAKE		=	$(STY_MAG)
-LIBRARIES		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
+LIBS_LOCAL		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
 
 include				$(MAKEFILES_DIR)/config.mk

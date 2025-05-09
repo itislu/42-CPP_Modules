@@ -7,7 +7,7 @@ NAME			:=	array
 MSG_PROGRESS	:=	"🆕"
 MSG_USAGE		?=	"Usage: ./$(NAME) [ft]"
 COLOR_MAKE		=	$(STY_BLU)
-LIBRARIES		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
+LIBS_LOCAL		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
 
 include				$(MAKEFILES_DIR)/config.mk
