@@ -5,6 +5,7 @@
 #include "libftpp/string.hpp"
 #include "whatever.hpp"
 #include <climits>
+#include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -15,6 +16,7 @@ static void benchmark_swap();
 template <typename T>
 static void swap_timed(T& a, T& b);
 static void print_seperator(const std::string& title);
+static bool running_on_valgrind();
 
 int main()
 {
@@ -73,10 +75,13 @@ static void benchmark_swap()
 {
 	print_seperator("Swap Benchmark");
 
-	const size_t string_init_size = 1024LU * 1024 * 1024; // 1 GiB
+	const size_t string_init_size = running_on_valgrind()
+	                                    ? 1024LU * 1024 * 64    // 64 MiB
+	                                    : 1024LU * 1024 * 1024; // 1 GiB
 	std::cout << BOLD("Constructing strings with "
-	                  + ft::to_string(string_init_size)
-	                  + " characters (1 GiB)...")
+	                  + ft::to_string(string_init_size) + " characters ("
+	                  + ft::to_string(string_init_size / (1024LU * 1024))
+	                  + " MiB)...")
 	          << '\n';
 	Fast fast1(string_init_size, 'A');
 	Fast fast2(string_init_size, 'B');
@@ -130,4 +135,9 @@ static void print_seperator(const std::string& title)
 	          << BOLD(std::string(left, '=') + ' ' + title + ' '
 	                  + std::string(right, '='))
 	          << "\n\n";
+}
+
+static bool running_on_valgrind()
+{
+	return std::getenv("RUNNING_ON_VALGRIND") != NULL;
 }
