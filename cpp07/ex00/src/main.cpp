@@ -73,13 +73,13 @@ static void benchmark_swap()
 {
 	print_seperator("Swap Benchmark");
 
-	Slow::string_init_size = 1024LU * 1024 * 1024; // 1 GiB
+	const size_t string_init_size = 1024LU * 1024 * 1024; // 1 GiB
 	std::cout << BOLD("Constructing strings with "
-	                  + ft::to_string(Slow::string_init_size)
-	                  + " characters...")
+	                  + ft::to_string(string_init_size)
+	                  + " characters (1 GiB)...")
 	          << '\n';
-	Fast fast1;
-	Fast fast2;
+	Fast fast1(string_init_size, 'A');
+	Fast fast2(string_init_size, 'B');
 	Slow& slow1 = fast1;
 	Slow& slow2 = fast2;
 	std::cerr << ft::log::ok(BOLD("Done!")) << '\n';

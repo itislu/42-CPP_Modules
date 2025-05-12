@@ -7,9 +7,8 @@
 
 class Slow {
 public:
-	static std::size_t string_init_size;
-
 	Slow();
+	Slow(std::size_t size, char c);
 	Slow(const Slow& other);
 	Slow& operator=(const Slow& other);
 	~Slow();

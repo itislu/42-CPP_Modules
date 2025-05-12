@@ -3,12 +3,13 @@
 #include <cstddef>
 #include <iostream>
 
-std::size_t Slow::string_init_size = 1024LU * 1024; // 1 MiB
+Slow::Slow() { std::cerr << ft::log::info("Default constructor") << '\n'; }
 
-Slow::Slow()
-    : _str(string_init_size, 'A')
+Slow::Slow(std::size_t size, char c)
+    : _str(size, c)
 {
-	std::cerr << ft::log::info("Default constructor") << '\n';
+	std::cerr << ft::log::info("Constructor(") << size << ", '" << c << "')"
+	          << '\n';
 }
 
 Slow::Slow(const Slow& other)
