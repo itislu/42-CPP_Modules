@@ -98,6 +98,9 @@ static void swap_timed(T& a, T& b)
 	std::cout << "Press Enter to start the benchmark... ";
 	std::string dummy;
 	std::getline(std::cin, dummy);
+	if (std::cin.eof()) {
+		std::cout << '\n';
+	}
 	std::cout << "\033[A\033[2K\r", std::cout.flush(); // Clear previous line
 
 	const clock_t start = clock();
