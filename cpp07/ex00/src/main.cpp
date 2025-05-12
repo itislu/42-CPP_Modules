@@ -75,9 +75,9 @@ static void benchmark_swap()
 {
 	print_seperator("Swap Benchmark");
 
-	const size_t string_init_size = running_on_valgrind()
-	                                    ? 1024LU * 1024 * 64    // 64 MiB
-	                                    : 1024LU * 1024 * 1024; // 1 GiB
+	const std::size_t string_init_size = running_on_valgrind()
+	                                         ? 1024LU * 1024 * 64    // 64 MiB
+	                                         : 1024LU * 1024 * 1024; // 1 GiB
 	std::cout << BOLD("Constructing strings with "
 	                  + ft::to_string(string_init_size) + " characters ("
 	                  + ft::to_string(string_init_size / (1024LU * 1024))

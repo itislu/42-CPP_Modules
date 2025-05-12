@@ -198,7 +198,7 @@ static void test_array_known_bound()
 	}
 }
 
-const size_t unknown_bound_size = 5;
+const std::size_t unknown_bound_size = 5;
 int unknown_bound[unknown_bound_size] = {};                   // NOLINT
 const int const_unknown_bound[unknown_bound_size] = {};       // NOLINT
 volatile int volatile_unknown_bound[unknown_bound_size] = {}; // NOLINT
