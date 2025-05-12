@@ -26,6 +26,12 @@ IntWithId& IntWithId::operator=(const IntWithId& other)
 
 IntWithId::~IntWithId() {}
 
+IntWithId& IntWithId::operator=(int value)
+{
+	_value = value;
+	return *this;
+}
+
 bool IntWithId::operator<(const IntWithId& rhs) const
 {
 	return _value < rhs._value;

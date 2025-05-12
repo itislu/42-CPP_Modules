@@ -6,7 +6,7 @@ template <typename T>
 class Array {
 public:
 	Array() throw();
-	Array(unsigned int n);
+	explicit Array(unsigned int n);
 	Array(const Array& other);
 	Array& operator=(Array other) throw();
 	~Array();

@@ -5,11 +5,12 @@
 
 class IntWithId : ft::operators::Comparison {
 public:
-	IntWithId(int value);
+	explicit IntWithId(int value);
 	IntWithId(const IntWithId& other);
 	IntWithId& operator=(const IntWithId& other);
 	~IntWithId();
 
+	IntWithId& operator=(int value);
 	bool operator<(const IntWithId& rhs) const;
 
 	unsigned int id() const;
