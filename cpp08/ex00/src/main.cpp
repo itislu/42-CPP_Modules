@@ -14,6 +14,10 @@
 #include <string>
 #include <vector>
 
+#ifndef DEFAULT_CONTAINER_SIZE
+#	define DEFAULT_CONTAINER_SIZE 64
+#endif
+
 template <typename C>
 static void test_find_shuffled(std::size_t size);
 template <typename C>
@@ -26,12 +30,14 @@ static void print_seperator(const std::string& title);
 int main(int argc, char* argv[])
 try {
 	if (argc > 2) {
-		std::cerr << "Usage: " << argv[0] << " [container_size]" << '\n';
+		std::cerr << "Usage: " << argv[0]
+		          << " [container_size=" << DEFAULT_CONTAINER_SIZE << "]"
+		          << '\n';
 		return 1;
 	}
 
-	const std::size_t size =
-	    argc == 2 ? ft::from_string<std::size_t>(argv[1]) : 64;
+	const std::size_t size = argc == 2 ? ft::from_string<std::size_t>(argv[1])
+	                                   : DEFAULT_CONTAINER_SIZE;
 
 	print_seperator("Vector of char");
 	test_find_shuffled<std::vector<char> >(size);
