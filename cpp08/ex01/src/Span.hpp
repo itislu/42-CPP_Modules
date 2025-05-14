@@ -4,7 +4,7 @@
 
 class Span {
 public:
-	Span(unsigned int max_size);
+	explicit Span(unsigned int max_size);
 	Span(const Span& other);
 	Span& operator=(Span other);
 	~Span();

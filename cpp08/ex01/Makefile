@@ -3,7 +3,7 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 # ***************************** CONFIGURATION ******************************** #
 
-NAME			:=	span
+NAME			:=	Span
 MSG_PROGRESS	:=	"🌉"
 MSG_USAGE		?=	"Usage: ./$(NAME) [nbr] [...]"
 COLOR_MAKE		=	$(STY_RED)
