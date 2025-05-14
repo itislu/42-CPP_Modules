@@ -1,6 +1,5 @@
 #include "easyfind.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/functional.hpp"
 #include "libftpp/numeric.hpp"
 #include "libftpp/random.hpp"
 #include "libftpp/string.hpp"
@@ -108,9 +107,9 @@ static void find_shuffled(std::size_t size, std::size_t target_amount)
 template <typename C>
 static void print_container(const C& container)
 {
-	std::for_each(container.begin(),
-	              container.end(),
-	              ft::functional::Print<typename C::value_type>());
+	std::copy(container.begin(),
+	          container.end(),
+	          std::ostream_iterator<typename C::value_type>(std::cout));
 	std::cout << '\n';
 }
 
