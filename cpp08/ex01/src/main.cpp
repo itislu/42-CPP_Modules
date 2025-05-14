@@ -3,7 +3,7 @@
 #include "Span.hpp"
 #include "libftpp/algorithm.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/functional.hpp"
+#include "libftpp/string.hpp"
 #include "test_utils.hpp"
 #include <algorithm>
 #include <exception>
@@ -25,10 +25,8 @@ try {
 	if (argc > 1) {
 		const std::vector<const char*> args(argv + 1, argv + argc);
 		std::vector<int> nbrs(args.size());
-		std::transform(args.begin(),
-		               args.end(),
-		               nbrs.begin(),
-		               ft::functional::FromString<int>());
+		std::transform(
+		    args.begin(), args.end(), nbrs.begin(), ft::FromString<int>());
 		Span sp(nbrs.size());
 		sp.addNumber(nbrs.begin(), nbrs.end());
 		print_spans(sp);
