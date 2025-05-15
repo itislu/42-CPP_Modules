@@ -45,8 +45,7 @@ try {
 	return 0;
 }
 catch (const std::exception& e) {
-	std::cerr << ft::log::error(BOLD("Unexpected exception: ") + e.what())
-	          << '\n';
+	std::cerr << ft::log::error(BOLD("Exception: ") + e.what()) << '\n';
 	return 1;
 }
 
