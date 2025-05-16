@@ -68,7 +68,7 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 
 			if (prev_rate) {
 				log_line_warning(csv)
-				    << "BitcoinExchange: Duplicate entry for " << date_str
+				    << "BitcoinExchange: duplicate entry for " << date_str
 				    << (*prev_rate != rate
 				            ? " - replaced with new exchange rate"
 				            : "")
@@ -144,7 +144,7 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 			// REASON: Parse tests not successful
 			// Valid row but not valid fields
 		}
-		std::cout << ft::log::info("Skipping header: \"") << (*cur)->line
+		std::cout << ft::log::info("skipping header: \"") << (*cur)->line
 		          << "\"" << '\n';
 	}
 	else {

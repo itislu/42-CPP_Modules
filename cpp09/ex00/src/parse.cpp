@@ -32,10 +32,10 @@ float parse_amount(const std::string& str, float max_query_amount)
 try {
 	const float amount = parse_field<float>(str, "query amount");
 	if (amount < 0) {
-		throw ft::Exception("Negative query amount");
+		throw ft::Exception("negative query amount");
 	}
 	if (amount > max_query_amount) {
-		throw ft::Exception("Too large query amount");
+		throw ft::Exception("too large query amount");
 	}
 	return amount;
 }
@@ -60,7 +60,7 @@ static To parse_field(const std::string& str, const std::string& field_name)
 		result = ft::from_string<To>(str, std::ios::fixed, &endpos);
 	}
 	if (endpos != str.length()) {
-		throw ft::Exception("Excess characters in " + field_name + " field");
+		throw ft::Exception("excess characters in " + field_name + " field");
 	}
 	return result;
 }

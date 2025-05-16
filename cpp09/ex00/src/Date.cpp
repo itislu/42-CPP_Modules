@@ -19,7 +19,7 @@ std::time_t Date::serialize(const std::string& str,
 	std::tm tm = {};
 	const char* endptr = strptime(str.c_str(), format, &tm);
 	if (endptr == NULL) {
-		throw ft::Exception("Invalid date format: \"" + str + "\"", "Date");
+		throw ft::Exception("invalid date format: \"" + str + "\"", "Date");
 	}
 
 	const int year = tm.tm_year;
@@ -30,7 +30,7 @@ std::time_t Date::serialize(const std::string& str,
 	const std::time_t time = std::mktime(&tm);
 	if (time == -1 || tm.tm_year != year || tm.tm_mon != month
 	    || tm.tm_mday != day) {
-		throw ft::Exception("Impossible date: " + str, "Date");
+		throw ft::Exception("impossible date: " + str, "Date");
 	}
 
 	if (endpos_out) {
@@ -43,12 +43,12 @@ std::string Date::str(std::time_t time, const char* format)
 {
 	const std::tm* const tm_ptr = std::localtime(&time);
 	if (tm_ptr == NULL) {
-		throw ft::Exception("Value too large for std::localtime", "Date");
+		throw ft::Exception("value too large for std::localtime", "Date");
 	}
 
 	char buffer[128];
 	if (std::strftime(static_cast<char*>(buffer), 128, format, tm_ptr) == 0) {
-		throw ft::Exception("String would exceed buffer size of 128 chars",
+		throw ft::Exception("string would exceed buffer size of 128 chars",
 		                    "Date");
 	}
 	return static_cast<char*>(buffer);

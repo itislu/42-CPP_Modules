@@ -23,13 +23,13 @@ Csv<Columns>::Csv(const std::string& filename, char delim, bool trim_whitespace)
       _trim_whitespace(trim_whitespace)
 {
 	if (!ft::ends_with(_filename, ".csv")) {
-		std::cerr << ft::log::warn("Csv: Filename does not end with \".csv\"")
+		std::cerr << ft::log::warn("Csv: filename does not end with \".csv\"")
 		          << '\n';
 	}
 	_file.exceptions(std::ifstream::badbit);
 	_file.open(_filename.c_str());
 	if (!_file.is_open()) {
-		throw ft::Exception("Failed to open file \"" + _filename + "\"", "Csv");
+		throw ft::Exception("failed to open file \"" + _filename + "\"", "Csv");
 	}
 }
 
@@ -92,7 +92,7 @@ bool Csv<Columns>::_process_next_line()
 
 	if (col < Columns || cur_pos != std::string::npos) {
 		_cur_row_error.error() =
-		    col < Columns ? "Not enough columns" : "Too many columns";
+		    col < Columns ? "not enough columns" : "too many columns";
 		return false;
 	}
 	return true;

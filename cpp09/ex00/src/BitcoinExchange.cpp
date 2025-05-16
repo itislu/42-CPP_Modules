@@ -24,7 +24,7 @@ BitcoinExchange::~BitcoinExchange() {}
 ft::Optional<double> BitcoinExchange::insert(std::time_t date, double rate)
 {
 	if (rate < 0) {
-		throw ft::Exception("Negative exchange rate", "BitcoinExchange");
+		throw ft::Exception("negative exchange rate", "BitcoinExchange");
 	}
 	const std::pair<std::map<std::time_t, double>::iterator, bool> result =
 	    _db.insert(std::make_pair(date, rate));
@@ -45,8 +45,8 @@ double BitcoinExchange::find(std::time_t date) const
 	}
 	// No lower entry
 	if (it == _db.begin()) {
-		throw ft::Exception(_db.empty() ? "The database is empty"
-		                                : "No data before "
+		throw ft::Exception(_db.empty() ? "the database is empty"
+		                                : "no data before "
 		                                      + Date::str(_db.begin()->first),
 		                    "BitcoinExchange");
 	}
