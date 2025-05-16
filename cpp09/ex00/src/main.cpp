@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include "Csv.hpp"
+#include "libftpp/Exception.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/format.hpp"
 #include "parse.hpp"
@@ -8,7 +9,6 @@
 #include <exception>
 #include <iomanip>
 #include <iostream>
-#include <stdexcept>
 #include <string>
 
 static void fill_exchange(BitcoinExchange& btc, const std::string& data_file);
@@ -57,7 +57,7 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 	     ++cur) {
 		try {
 			if (!cur->has_value()) {
-				throw std::invalid_argument(cur->error());
+				throw ft::Exception(cur->error(), "Csv");
 			}
 			const std::string& date_str = (*cur)->fields[0];
 			const std::string& rate_str = (*cur)->fields[1];
@@ -68,14 +68,14 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 
 			if (prev_rate) {
 				log_line_warning(csv)
-				    << ": Duplicate entry for " << date_str
+				    << "BitcoinExchange: Duplicate entry for " << date_str
 				    << (*prev_rate != rate
 				            ? " - replaced with new exchange rate"
 				            : "")
 				    << '\n';
 			}
 		}
-		catch (const std::logic_error& e) {
+		catch (const ft::Exception& e) {
 			log_line_warning(csv) << e.what() << " - skipping line "
 			                      << csv.cur_line_nbr() << '\n';
 		}
@@ -102,7 +102,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 	     ++cur) {
 		try {
 			if (!cur->has_value()) {
-				throw std::invalid_argument(cur->error());
+				throw ft::Exception(cur->error(), "Csv");
 			}
 			const std::string& date_str = (*cur)->fields[0];
 			const std::string& amount_str = (*cur)->fields[1];
@@ -114,7 +114,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 			std::cout << ft::log::ok() << date_str << ": BTC " << amount_str
 			          << " = " << value << '\n';
 		}
-		catch (const std::logic_error& e) {
+		catch (const ft::Exception& e) {
 			log_line_warning(csv) << e.what() << " - skipping line "
 			                      << csv.cur_line_nbr() << '\n';
 		}
@@ -140,7 +140,7 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 			// Valid fields, so not a header
 			return cur;
 		}
-		catch (const std::logic_error&) {
+		catch (const ft::Exception&) {
 			// REASON: Parse tests not successful
 			// Valid row but not valid fields
 		}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Csv.hpp"
+#include "libftpp/Exception.hpp"
 #include "libftpp/Expected.hpp"
 #include "libftpp/algorithm.hpp"
 #include "libftpp/format.hpp"
@@ -9,7 +10,6 @@
 #include <cstddef>
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
 #include <string>
 
 template <std::size_t Columns>
@@ -29,8 +29,7 @@ Csv<Columns>::Csv(const std::string& filename, char delim, bool trim_whitespace)
 	_file.exceptions(std::ifstream::badbit);
 	_file.open(_filename.c_str());
 	if (!_file.is_open()) {
-		throw std::runtime_error("Csv: Failed to open file \"" + _filename
-		                         + "\"");
+		throw ft::Exception("Failed to open file \"" + _filename + "\"", "Csv");
 	}
 }
 

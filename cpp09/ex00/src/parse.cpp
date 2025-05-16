@@ -1,42 +1,54 @@
 #include "parse.hpp"
 #include "Date.hpp"
+#include "libftpp/Exception.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
 #include <ctime>
 #include <ios>
-#include <stdexcept>
 #include <string>
 
 template <typename To>
 static To parse_field(const std::string& str, const std::string& field_name);
 
 std::time_t parse_date(const std::string& str)
-{
+try {
 	return parse_field<std::time_t>(str, "date");
+}
+catch (ft::Exception& e) {
+	e.set_who("Date");
+	throw;
 }
 
 double parse_rate(const std::string& str)
-{
+try {
 	return parse_field<double>(str, "exchange rate");
+}
+catch (ft::Exception& e) {
+	e.set_who("Rate");
+	throw;
 }
 
 float parse_amount(const std::string& str, float max_query_amount)
-{
+try {
 	const float amount = parse_field<float>(str, "query amount");
 	if (amount < 0) {
-		throw std::invalid_argument("Negative query amount");
+		throw ft::Exception("Negative query amount");
 	}
 	if (amount > max_query_amount) {
-		throw std::invalid_argument("Too large query amount");
+		throw ft::Exception("Too large query amount");
 	}
 	return amount;
+}
+catch (ft::Exception& e) {
+	e.set_who("Amount");
+	throw;
 }
 
 template <typename To>
 static To parse_field(const std::string& str, const std::string& field_name)
-try {
+{
 	if (str.empty()) {
-		throw std::invalid_argument("Empty " + field_name + " field");
+		throw ft::Exception("Empty " + field_name + " field");
 	}
 	To result;
 	std::string::size_type endpos = 0;
@@ -48,14 +60,7 @@ try {
 		result = ft::from_string<To>(str, std::ios::fixed, &endpos);
 	}
 	if (endpos != str.length()) {
-		throw std::invalid_argument("Excess characters in " + field_name
-		                            + " field");
+		throw ft::Exception("Excess characters in " + field_name + " field");
 	}
 	return result;
-}
-catch (const ft::FromStringRangeException& e) {
-	throw std::out_of_range(e.what());
-}
-catch (const ft::FromStringInvalidException& e) {
-	throw std::invalid_argument(e.what());
 }

@@ -1,10 +1,10 @@
 #include "BitcoinExchange.hpp"
 #include "Date.hpp"
+#include "libftpp/Exception.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/algorithm.hpp"
 #include <ctime>
 #include <map>
-#include <stdexcept>
 #include <utility>
 
 BitcoinExchange::BitcoinExchange() {}
@@ -24,7 +24,7 @@ BitcoinExchange::~BitcoinExchange() {}
 ft::Optional<double> BitcoinExchange::insert(std::time_t date, double rate)
 {
 	if (rate < 0) {
-		throw std::invalid_argument("Negative exchange rate");
+		throw ft::Exception("Negative exchange rate", "BitcoinExchange");
 	}
 	const std::pair<std::map<std::time_t, double>::iterator, bool> result =
 	    _db.insert(std::make_pair(date, rate));
@@ -45,11 +45,10 @@ double BitcoinExchange::find(std::time_t date) const
 	}
 	// No lower entry
 	if (it == _db.begin()) {
-		throw std::out_of_range(
-		    "BitcoinExchange: "
-		    + (_db.empty()
-		           ? "The database is empty"
-		           : "No data before " + Date::str(_db.begin()->first)));
+		throw ft::Exception(_db.empty() ? "The database is empty"
+		                                : "No data before "
+		                                      + Date::str(_db.begin()->first),
+		                    "BitcoinExchange");
 	}
 	// Closest lower entry
 	return (--it)->second;

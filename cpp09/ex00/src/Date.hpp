@@ -10,8 +10,8 @@ public:
 	/**
 	 * @brief Converts a formatted string to seconds since the Unix epoch
 	 *
-	 * @throws std::invalid_argument When `str` does not match the format
-	 * @throws std::out_of_range When impossible date
+	 * @throws ft::Exception When `str` is an invalid date format or the
+	 * extracted date is impossible
 	 */
 	static std::time_t serialize(const std::string& str,
 	                             std::string::size_type* endpos_out = NULL,
@@ -19,7 +19,7 @@ public:
 	/**
 	 * @brief Converts seconds since the Unix epoch to a formatted string
 	 *
-	 * @throws std::out_of_range When value too large or string would exceed
+	 * @throws ft::Exception When value too large or string would exceed
 	 * buffer size
 	 */
 	static std::string str(std::time_t time,
