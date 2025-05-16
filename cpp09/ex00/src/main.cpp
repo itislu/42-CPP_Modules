@@ -84,6 +84,9 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 	if (csv.cur_line_nbr() == 0) {
 		std::cerr << ft::log::warn(data_file + " is empty") << '\n';
 	}
+	else if (csv.cur_line_nbr() == 1) {
+		std::cerr << ft::log::warn(data_file + " has no data") << '\n';
+	}
 	else {
 		std::cout << ft::log::ok("Done") << '\n';
 	}
@@ -122,6 +125,9 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 
 	if (csv.cur_line_nbr() == 0) {
 		std::cerr << ft::log::warn(query_file + " is empty") << '\n';
+	}
+	else if (csv.cur_line_nbr() == 1) {
+		std::cerr << ft::log::warn(query_file + " has no data") << '\n';
 	}
 }
 
