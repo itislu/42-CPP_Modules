@@ -1,6 +1,5 @@
 *
 !*/
-!.devcontainer/
 !*.cpp
 !*.hpp
 !*.tpp
@@ -9,7 +8,9 @@
 !.clang-format
 !.clang-uml
 !.clangd
+!.devcontainer/
 !.gitignore
+!cpp09/ex00/*.csv
 !Dockerfile
 !Doxyfile
 !Makefile
