@@ -147,7 +147,7 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 			return cur;
 		}
 		catch (const ft::Exception&) {
-			// REASON: Parse tests not successful
+			// EMPTY: Parse tests not successful
 			// Valid row but not valid fields
 		}
 		std::cout << ft::log::info("skipping header: \"") << (*cur)->line
