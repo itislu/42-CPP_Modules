@@ -52,6 +52,7 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 	          << '\n';
 
 	Csv<2> csv(data_file);
+	bool has_data = false;
 
 	for (Csv<2>::iterator cur = skip_header(csv), end = csv.end(); cur != end;
 	     ++cur) {
@@ -59,6 +60,7 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 			if (!cur->has_value()) {
 				throw ft::Exception(cur->error(), "Csv");
 			}
+			has_data = true;
 			const std::string& date_str = (*cur)->fields[0];
 			const std::string& rate_str = (*cur)->fields[1];
 
@@ -84,7 +86,7 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 	if (csv.cur_line_nbr() == 0) {
 		std::cerr << ft::log::warn(data_file + " is empty") << '\n';
 	}
-	else if (csv.cur_line_nbr() == 1) {
+	else if (!has_data) {
 		std::cerr << ft::log::warn(data_file + " has no data") << '\n';
 	}
 	else {
@@ -99,6 +101,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 	          << '\n';
 
 	Csv<2> csv(query_file, " | ");
+	bool has_data = false;
 	std::cout << std::fixed << std::setprecision(2);
 
 	for (Csv<2>::iterator cur = skip_header(csv), end = csv.end(); cur != end;
@@ -107,6 +110,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 			if (!cur->has_value()) {
 				throw ft::Exception(cur->error(), "Csv");
 			}
+			has_data = true;
 			const std::string& date_str = (*cur)->fields[0];
 			const std::string& amount_str = (*cur)->fields[1];
 
@@ -126,11 +130,14 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 	if (csv.cur_line_nbr() == 0) {
 		std::cerr << ft::log::warn(query_file + " is empty") << '\n';
 	}
-	else if (csv.cur_line_nbr() == 1) {
+	else if (!has_data) {
 		std::cerr << ft::log::warn(query_file + " has no data") << '\n';
 	}
 }
 
+/**
+ * Detects if a header needs to be skipped or not.
+ */
 template <std::size_t Columns>
 static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 {

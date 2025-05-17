@@ -42,7 +42,7 @@ double BitcoinExchange::find(std::time_t date) const
 	}
 	// No lower entry
 	if (it == _db.begin()) {
-		throw ft::Exception(_db.empty() ? "the database is empty"
+		throw ft::Exception(_db.empty() ? "database is empty"
 		                                : "no data before "
 		                                      + Date::str(_db.begin()->first),
 		                    "BitcoinExchange");
