@@ -10,7 +10,7 @@
 !.clangd
 !.devcontainer/
 !.gitignore
-!cpp09/ex00/*.csv
+!cpp09/ex00/test_data/*
 !Dockerfile
 !Doxyfile
 !Makefile

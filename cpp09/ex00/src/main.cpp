@@ -11,6 +11,10 @@
 #include <iostream>
 #include <string>
 
+#ifndef DEFAULT_DATA_FILE
+#	define DEFAULT_DATA_FILE "test_data/data.csv"
+#endif
+
 static void fill_exchange(BitcoinExchange& btc, const std::string& data_file);
 static void query_exchange(BitcoinExchange& btc, const std::string& query_file);
 template <std::size_t Columns>
@@ -18,7 +22,6 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv);
 template <std::size_t Columns>
 static std::ostream& log_line_warning(Csv<Columns>& csv);
 
-static const char* const default_data_file = "data.csv";
 static const float max_query_amount = 1000;
 
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -26,13 +29,13 @@ int main(int argc, char* argv[])
 try {
 	if (argc < 2 || argc > 3) {
 		std::cerr << "Usage: " << argv[0]
-		          << " <input_file> [data_file=" << default_data_file << "]"
+		          << " <input_file> [data_file=" << DEFAULT_DATA_FILE << "]"
 		          << '\n';
 		return 1;
 	}
 
 	const std::string query_file(argv[1]);
-	const std::string data_file(argc >= 3 ? argv[2] : default_data_file);
+	const std::string data_file(argc >= 3 ? argv[2] : DEFAULT_DATA_FILE);
 	BitcoinExchange btc;
 
 	fill_exchange(btc, data_file);
