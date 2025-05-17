@@ -57,7 +57,8 @@ static bool parse_date(const std::string& str,
 		const int month = ft::from_string<int>(
 		    str_part.erase(0, endpos), std::ios::dec, &pos);
 		endpos += pos;
-		if (str.at(endpos) != '-' || !(bool)std::isdigit(str.at(++endpos))) {
+		if (pos > 2 || str.at(endpos) != '-'
+		    || !(bool)std::isdigit(str.at(++endpos))) {
 			return false;
 		}
 		// NOLINTEND(bugprone-inc-dec-in-conditions)
@@ -65,6 +66,9 @@ static bool parse_date(const std::string& str,
 		const int day =
 		    ft::from_string<int>(str_part.erase(0, ++pos), std::ios::dec, &pos);
 		endpos += pos;
+		if (pos > 2) {
+			return false;
+		}
 
 		tm->tm_year = year - epoch;
 		tm->tm_mon = month - 1;
