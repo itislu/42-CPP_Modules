@@ -13,14 +13,16 @@
 #include <string>
 
 template <std::size_t Columns>
-Csv<Columns>::Csv(const std::string& filename, char delim, bool trim_whitespace)
+Csv<Columns>::Csv(const std::string& filename,
+                  const std::string& delim /*= ","*/,
+                  bool trim_whitespace /*= false*/)
     : _filename(filename),
       _cur_row(),
       _cur_row_error(ft::unexpect),
       _cur_line_nbr(0),
-      _is_eof(false),
       _delim(delim),
-      _trim_whitespace(trim_whitespace)
+      _trim_whitespace(trim_whitespace),
+      _is_eof(false)
 {
 	if (!ft::ends_with(_filename, ".csv")) {
 		std::cerr << ft::log::warn("Csv: filename does not end with \".csv\"")
@@ -79,7 +81,7 @@ bool Csv<Columns>::_process_next_line()
 	std::string::size_type cur_pos = 0;
 	while (col < Columns && cur_pos != std::string::npos) {
 		if (col > 0) {
-			++cur_pos;
+			cur_pos += _delim.length();
 		}
 		std::string::size_type next_pos = line.find(_delim, cur_pos);
 		_cur_row->fields[col] = line.substr(cur_pos, next_pos - cur_pos);

@@ -98,7 +98,7 @@ static void query_exchange(BitcoinExchange& btc, const std::string& query_file)
 	          << BOLD(UNDERLINE("Query BitcoinExchange with " + query_file))
 	          << '\n';
 
-	Csv<2> csv(query_file, '|');
+	Csv<2> csv(query_file, " | ");
 	std::cout << std::fixed << std::setprecision(2);
 
 	for (Csv<2>::iterator cur = skip_header(csv), end = csv.end(); cur != end;
