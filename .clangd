@@ -44,6 +44,7 @@ Diagnostics:
         hicpp-no-array-decay, # alias
         hicpp-no-malloc, # alias
         hicpp-special-member-functions, # alias
+        hicpp-uppercase-literal-suffix, # alias
         hicpp-use-auto, # alias
         hicpp-use-equals-delete, # alias
         hicpp-use-nullptr, # alias

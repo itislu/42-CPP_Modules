@@ -12,9 +12,7 @@ public:
 	~BitcoinExchange();
 
 	/**
-	 * @throws ft::Exception When trying to insert a negative exchange rate
-	 *
-	 * @returns A `ft::Optional<double>` containing the replaced exchange rate,
+	 * @return A `ft::Optional<double>` containing the replaced exchange rate,
 	 * or an empty `ft::Optional` if no previous exchange rate existed for that
 	 * date
 	 */

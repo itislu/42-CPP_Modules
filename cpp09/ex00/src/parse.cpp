@@ -3,6 +3,7 @@
 #include "libftpp/Exception.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
+#include <algorithm>
 #include <cmath>
 #include <ctime>
 #include <ios>
@@ -10,7 +11,8 @@
 
 template <typename To>
 static To parse_field(const std::string& str, const std::string& field_name);
-static bool is_too_large(const std::string& str, float amount, float max);
+template <typename T>
+static bool is_within_limit(const std::string& value_str, T value, T limit);
 
 std::time_t parse_date(const std::string& str)
 try {
@@ -23,7 +25,12 @@ catch (ft::Exception& e) {
 
 double parse_rate(const std::string& str)
 try {
-	return parse_field<double>(str, "exchange rate");
+	const double rate = parse_field<double>(str, "exchange rate");
+
+	if (std::signbit(rate) != 0 && !is_within_limit(str, rate, 0.)) {
+		throw ft::Exception("negative exchange rate");
+	}
+	return std::abs(rate);
 }
 catch (ft::Exception& e) {
 	e.set_who("Rate");
@@ -33,13 +40,15 @@ catch (ft::Exception& e) {
 float parse_amount(const std::string& str, float max_query_amount)
 try {
 	const float amount = parse_field<float>(str, "query amount");
-	if (std::signbit(amount) != 0) {
+
+	// Signed zeros are equal to 0: https://en.wikipedia.org/wiki/Signed_zero
+	if (std::signbit(amount) != 0 && !is_within_limit(str, amount, 0.F)) {
 		throw ft::Exception("negative query amount");
 	}
-	if (is_too_large(str, amount, max_query_amount)) {
+	if (!is_within_limit(str, amount, max_query_amount)) {
 		throw ft::Exception("too large query amount");
 	}
-	return amount;
+	return std::abs(amount);
 }
 catch (ft::Exception& e) {
 	e.set_who("Amount");
@@ -67,15 +76,55 @@ static To parse_field(const std::string& str, const std::string& field_name)
 	return result;
 }
 
-static bool is_too_large(const std::string& str, float amount, float max)
+/**
+ * Checks if a value from a string is not further away from 0 than a given
+ * limit.
+ */
+template <typename T>
+static bool is_within_limit(const std::string& value_str, T value, T limit)
 {
-	if (amount < max) {
-		return false;
-	}
-	if (amount > max) {
+	if (std::abs(value) < std::abs(limit)) {
 		return true;
 	}
-	const std::string::size_type pos = str.find('.');
-	return pos != std::string::npos
-	       && str.find_first_not_of('0', pos + 1) != std::string::npos;
+	if (std::abs(value) > std::abs(limit)) {
+		return false;
+	}
+
+	/* Numerically equal, but potentially rounded */
+
+	typedef std::string::size_type size_type;
+	const std::string limit_str = ft::to_string(limit, std::ios::fixed);
+
+	// Skip sign and leading zeros
+	const size_type limit_start =
+	    std::min(limit_str.find_first_not_of("0+-"), limit_str.length());
+	const size_type value_start =
+	    std::min(value_str.find_first_not_of("0+-"), value_str.length());
+
+	// If no dot, dot would be at length
+	const size_type limit_dot =
+	    std::min(limit_str.find('.', limit_start), limit_str.length());
+	const size_type value_dot =
+	    std::min(value_str.find('.', value_start), value_str.length());
+
+	// Compare length until dot (skipping zeros): if less than limit_str, it
+	// cannot be larger
+	if (value_dot - value_start < limit_dot - limit_start) {
+		return true;
+	}
+
+	// After sign and zeros, if value_str <= limit_str, it cannot be larger
+	if (value_start < value_str.length() && limit_start < limit_str.length()
+	    && value_str.compare(
+	           value_start, std::string::npos, limit_str, limit_start)
+	           <= 0) {
+		return true;
+	}
+
+	// The part of value_str that is longer than limit_str must only be 0s
+	return value_str.find_first_not_of(
+	           '0',
+	           value_dot
+	               + std::min(limit_str.length() - limit_dot, size_type(1)))
+	       == std::string::npos;
 }
