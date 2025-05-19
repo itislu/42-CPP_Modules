@@ -66,12 +66,12 @@ ft::Expected<long, std::string> RPN::calculate(std::string& input)
 ft::Expected<long, std::string> RPN::result()
 {
 	if (_stack.empty()) {
-		return ft::Unexpected<std::string>("Empty");
+		return ft::Unexpected<std::string>("empty");
 	}
 	if (_stack.size() > 1) {
 		// keeps progress
 		const std::size_t missing = _stack.size() - 1;
-		return ft::Unexpected<std::string>("Missing " + ft::to_string(missing)
+		return ft::Unexpected<std::string>("missing " + ft::to_string(missing)
 		                                   + " operator"
 		                                   + (missing > 1 ? "s" : ""));
 	}
@@ -119,7 +119,7 @@ void RPN::_push_operand(const std::string& word)
 	std::string::size_type endpos = 0;
 	const long operand = ft::from_string<long>(word, &endpos);
 	if (endpos != word.length()) {
-		throw ft::Exception("excess characters");
+		throw ft::Exception("excess characters: \"" + word + "\"");
 	}
 	_stack.push(operand);
 }
