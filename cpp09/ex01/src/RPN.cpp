@@ -8,7 +8,7 @@
 #include <sstream>
 #include <string>
 
-static ft::Optional<RPN::Operator> get_operator(const std::string& word);
+static ft::Optional<RPN::Token> get_operator_token(const std::string& word);
 
 RPN::RPN() {}
 
@@ -34,11 +34,11 @@ ft::Expected<long, std::string> RPN::calculate(std::string& input)
 	std::size_t operand_count = 0;
 
 	while (oss >> word) {
-		const ft::Optional<Operator> op = get_operator(word);
-		if (op) {
+		const ft::Optional<Token> op_token = get_operator_token(word);
+		if (op_token) {
 			++operator_count;
 			try {
-				_push_operator(*op);
+				_push_operator(*op_token);
 			}
 			catch (const ft::Exception& e) {
 				// keeps progress
@@ -78,10 +78,10 @@ ft::Expected<long, std::string> RPN::result()
 	return _stack.top();
 }
 
-void RPN::_push_operator(Operator op)
+void RPN::_push_operator(Token op_token)
 {
 	long (*operation)(long, long); // NOLINT(cppcoreguidelines-init-variables)
-	switch (op) {
+	switch (op_token) {
 	case PLUS:
 		operation = ft::add_throw;
 		break;
@@ -124,7 +124,7 @@ void RPN::_push_operand(const std::string& word)
 	_stack.push(operand);
 }
 
-static ft::Optional<RPN::Operator> get_operator(const std::string& word)
+static ft::Optional<RPN::Token> get_operator_token(const std::string& word)
 {
 	if (word.length() != 1) {
 		return ft::nullopt;

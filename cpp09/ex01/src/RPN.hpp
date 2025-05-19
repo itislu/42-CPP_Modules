@@ -6,7 +6,7 @@
 
 class RPN {
 public:
-	enum Operator {
+	enum Token {
 		PLUS,
 		MINUS,
 		STAR,
@@ -22,7 +22,7 @@ public:
 	ft::Expected<long, std::string> result();
 
 private:
-	void _push_operator(Operator op);
+	void _push_operator(Token op);
 	void _push_operand(const std::string& word);
 
 	std::stack<long> _stack;
