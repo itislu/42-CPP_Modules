@@ -5,7 +5,6 @@
 #include "libftpp/numeric.hpp"
 #include "libftpp/string.hpp"
 #include <cstddef>
-#include <ios>
 #include <sstream>
 #include <string>
 
@@ -27,7 +26,7 @@ RPN& RPN::operator=(const RPN& other)
 
 RPN::~RPN() {}
 
-ft::Expected<long, std::string> RPN::calculate(const std::string& input)
+ft::Expected<long double, std::string> RPN::calculate(const std::string& input)
 {
 	std::istringstream word_stream(input);
 	std::string word;
@@ -64,7 +63,7 @@ ft::Expected<long, std::string> RPN::calculate(const std::string& input)
 	return result();
 }
 
-ft::Expected<long, std::string> RPN::result()
+ft::Expected<long double, std::string> RPN::result()
 {
 	if (_stack.empty()) {
 		return ft::Unexpected<std::string>("empty");
@@ -81,32 +80,35 @@ ft::Expected<long, std::string> RPN::result()
 
 void RPN::_push_operator(Token op_token)
 {
-	long (*operation)(long, long); // NOLINT(cppcoreguidelines-init-variables)
-	switch (op_token) {
-	case PLUS:
-		operation = ft::add_throw;
-		break;
-	case MINUS:
-		operation = ft::sub_throw;
-		break;
-	case STAR:
-		operation = ft::mul_throw;
-		break;
-	case SLASH:
-		operation = ft::div_throw;
-		break;
-	}
-
 	if (_stack.size() < 2) {
 		throw ft::Exception("missing operand");
 	}
-	const long rhs = _stack.top();
+	const long double rhs = _stack.top();
 	_stack.pop();
-	const long lhs = _stack.top();
+	const long double lhs = _stack.top();
 	_stack.pop();
 
 	try {
-		_stack.push(operation(lhs, rhs));
+		long double result; // NOLINT(cppcoreguidelines-init-variables)
+		switch (op_token) {
+		case PLUS:
+			result = lhs + rhs;
+			break;
+		case MINUS:
+			result = lhs - rhs;
+			break;
+		case STAR:
+			result = lhs * rhs;
+			break;
+		case SLASH:
+			if (rhs == 0) {
+				throw ft::ArithmeticDivisionByZeroException(
+				    "RPN::_push_operator");
+			}
+			result = lhs / rhs;
+			break;
+		}
+		_stack.push(result);
 	}
 	catch (const ft::ArithmeticException&) {
 		_stack.push(lhs);
@@ -118,7 +120,7 @@ void RPN::_push_operator(Token op_token)
 void RPN::_push_operand(const std::string& word)
 {
 	std::string::size_type endpos = 0;
-	const long operand = ft::from_string<long>(word, std::ios::dec, &endpos);
+	const long double operand = ft::from_string<long double>(word, &endpos);
 	if (endpos != word.length()) {
 		throw ft::Exception("excess characters: \"" + word + "\"");
 	}

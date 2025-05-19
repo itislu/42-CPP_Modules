@@ -18,12 +18,12 @@ public:
 	RPN& operator=(const RPN& other);
 	~RPN();
 
-	ft::Expected<long, std::string> calculate(const std::string& input);
-	ft::Expected<long, std::string> result();
+	ft::Expected<long double, std::string> calculate(const std::string& input);
+	ft::Expected<long double, std::string> result();
 
 private:
 	void _push_operator(Token op);
 	void _push_operand(const std::string& word);
 
-	std::stack<long> _stack;
+	std::stack<long double> _stack;
 };
