@@ -31,7 +31,8 @@ try {
 	RPN rpn;
 	std::string line;
 	while (std::getline(*input, line, delim)) {
-		const ft::Expected<long, std::string> result = rpn.calculate(line);
+		const ft::Expected<long double, std::string> result =
+		    rpn.calculate(line);
 		if (result) {
 			std::cout << *result << '\n';
 		}
