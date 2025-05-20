@@ -26,14 +26,14 @@ RPN& RPN::operator=(const RPN& other)
 
 RPN::~RPN() {}
 
-ft::Expected<long, std::string> RPN::calculate(std::string& input)
+ft::Expected<long, std::string> RPN::calculate(const std::string& input)
 {
-	std::istringstream oss(input);
+	std::istringstream word_stream(input);
 	std::string word;
 	std::size_t operator_count = 0;
 	std::size_t operand_count = 0;
 
-	while (oss >> word) {
+	while (word_stream >> word) {
 		const ft::Optional<Token> op_token = get_operator_token(word);
 		if (op_token) {
 			++operator_count;

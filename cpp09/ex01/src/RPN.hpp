@@ -18,7 +18,7 @@ public:
 	RPN& operator=(const RPN& other);
 	~RPN();
 
-	ft::Expected<long, std::string> calculate(std::string& input);
+	ft::Expected<long, std::string> calculate(const std::string& input);
 	ft::Expected<long, std::string> result();
 
 private:
