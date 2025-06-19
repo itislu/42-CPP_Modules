@@ -25,10 +25,12 @@ ft::Optional<double> BitcoinExchange::insert(std::time_t date, double rate)
 {
 	const std::pair<std::map<std::time_t, double>::iterator, bool> result =
 	    _db.insert(std::make_pair(date, rate));
-	if (!result.second /*inserted?*/) {
-		const double prev_value = (*result.first /*entry*/).second /*rate*/;
-		(*result.first).second = rate;
-		return prev_value;
+	const bool is_inserted = result.second;
+	if (!is_inserted) {
+		const std::map<std::time_t, double>::iterator& entry = result.first;
+		const double prev_rate = entry->second;
+		entry->second = rate;
+		return prev_rate;
 	}
 	return ft::nullopt;
 }
