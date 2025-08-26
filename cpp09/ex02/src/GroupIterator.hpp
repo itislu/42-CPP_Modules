@@ -1,13 +1,9 @@
 #pragma once
 
+#include "GroupIteratorBase/GroupIteratorBase.hpp"
 #include "libftpp/iterator.hpp"
 #include "libftpp/type_traits.hpp"
 #include <iterator>
-
-namespace detail_group_iterator {
-template <typename ForwardIt, typename Tag>
-class GroupIteratorBase;
-} // namespace detail_group_iterator
 
 /**
  * @brief An iterator adapter that groups elements from an underlying iterator
@@ -27,9 +23,11 @@ template <typename ForwardIt>
 class GroupIterator
     : public detail_group_iterator::GroupIteratorBase<
           ForwardIt,
+          GroupIterator<ForwardIt>,
           typename std::iterator_traits<ForwardIt>::iterator_category> {
 	typedef detail_group_iterator::GroupIteratorBase<
 	    ForwardIt,
+	    GroupIterator<ForwardIt>,
 	    typename std::iterator_traits<ForwardIt>::iterator_category>
 	    Base_;
 
@@ -47,100 +45,6 @@ public:
 	GroupIterator& operator=(const GroupIterator& other);
 	~GroupIterator();
 };
-
-namespace detail_group_iterator {
-
-template <typename ForwardIt>
-class GroupIteratorBase<ForwardIt, std::forward_iterator_tag> {
-public:
-	typedef ForwardIt iterator;
-	typedef typename std::iterator_traits<ForwardIt>::iterator_category
-	    iterator_category;
-	typedef typename std::iterator_traits<ForwardIt>::value_type value_type;
-	typedef typename std::iterator_traits<ForwardIt>::difference_type
-	    difference_type;
-	typedef typename std::iterator_traits<ForwardIt>::pointer pointer;
-	typedef typename std::iterator_traits<ForwardIt>::reference reference;
-
-	static GroupIterator<ForwardIt>
-	end(ForwardIt first, ForwardIt last, difference_type group_size);
-
-	GroupIteratorBase();
-	GroupIteratorBase(ForwardIt it, difference_type group_size);
-	GroupIteratorBase(const GroupIteratorBase& other);
-	GroupIteratorBase& operator=(const GroupIteratorBase& other);
-	~GroupIteratorBase();
-
-	/* Accesses the last element in the group. */
-	reference operator*() const;
-	pointer operator->() const;
-	GroupIterator<ForwardIt>& operator++();
-	GroupIterator<ForwardIt> operator++(int);
-
-	/* Range access within the group */
-	iterator begin() const;
-	iterator middle() const;
-	iterator end() const;
-
-	const ForwardIt& base() const throw();
-	difference_type size() const throw();
-
-protected:
-	/* Data shared by all iterator categories */
-	// NOLINTBEGIN(misc-non-private-member-variables-in-classes)
-	ForwardIt _base;
-	difference_type _size;
-	// NOLINTEND(misc-non-private-member-variables-in-classes)
-};
-
-template <typename BidirIt>
-class GroupIteratorBase<BidirIt, std::bidirectional_iterator_tag>
-    : public GroupIteratorBase<BidirIt, std::forward_iterator_tag> {
-	typedef detail_group_iterator::GroupIteratorBase<BidirIt,
-	                                                 std::forward_iterator_tag>
-	    Base_;
-
-public:
-	typedef typename Base_::difference_type difference_type;
-
-	/* Compute an aligned end GroupIterator with the given group size. */
-	static GroupIterator<BidirIt>
-	end(BidirIt first, BidirIt last, difference_type group_size);
-	using Base_::end; // Needed to also find overload in base class.
-
-	GroupIteratorBase();
-	GroupIteratorBase(BidirIt it, difference_type group_size);
-	GroupIteratorBase(const GroupIteratorBase& other);
-	GroupIteratorBase& operator=(const GroupIteratorBase& other);
-	~GroupIteratorBase();
-
-	GroupIterator<BidirIt>& operator--();
-	GroupIterator<BidirIt> operator--(int);
-};
-
-template <typename RandomIt>
-class GroupIteratorBase<RandomIt, std::random_access_iterator_tag>
-    : public GroupIteratorBase<RandomIt, std::bidirectional_iterator_tag> {
-	typedef detail_group_iterator::
-	    GroupIteratorBase<RandomIt, std::bidirectional_iterator_tag>
-	        Base_;
-
-public:
-	typedef typename Base_::difference_type difference_type;
-	typedef typename Base_::reference reference;
-
-	GroupIteratorBase();
-	GroupIteratorBase(RandomIt it, difference_type group_size);
-	GroupIteratorBase(const GroupIteratorBase& other);
-	GroupIteratorBase& operator=(const GroupIteratorBase& other);
-	~GroupIteratorBase();
-
-	GroupIterator<RandomIt>& operator+=(difference_type n);
-	GroupIterator<RandomIt>& operator-=(difference_type n);
-	reference operator[](difference_type n) const;
-};
-
-} // namespace detail_group_iterator
 
 template <typename ForwardIt1, typename ForwardIt2>
 bool operator==(const GroupIterator<ForwardIt1>& lhs,
