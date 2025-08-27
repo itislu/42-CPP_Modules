@@ -1,8 +1,8 @@
 // NOLINTBEGIN(readability-magic-numbers)
 
 #include "Span.hpp"
-#include "libftpp/algorithm.hpp"
 #include "libftpp/format.hpp"
+#include "libftpp/numeric.hpp"
 #include "libftpp/string.hpp"
 #include "test_utils.hpp"
 #include <algorithm>

@@ -1,6 +1,6 @@
 #include "MutantStack.hpp"
-#include "libftpp/algorithm.hpp"
 #include "libftpp/format.hpp"
+#include "libftpp/numeric.hpp"
 #include <deque>
 #include <exception>
 #include <iostream>
