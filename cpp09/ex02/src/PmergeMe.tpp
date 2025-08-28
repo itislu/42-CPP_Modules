@@ -11,7 +11,9 @@
 #include <typeinfo>
 
 template <typename C, typename Sorter>
-void PmergeMe::sort(C& container, Sorter sorter, const std::string& sorter_name)
+void PmergeMe::sort_logged(C& container,
+                           Sorter sorter,
+                           const std::string& sorter_name)
 {
 	typedef typename C::value_type value_type;
 
@@ -20,25 +22,38 @@ void PmergeMe::sort(C& container, Sorter sorter, const std::string& sorter_name)
 	stats.value_type_name = ft::demangle(typeid(value_type).name());
 	stats.sorter_name = sorter_name;
 	stats.container_size = container.size();
+	_print_stats_title(stats);
 
-	_count_sort_stats(container, sorter, stats);
+	const C unsorted(container);
+	_measure_sort_times(container, unsorted, sorter, stats);
+	_print_sort_times(stats);
+	_count_sort_ops(unsorted, sorter, stats);
+	_print_sort_ops(stats);
+	_check_is_sorted(container, stats);
+	_print_is_sorted(stats);
 
-	const char* clear_prev_line = "\033[A\033[2K\r";
+	_stats_log.push_back(stats);
+}
+
+template <typename C, typename Sorter>
+void PmergeMe::_measure_sort_times(C& container,
+                                   const C& unsorted,
+                                   Sorter sorter,
+                                   Stats_& stats)
+{
 	std::cerr << '\n';
 	for (unsigned i = 1; i <= _measurements; ++i) {
-		std::cerr << clear_prev_line << "Measuring ... " << i << "/"
-		          << _measurements << '\n';
+		std::cerr << _clear_prev_line << "Measuring sorting time ... " << i
+		          << "/" << _measurements << '\n';
 		if (i != _measurements) {
-			C tmp(container);
+			C tmp(unsorted);
 			_sort_timed(tmp, sorter, stats);
 		}
 		else {
 			_sort_timed(container, sorter, stats);
 		}
 	}
-	stats.is_sorted = ft::is_sorted(container.begin(), container.end());
-
-	_stats_log.push_back(stats);
+	std::cerr << _clear_prev_line;
 }
 
 template <typename C, typename Sorter>
@@ -51,8 +66,7 @@ void PmergeMe::_sort_timed(C& container, Sorter sorter, Stats_& stats)
 }
 
 template <typename C, typename Sorter>
-void
-PmergeMe::_count_sort_stats(const C& container, Sorter sorter, Stats_& stats)
+void PmergeMe::_count_sort_ops(const C& container, Sorter sorter, Stats_& stats)
 {
 	typedef OperationCounter<typename C::value_type> OpCounter;
 	typedef typename _rebind_value_type<C, OpCounter>::type CountedContainer;
@@ -61,7 +75,8 @@ PmergeMe::_count_sort_stats(const C& container, Sorter sorter, Stats_& stats)
 		return;
 	}
 
-	// Scope so OpCounter can be reset after CountedContainer gets destructed.
+	std::cerr << "Counting sort operations ...\n";
+	// Avoid any bleed of CountedContainer destruction by resetting afterwards.
 	{
 		CountedContainer tmp(container.begin(), container.end());
 		OpCounter::reset();
@@ -70,6 +85,15 @@ PmergeMe::_count_sort_stats(const C& container, Sorter sorter, Stats_& stats)
 		stats.num_copies = OpCounter::copies();
 	}
 	OpCounter::reset();
+	std::cerr << _clear_prev_line;
+}
+
+template <typename C>
+void PmergeMe::_check_is_sorted(const C& container, Stats_& stats)
+{
+	std::cerr << "Checking if sorted ...\n";
+	stats.is_sorted = ft::is_sorted(container.begin(), container.end());
+	std::cerr << _clear_prev_line;
 }
 
 template <typename C, typename>

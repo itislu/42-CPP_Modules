@@ -12,6 +12,8 @@
 static std::string format_duration(std::clock_t duration);
 static std::clock_t median(std::vector<std::clock_t> sort_times);
 
+const char* const PmergeMe::_clear_prev_line = "\033[A\033[2K\r";
+
 PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(const PmergeMe& other)
@@ -34,38 +36,54 @@ void PmergeMe::swap(PmergeMe& other)
 
 void PmergeMe::print_stats() const
 {
-	typedef std::vector<Stats_>::const_iterator It;
+	// typedef std::vector<Stats_>::const_iterator It;
 
-	for (It stats = _stats_log.begin(); stats != _stats_log.end(); ++stats) {
-		const std::string short_container_type_name(
-		    stats->container_type_name,
-		    0,
-		    stats->container_type_name.find('<'));
+	// for (It stats = _stats_log.begin(); stats != _stats_log.end(); ++stats) {
+	// 	_print_stats_title(*stats);
+	// 	_print_sort_times(*stats);
+	// 	_print_sort_ops(*stats);
+	// 	_print_is_sorted(*stats);
+	// }
+}
 
-		std::cout << '\n'
-		          << BOLD(UNDERLINE(ft::to_string(stats->container_size) + " "
-		                            + stats->value_type_name + "  |  "
-		                            + short_container_type_name + "  |  "
-		                            + stats->sorter_name))
-		          << '\n';
+void PmergeMe::_print_stats_title(const Stats_& stats)
+{
+	std::cout << '\n'
+	          << BOLD(UNDERLINE(ft::to_string(stats.container_size) + " "
+	                            + stats.value_type_name + "  |  "
+	                            + _short_container_type_name(stats) + "  |  "
+	                            + stats.sorter_name))
+	          << '\n';
+}
 
-		std::cout << "Sorting time (median accross " << _measurements
-		          << " runs): " << format_duration(median(stats->sort_times))
-		          << '\n';
+std::string PmergeMe::_short_container_type_name(const Stats_& stats)
+{
+	return stats.container_type_name.substr(
+	    0, stats.container_type_name.find('<'));
+}
 
-		std::cout << "Comparisons: "
-		          << (stats->num_comparisons
-		                  ? ft::to_string(*stats->num_comparisons)
-		                  : "could not be counted")
-		          << '\n';
+void PmergeMe::_print_sort_times(const Stats_& stats)
+{
+	std::cout << "Sorting time (median accross " << _measurements
+	          << " runs): " << format_duration(median(stats.sort_times))
+	          << '\n';
+}
 
-		std::cout << "Copies: "
-		          << (stats->num_copies ? ft::to_string(*stats->num_copies)
-		                                : "could not be counted")
-		          << '\n';
+void PmergeMe::_print_sort_ops(const Stats_& stats)
+{
+	std::cout << "Comparisons: "
+	          << (stats.num_comparisons ? ft::to_string(*stats.num_comparisons)
+	                                    : "could not be counted")
+	          << '\n';
+	std::cout << "Copies: "
+	          << (stats.num_copies ? ft::to_string(*stats.num_copies)
+	                               : "could not be counted")
+	          << '\n';
+}
 
-		std::cout << "Sorted: " << (stats->is_sorted ? "Yes" : "No") << '\n';
-	}
+void PmergeMe::_print_is_sorted(const Stats_& stats)
+{
+	std::cout << "Sorted: " << (stats.is_sorted ? "Yes" : "No") << '\n';
 }
 
 static std::string format_duration(std::clock_t duration)
