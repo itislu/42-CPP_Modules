@@ -1,70 +1,16 @@
-#include "GroupIterator.hpp"
 #include "PmergeMe.hpp"
-#include "libftpp/Expected.hpp"
 #include "libftpp/format.hpp"
 #include "libftpp/string.hpp"
-#include "libftpp/utility.hpp"
 #include "merge_insertion_sort.hpp"
-#include "test_types/OperationCounter.hpp"
 #include <algorithm>
-#include <ctime>
 #include <deque>
 #include <exception>
 #include <iostream>
 #include <iterator>
 #include <list>
 #include <locale>
-#include <memory>
 #include <string>
 #include <vector>
-
-/*
-Get next index
-
-Goal:
-Use pure logic, not Jacobstahl formula.
-Only consider how many items are already sorted.
-
-Logic:
-The number of sorted items is the search space. We want to maximize the search
-space for the minimum currently possible binary insertion comparison count.
-cur_comps = floor(log2(search_size)) + 1
-max_search_size = pow(2, cur_comps) - 1
-
-We can increase the current search space to the max search space with the same
-amount of comparisons.
-skip = max_search_size - search_size
-
-We can add 1 to the index bc the item's search space is automatically decreased
-by its pair.
-prev_max_index = search_size / 2
-next_index = prev_max_index + skip + 1
-
-Data:
-- Sorted amount / search space
-- Index when to make next request
-  OR: Target search space (size until request next index)
-*/
-
-/*
-Insertion:
-
-Don't need to label and track pairs at all:
-"if you insert at the end of the current search range, you can check that, and
-now just decrease the search range by 1 until the next jacobstahl jump"
-*/
-
-/*
-T could be made a pointer to the actual element if heavy type.
-merge_insertion(vector<T>)
-{
-    vector<pair<T, T> > = pair_up(vector<T>)
-    sort_pairs(vector<pair<T, T> >)
-    merge_insertion(vector<pair<T, T> >)
-    vector<T>.clear()
-    binary_insertion(vector<pair<T, T> >, vector<T>)
-}
-*/
 
 enum Error {
 	UNEXPECTED = -1,
@@ -73,8 +19,17 @@ enum Error {
 	PARSE_ERROR = 2
 };
 
-// typedef OperationCounter<unsigned long> CompType; // TODO change
-typedef unsigned CompType;
+static void init_user_locale();
+static void reset_locale();
+template <typename T>
+static std::vector<T> parse_args(int argc, char* argv[], bool& quiet);
+template <typename C, typename T, typename Sorter>
+static void print_before_after_sort(const std::vector<T>& input, Sorter sorter);
+template <typename C>
+static void print_container(const C& container, const std::string& prefix);
+template <typename C, typename T, typename Sorter>
+static void
+pmerge_me_sort(PmergeMe& pmerge_me, const std::vector<T>& input, Sorter sorter);
 
 struct MergeInsertionSorter {
 	static std::string name() { return "merge_insertion_sort()"; }
@@ -116,12 +71,110 @@ struct StandardListSorter {
 	}
 };
 
+int main(int argc, char* argv[])
+try {
+	typedef unsigned InputType;
+
+	init_user_locale();
+
+	bool quiet = false;
+	const std::vector<InputType> input =
+	    parse_args<InputType>(argc, argv, quiet);
+
+	if (!quiet) {
+		print_before_after_sort<std::vector<InputType> >(
+		    input, MergeInsertionSorter());
+	}
+
+	PmergeMe pmerge_me;
+	pmerge_me_sort<std::vector<InputType> >(
+	    pmerge_me, input, MergeInsertionSorter());
+	pmerge_me_sort<std::deque<InputType> >(
+	    pmerge_me, input, MergeInsertionSorter());
+	pmerge_me_sort<std::list<InputType> >(
+	    pmerge_me, input, MergeInsertionSorter());
+	pmerge_me_sort<std::list<InputType> >(
+	    pmerge_me, input, MergeInsertionListSorter());
+	pmerge_me_sort<std::vector<InputType> >(pmerge_me, input, StandardSorter());
+	pmerge_me_sort<std::deque<InputType> >(pmerge_me, input, StandardSorter());
+	pmerge_me_sort<std::list<InputType> >(
+	    pmerge_me, input, StandardListSorter());
+
+	reset_locale();
+	return OK;
+}
+catch (Error e) {
+	reset_locale();
+	return e;
+}
+catch (const std::exception& e) {
+	std::cerr << ft::log::error(BOLD("Unexpected exception: ") + e.what())
+	          << '\n';
+	reset_locale();
+	return UNEXPECTED;
+}
+
+/**
+ * Use the user-preferred locale for better formatting of large numbers.
+ * On failure, keep the standard locale.
+ */
+static void init_user_locale()
+{
+	try {
+		std::locale::global(std::locale(""));
+	}
+	catch (const std::exception& e) {
+		std::cerr << ft::log::info("Cannot change locale: ") << e.what()
+		          << '\n';
+	}
+}
+
+/**
+ * Avoids "still reachable" valgrind warnings for sake of the subject...
+ */
+static void reset_locale() { std::locale::global(std::locale::classic()); }
+
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic): argv
+template <typename T>
+static std::vector<T> parse_args(int argc, char* argv[], bool& quiet)
+{
+	int start_idx = 1;
+
+	if (argc > 1
+	    && (std::string(argv[1]) == "-n"
+	        || std::string(argv[1]) == "--no-before-after")) {
+		quiet = true;
+		start_idx = 2;
+	}
+	if (start_idx == argc) {
+		std::cerr << "Usage: " << argv[0]
+		          << " [-n|--no-before-after] [positive_number] [...]\n";
+		throw NO_ARGS; // NOLINT: Exit code.
+	}
+
+	std::vector<T> input;
+	input.reserve(argc - start_idx);
+	try {
+		std::transform(argv + start_idx,
+		               argv + argc,
+		               std::back_inserter(input),
+		               ft::FromString<T>());
+	}
+	catch (const ft::FromStringException& e) {
+		std::cerr << ft::log::error(e.what()) << '\n';
+		throw PARSE_ERROR; // NOLINT: Exit code.
+	}
+	return input;
+}
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
 template <typename C, typename T, typename Sorter>
-static void
-pmerge_me_sort(PmergeMe& pmerge_me, const std::vector<T>& input, Sorter sorter)
+static void print_before_after_sort(const std::vector<T>& input, Sorter sorter)
 {
 	C container(input.begin(), input.end());
-	pmerge_me.sort_logged(container, sorter, Sorter::name());
+	print_container(container, "Before: ");
+	sorter(container);
+	print_container(container, "After:  ");
 }
 
 template <typename C>
@@ -135,144 +188,9 @@ static void print_container(const C& container, const std::string& prefix)
 }
 
 template <typename C, typename T, typename Sorter>
-static void print_before_after_sort(const std::vector<T>& input, Sorter sorter)
+static void
+pmerge_me_sort(PmergeMe& pmerge_me, const std::vector<T>& input, Sorter sorter)
 {
 	C container(input.begin(), input.end());
-	print_container(container, "Before: ");
-	sorter(container);
-	print_container(container, "After:  ");
-}
-
-// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-// TODO Maybe change back to just throwing Error bc it's more concise.
-static ft::Expected<std::vector<CompType>, Error>
-parse_args(int argc, char* argv[], bool& quiet)
-{
-	int start_idx = 1;
-
-	if (argc > 1
-	    && (std::string(argv[1]) == "-n"
-	        || std::string(argv[1]) == "--no-before-after")) {
-		quiet = true;
-		start_idx = 2;
-	}
-	if (start_idx == argc) {
-		std::cerr << "Usage: " << argv[0]
-		          << " [-n|--no-before-after] [positive_number] [...]\n";
-		return ft::Unexpected<Error>(NO_ARGS);
-	}
-
-	ft::Expected<std::vector<CompType>, Error> input;
-	input->reserve(argc - start_idx);
-	try {
-		std::transform(argv + start_idx,
-		               argv + argc,
-		               std::back_inserter(*input),
-		               ft::FromString<CompType>());
-	}
-	catch (const ft::FromStringException& e) {
-		std::cerr << ft::log::error(e.what()) << '\n';
-		return ft::Unexpected<Error>(PARSE_ERROR);
-	}
-	return input;
-}
-// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-
-const std::clock_t clocks_per_usec = CLOCKS_PER_SEC / 1000000;
-
-template <typename Sort>
-void sort(std::list<CompType> lst, Sort sort_f)
-{
-	// std::cout << "Before: ";
-	// std::copy(
-	//     lst.begin(), lst.end(), std::ostream_iterator<CompType>(std::cout,
-	//     " "));
-	// std::cout << '\n';
-
-	const std::clock_t start = std::clock();
-	sort_f(lst);
-	const std::clock_t end = std::clock();
-
-	// std::cout << "After:  ";
-	// std::copy(
-	//     lst.begin(), lst.end(), std::ostream_iterator<CompType>(std::cout,
-	//     " "));
-	// std::cout << '\n';
-
-	std::cout << "Time: " << (end - start) / clocks_per_usec << "us\n";
-}
-
-void test_group_iterator(std::vector<CompType> vec)
-{
-	typedef std::vector<CompType>::iterator VecIt;
-	// typedef std::list<CompType>::iterator LstIt;
-
-	for (GroupIterator<VecIt> it(vec.begin(), 4),
-	     end = GroupIterator<VecIt>::end(vec.begin(), vec.end(), 4);
-	     it != end;
-	     ++it) {
-		std::cout << *it << ' ';
-	}
-	std::cout << '\n';
-
-	// std::list<CompType> lst(vec.begin(), vec.end());
-	// for (GroupIterator<LstIt> it = GroupIterator<LstIt>::begin(lst, 4),
-	//                           end = GroupIterator<LstIt>::end(lst, 4);
-	//      it != end;
-	//      ++it) {
-	// 	std::cout << *it << ' ';
-	// }
-	// std::cout << '\n';
-}
-
-/*
-PMergeMe manages the timing, delegates the sorting to sth else.
-
-Once everything done, compare FJ with std::sort, once with integers, and once
-with a type that takes long to compare.
-Use composition: OperationCounter<ExpensiveComparison<ExpensiveCopy<T> > >
-*/
-int main(int argc, char* argv[])
-try {
-	typedef std::vector<CompType> Input;
-	std::locale::global(std::locale(""));
-
-	bool quiet = false;
-	const ft::Expected<Input, Error> expected_input =
-	    parse_args(argc, argv, quiet);
-	if (!expected_input) {
-		// Avoid "still reachable" valgrind warnings.
-		std::locale::global(std::locale::classic());
-		return expected_input.error();
-	}
-	const Input& input = *expected_input;
-	
-	if (!quiet) {
-		print_before_after_sort<std::vector<CompType> >(input,
-		                                                MergeInsertionSorter());
-	}
-
-	PmergeMe pmerge_me;
-	pmerge_me_sort<std::vector<CompType> >(
-	    pmerge_me, input, MergeInsertionSorter());
-	pmerge_me_sort<std::deque<CompType> >(
-	    pmerge_me, input, MergeInsertionSorter());
-	pmerge_me_sort<std::list<CompType> >(
-	    pmerge_me, input, MergeInsertionSorter());
-	pmerge_me_sort<std::vector<CompType> >(pmerge_me, input, StandardSorter());
-	pmerge_me_sort<std::deque<CompType> >(pmerge_me, input, StandardSorter());
-	pmerge_me_sort<std::list<CompType> >(
-	    pmerge_me, input, StandardListSorter());
-	pmerge_me_sort<std::list<CompType> >(
-	    pmerge_me, input, MergeInsertionListSorter());
-	pmerge_me.print_stats();
-
-	std::locale::global(std::locale::classic());
-	return OK;
-}
-catch (const std::exception& e) {
-	std::cerr << ft::log::error(BOLD("Unexpected exception: ") + e.what())
-	          << '\n';
-	std::locale::global(std::locale::classic());
-	return UNEXPECTED;
+	pmerge_me.sort_logged(container, sorter, Sorter::name());
 }
