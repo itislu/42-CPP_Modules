@@ -1,5 +1,4 @@
 #include "GroupIterator.hpp"
-#include "MergeInsertionList.hpp"
 #include "PmergeMe.hpp"
 #include "libftpp/Expected.hpp"
 #include "libftpp/format.hpp"
@@ -84,6 +83,16 @@ struct MergeInsertionSorter {
 	void operator()(C& container)
 	{
 		merge_insertion_sort(container);
+	}
+};
+
+struct MergeInsertionListSorter {
+	static std::string name() { return "merge_insertion_sort_list()"; }
+
+	template <typename T>
+	void operator()(std::list<T>& lst)
+	{
+		merge_insertion_sort_list(lst);
 	}
 };
 
@@ -254,107 +263,9 @@ try {
 	pmerge_me_sort<std::deque<CompType> >(pmerge_me, input, StandardSorter());
 	pmerge_me_sort<std::list<CompType> >(
 	    pmerge_me, input, StandardListSorter());
+	pmerge_me_sort<std::list<CompType> >(
+	    pmerge_me, input, MergeInsertionListSorter());
 	pmerge_me.print_stats();
-
-	// return OK;
-
-	std::cout << "\nMergeInsertionList\n";
-	std::clock_t start, end;
-
-	std::auto_ptr<std::list<CompType> > lst(
-	    new std::list<CompType>(input.begin(), input.end()));
-
-	// encapsulation test
-	// MergeInsertionList<CompType>::iterator::CompType test(lst->begin());
-
-	// std::cout << "Before: ";
-	// std::copy(
-	//     lst.begin(), lst.end(), std::ostream_iterator<CompType>(std::cout,
-	//     " "));
-	// std::cout << '\n';
-
-	// std::clock_t start = std::clock();
-	// sort_pairwise(lst);
-	// std::clock_t end = std::clock();
-
-	// std::cout << "After:  ";
-	// std::copy(
-	//     lst.begin(), lst.end(), std::ostream_iterator<CompType>(std::cout,
-	//     " "));
-	// std::cout << '\n';
-
-	// std::cout << "Time: " << (end - start) / clocks_per_usec << "us\n";
-
-	// sort(*lst, sort_pairwise<CompType>);
-	// CompType::reset();
-
-	start = std::clock();
-	MergeInsertionList<CompType> lazy_list(lst);
-	lazy_list.sort();
-	end = std::clock();
-	std::cout << "Time: " << (end - start) / clocks_per_usec << "us\n";
-
-	// print_container("List:  ", lst);
-	std::cout << '\n';
-
-	// std::cout << "size: " << lazy_list._lst.size() << '\n';
-	// std::cout << "step_size:  " << lazy_list._step_size << '\n';
-	// print_container("Lazy1: ", lazy_list);
-	// std::cout << '\n';
-
-	// lazy_list.sort();
-	// print_container("sorted: ", lazy_list);
-	// std::cout << '\n';
-
-	// lazy_list.sort();
-	// print_container("sorted: ", lazy_list);
-	// std::cout << '\n';
-
-	// lazy_list.sort();
-	// print_container("sorted: ", lazy_list);
-	// std::cout << '\n';
-
-	std::cout << "release()\n";
-	start = std::clock();
-	lst = lazy_list.release();
-	// lst = lazy_list.release(); // TODO segfault
-	end = std::clock();
-	std::cout << "Time: " << (end - start) / clocks_per_usec << "us\n";
-
-	// print_container("List:  ", *lst);
-	// std::cout << '\n';
-
-	// std::cout << "Comparisons: " << CompType::comparisons() << '\n';
-	// std::cout << "Copies:      " << CompType::copies() << '\n';
-
-	// std::cout << "\nhalf_skip_size\n", lazy_list.half_skip_size();
-	// print_container("Lazy1: ", lazy_list);
-	// std::cout << '\n';
-
-	// std::cout << "\nhalf_skip_size\n", lazy_list.half_skip_size();
-	// print_container("Lazy1: ", lazy_list);
-	// std::cout << '\n';
-
-	// lazy_list.half_skip_size(); // throws
-
-	// std::cout << "size:  " << lazy_list._next.size() << '\n';
-	// std::cout << "step_size:  " << lazy_list._step_size << '\n';
-	// std::cout << '\n';
-
-	// std::cout << "size:  " << lazy_list._next.front()._next.size() << '\n';
-	// std::cout << "step_size:  " << lazy_list._next.front()._step_size <<
-	// '\n'; std::cout << '\n';
-
-	// std::cout << "pos:   " << *lazy_list.pos() << '\n';
-	// print_container("List1: ", lazy_list._next);
-
-	// std::cout << "\nhalf_step_size\n", lazy_list.half_step_size();
-	// std::cout << "pos:   " << *lazy_list.pos() << '\n';
-	// print_container("List2: ", lazy_list._next);
-
-	// std::cout << "\nhalf_step_size\n", lazy_list.half_step_size();
-	// std::cout << "pos:   " << *lazy_list.pos() << '\n';
-	// print_container("List2: ", lazy_list._next);
 
 	std::locale::global(std::locale::classic());
 	return OK;
