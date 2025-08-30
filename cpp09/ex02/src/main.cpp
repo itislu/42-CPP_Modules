@@ -138,7 +138,13 @@ template <typename C, typename T, typename Sorter>
 static void print_before_after_sort(const std::vector<T>& input, Sorter sorter)
 {
 	C container(input.begin(), input.end());
-	print_container(container, "Before: ");
+	std::cout
+	    << "------------------------------------------------------------\n";
+	print_container(container, BOLD("Before: "));
+	std::cout
+	    << "------------------------------------------------------------\n";
 	sorter(container);
-	print_container(container, "After:  ");
+	print_container(container, BOLD("After:  "));
+	std::cout
+	    << "------------------------------------------------------------\n";
 }
