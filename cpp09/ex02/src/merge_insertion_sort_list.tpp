@@ -85,7 +85,7 @@ build_layered_main_chain(std::list<T>& lst,
 		main_chain.push_front(TournamentTree<ListIt>(it));
 		while (next != main_chain.end()
 		       && main_chain.front().size() == next->size()) {
-			main_chain.front().merge(main_chain, next++);
+			main_chain.front().merge(main_chain, next++); //! Comparison here.
 		}
 	}
 	main_chain.reverse(); // Move leftovers to the back in decreasing pair size.
@@ -95,9 +95,10 @@ build_layered_main_chain(std::list<T>& lst,
  * Alternate between splitting the lower of the pairs in the main chain into a
  * pending stack and inserting them back in correct order.
  *
- * The interval is so that the search size for insertion always exactly doubles.
- * This is due to the fact that the amount of comparisons in binary insertion is
- * same for 2^n and 2^(n+1)-1.
+ * The interval is so that we maximize the amount of elements to insert with the
+ * lowest amount of comparisons currently possible. It always doubles (plus 1)
+ * due to the fact that the amount of comparisons in binary insertion is same
+ * for 2^n and 2^(n+1)-1.
  *
  * Repeat until all pairs are fully split up.
  */
@@ -170,8 +171,10 @@ static void binary_insertion(
 	typedef typename std::list<TournamentTree<ListIt> >::iterator PairsIt;
 
 	while (!pend_stack.empty()) {
-		const PairsIt insert_pos = ft::upper_bound(
-		    main_chain.begin(), search_size, pend_stack.front());
+		const PairsIt insert_pos = ft::upper_bound( //! Comparison here.
+		    main_chain.begin(),
+		    search_size,
+		    pend_stack.front());
 		if (insert_pos == search_end) {
 			--search_size;
 		}

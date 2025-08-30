@@ -33,6 +33,9 @@ template <typename C>
 REQUIRES(ft::is_bidirectional_iterator<typename C::iterator>::value)
 (void)merge_insertion_sort(C& container)
 {
+	if (container.size() < 2) {
+		return;
+	}
 	C buf(container.size());
 	detail_merge_insertion_sort::merge_insertion_sort_recursive(
 	    container, buf, 1);
@@ -86,9 +89,10 @@ static void merge_to_pairs(C& cont, typename C::size_type group_size)
  * lows. Push means `copy()`. Insert means `shift_right()` and `copy()`.
  * Repeat with the next search range.
  *
- * The search ranges are determined as follows: The amount of comparisons in
- * binary insertion is same for 2^n and 2^(n+1)-1. The size of this range
- * doubles every time.
+ * The search range is so that we maximize the amount of elements to insert with
+ * the lowest amount of comparisons currently possible. It always doubles (plus
+ * 1) due to the fact that the amount of comparisons in binary insertion is same
+ * for 2^n and 2^(n+1)-1.
  *
  * At the very end, copy leftovers and swap the buffer with the main container.
  */
@@ -108,7 +112,7 @@ split_and_insert_pairs(C& cont, C& buf, typename C::size_type pair_size)
 
 	// First node is known to be lowest.
 	buf_it = ft::copy_n(cont.begin(), group_size, buf_it);
-	search_size += 1;
+	++search_size;
 
 	GroupIt pair_it(ft::next(cont.begin(), group_size), pair_size);
 	const GroupIt pairs_end =
@@ -119,10 +123,9 @@ split_and_insert_pairs(C& cont, C& buf, typename C::size_type pair_size)
 
 		// Push highs to buf.
 		Size insert_amount = 0;
-		for (; search_size < max_search_size && pair_it != pairs_end;
-		     ++pair_it) {
+		while (search_size < max_search_size && pair_it != pairs_end) {
 			buf_it = std::copy(pair_it.begin(), pair_it.middle(), buf_it);
-			++search_size;
+			++pair_it, ++search_size;
 			++insert_amount;
 		}
 
