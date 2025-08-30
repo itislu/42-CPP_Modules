@@ -64,8 +64,11 @@ std::string PmergeMe::_short_container_type_name(const Stats_& stats)
 
 void PmergeMe::_print_sort_times(const Stats_& stats)
 {
-	std::cout << "Sorting time (median accross " << _measurements
-	          << " runs): " << format_duration(median(stats.sort_times))
+	std::cout << "Sorting time (median of " << _measurements
+	          << "): " << format_duration(median(stats.sort_times)) << '\n';
+	std::cout << "Sorting time (min. of " << _measurements << "):   "
+	          << format_duration(*std::min_element(stats.sort_times.begin(),
+	                                               stats.sort_times.end()))
 	          << '\n';
 }
 
@@ -91,7 +94,7 @@ static std::string format_duration(std::clock_t duration)
 	const long double ms_in_s = 1000;
 	const long double us_in_s = ms_in_s * 1000;
 	const long double us =
-	    static_cast<long double>(duration) / CLOCKS_PER_SEC * us_in_s;
+	    static_cast<long double>(duration) / (CLOCKS_PER_SEC / us_in_s);
 	std::ostringstream oss;
 	oss << std::fixed << std::setprecision(3);
 
@@ -102,7 +105,7 @@ static std::string format_duration(std::clock_t duration)
 		oss << (us / ms_in_s) << " ms";
 	}
 	else {
-		oss << std::setprecision(0) << us << " us";
+		oss << std::setprecision(0) << us << " μs";
 	}
 	return oss.str();
 }
