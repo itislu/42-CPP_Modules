@@ -6,7 +6,7 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 NAME				:=	PmergeMe
 MSG_PROGRESS		:=	"🔀"
 COLOR_MAKE			=	$(STY_BLU)
-MSG_USAGE			?=	"Usage: ./$(NAME) [-n|--no-before-after] [positive_number] [...]"
+MSG_USAGE			?=	"Usage: ./$(NAME) [-m|--more-types] [-n|--no-before-after] <positive_number...>"
 LIBS_LOCAL			=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
 
