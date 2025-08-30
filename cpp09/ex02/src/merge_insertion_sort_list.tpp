@@ -1,26 +1,29 @@
 #pragma once
 
-#include "PairTree.hpp"
+#include "TournamentTree.hpp"
 #include "libftpp/algorithm.hpp"
 #include "libftpp/iterator.hpp"
 #include "merge_insertion_sort.hpp"
 #include <list>
 
 namespace detail_merge_insertion_sort_list {
-template <typename T>
-static void build_layered_main_chain(std::list<T>& lst,
-                                     std::list<PairTree<T> >& main_chain);
-template <typename T>
-static void split_and_insert_pairs(std::list<PairTree<T> >& main_chain);
-template <typename T, typename Size>
+template <typename T, typename ListIt>
 static void
-binary_insertion(std::list<PairTree<T> >& pend_stack,
-                 typename std::list<PairTree<T> >::iterator search_end,
-                 Size search_size,
-                 std::list<PairTree<T> >& main_chain);
-template <typename T>
-static void apply_sorted_main_chain(const std::list<PairTree<T> >& main_chain,
-                                    std::list<T>& lst);
+build_layered_main_chain(std::list<T>& lst,
+                         std::list<TournamentTree<ListIt> >& main_chain);
+template <typename ListIt>
+static void
+split_and_insert_pairs(std::list<TournamentTree<ListIt> >& main_chain);
+template <typename ListIt>
+static void binary_insertion(
+    std::list<TournamentTree<ListIt> >& pend_stack,
+    typename std::list<TournamentTree<ListIt> >::iterator search_end,
+    typename std::list<TournamentTree<ListIt> >::size_type search_size,
+    std::list<TournamentTree<ListIt> >& main_chain);
+template <typename T, typename ListIt>
+static void
+apply_sorted_main_chain(const std::list<TournamentTree<ListIt> >& main_chain,
+                        std::list<T>& lst);
 } // namespace detail_merge_insertion_sort_list
 
 /**
@@ -41,10 +44,12 @@ static void apply_sorted_main_chain(const std::list<PairTree<T> >& main_chain,
 template <typename T>
 void merge_insertion_sort_list(std::list<T>& lst)
 {
+	typedef typename std::list<T>::iterator ListIt;
+
 	if (lst.size() < 2) {
 		return;
 	}
-	std::list<PairTree<T> > main_chain;
+	std::list<TournamentTree<ListIt> > main_chain;
 	detail_merge_insertion_sort_list::build_layered_main_chain(lst, main_chain);
 	detail_merge_insertion_sort_list::split_and_insert_pairs(main_chain);
 	detail_merge_insertion_sort_list::apply_sorted_main_chain(main_chain, lst);
@@ -66,21 +71,21 @@ namespace detail_merge_insertion_sort_list {
  * 1 1 4   ->   2 4
  * N = pair size
  */
-template <typename T>
-static void build_layered_main_chain(std::list<T>& lst,
-                                     std::list<PairTree<T> >& main_chain)
+template <typename T, typename ListIt>
+static void
+build_layered_main_chain(std::list<T>& lst,
+                         std::list<TournamentTree<ListIt> >& main_chain)
 {
-	typedef typename std::list<T>::iterator ListIt;
-	typedef typename std::list<PairTree<T> >::iterator PairsIt;
+	typedef typename std::list<TournamentTree<ListIt> >::iterator PairsIt;
 
 	for (ListIt it = lst.begin(), end = lst.end(); it != end; ++it) {
 		// Use main_chain as a stack.
 		// Biggest pair at the bottom. Build up current pair with the top.
 		PairsIt next = main_chain.begin();
-		main_chain.push_front(PairTree<T>(it));
+		main_chain.push_front(TournamentTree<ListIt>(it));
 		while (next != main_chain.end()
 		       && main_chain.front().size() == next->size()) {
-			main_chain.front().insert(main_chain, next++);
+			main_chain.front().merge(main_chain, next++);
 		}
 	}
 	main_chain.reverse(); // Move leftovers to the back in decreasing pair size.
@@ -96,13 +101,14 @@ static void build_layered_main_chain(std::list<T>& lst,
  *
  * Repeat until all pairs are fully split up.
  */
-template <typename T>
-static void split_and_insert_pairs(std::list<PairTree<T> >& main_chain)
+template <typename ListIt>
+static void
+split_and_insert_pairs(std::list<TournamentTree<ListIt> >& main_chain)
 {
-	typedef typename std::list<PairTree<T> >::iterator PairsIt;
-	typedef typename std::list<PairTree<T> >::size_type Size;
+	typedef typename std::list<TournamentTree<ListIt> >::iterator PairsIt;
+	typedef typename std::list<TournamentTree<ListIt> >::size_type Size;
 
-	std::list<PairTree<T> > pend_stack;
+	std::list<TournamentTree<ListIt> > pend_stack;
 	PairsIt layer_end = ft::next(main_chain.begin());
 
 	for (Size pair_size = main_chain.front().size(); pair_size > 1;
@@ -154,14 +160,14 @@ static void split_and_insert_pairs(std::list<PairTree<T> >& main_chain)
  * Insertion happens at the upper bound of any duplicates to allow for more such
  * search size decreases.
  */
-template <typename T, typename Size>
-static void
-binary_insertion(std::list<PairTree<T> >& pend_stack,
-                 typename std::list<PairTree<T> >::iterator search_end,
-                 Size search_size,
-                 std::list<PairTree<T> >& main_chain)
+template <typename ListIt>
+static void binary_insertion(
+    std::list<TournamentTree<ListIt> >& pend_stack,
+    typename std::list<TournamentTree<ListIt> >::iterator search_end,
+    typename std::list<TournamentTree<ListIt> >::size_type search_size,
+    std::list<TournamentTree<ListIt> >& main_chain)
 {
-	typedef typename std::list<PairTree<T> >::iterator PairsIt;
+	typedef typename std::list<TournamentTree<ListIt> >::iterator PairsIt;
 
 	while (!pend_stack.empty()) {
 		const PairsIt insert_pos = ft::upper_bound(
@@ -174,17 +180,18 @@ binary_insertion(std::list<PairTree<T> >& pend_stack,
 	}
 }
 
-template <typename T>
-static void apply_sorted_main_chain(const std::list<PairTree<T> >& main_chain,
-                                    std::list<T>& lst)
+template <typename T, typename ListIt>
+static void
+apply_sorted_main_chain(const std::list<TournamentTree<ListIt> >& main_chain,
+                        std::list<T>& lst)
 {
-	typedef typename std::list<T>::iterator ListIt;
-	typedef typename std::list<PairTree<T> >::const_iterator ConstPairsIt;
+	typedef typename std::list<TournamentTree<ListIt> >::const_iterator
+	    ConstPairsIt;
 
 	ListIt insert_pos = lst.begin();
 	for (ConstPairsIt node = main_chain.begin(); node != main_chain.end();
 	     ++node) {
-		ListIt cur = node->last();
+		ListIt cur = node->top();
 		if (cur == insert_pos) {
 			++insert_pos;
 			continue;
