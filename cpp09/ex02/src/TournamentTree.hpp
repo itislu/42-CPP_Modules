@@ -1,11 +1,13 @@
 #pragma once
 
+#include "libftpp/functional.hpp"
 #include <list>
 
 /**
  * @brief A very minimal implementation of a tournament tree
  *
- * Elements are compared with `<` and the highest value will be at the top.
+ * By default, elements are compared with `ft::less` and the highest value will
+ * be at the top.
  *
  * Example structure for a tree of size 8:
  *                           e4
@@ -25,9 +27,10 @@
  * The tree stores the overall winner (e.g., e4) and a list of the subtrees it
  * has directly beaten (L_).
  */
-template <typename T>
+template <typename T, typename Compare = ft::less<T> >
 class TournamentTree {
 public:
+	typedef Compare value_compare;
 	typedef T value_type;
 	typedef typename std::list<TournamentTree>::size_type size_type;
 	typedef typename std::list<TournamentTree>::difference_type difference_type;
@@ -37,12 +40,10 @@ public:
 	typedef const value_type* const_pointer;
 	typedef typename std::list<TournamentTree>::iterator iterator;
 
-	explicit TournamentTree(const value_type& pos);
+	explicit TournamentTree(const T& pos, const Compare& comp = Compare());
 	TournamentTree(const TournamentTree& other);
 	TournamentTree& operator=(TournamentTree other);
 	~TournamentTree();
-
-	bool operator<(const TournamentTree& other) const;
 
 	/**
 	 * @brief Compare the winner of another tree and move it to 1st or 2nd place
@@ -56,6 +57,7 @@ public:
 
 	const_reference top() const throw();
 	size_type size() const throw();
+	value_compare value_comp() const;
 
 private:
 	TournamentTree();
@@ -63,6 +65,7 @@ private:
 	std::list<TournamentTree> _losers; // Front is first child.
 	value_type _winner;
 	size_type _size;
+	value_compare _comp;
 };
 
 #include "TournamentTree.tpp" // IWYU pragma: export

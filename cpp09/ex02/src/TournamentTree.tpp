@@ -1,54 +1,52 @@
 #pragma once
 
 #include "TournamentTree.hpp"
-#include <algorithm>
+#include "libftpp/algorithm.hpp"
 #include <cassert>
 #include <list>
 
-template <typename T>
-TournamentTree<T>::TournamentTree(const value_type& pos)
+template <typename T, typename Compare /*= ft::less<T> */>
+TournamentTree<T, Compare>::TournamentTree(const T& pos,
+                                           const Compare& comp /*= Compare()*/)
     : _winner(pos),
-      _size(1)
+      _size(1),
+      _comp(comp)
 {}
 
-template <typename T>
-TournamentTree<T>::TournamentTree(const TournamentTree& other)
+template <typename T, typename Compare /*= ft::less<T> */>
+TournamentTree<T, Compare>::TournamentTree(const TournamentTree& other)
     : _losers(other._losers),
       _winner(other._winner),
-      _size(other._size)
+      _size(other._size),
+      _comp(other._comp)
 {}
 
-template <typename T>
-TournamentTree<T>& TournamentTree<T>::operator=(TournamentTree other)
+template <typename T, typename Compare /*= ft::less<T> */>
+TournamentTree<T, Compare>&
+TournamentTree<T, Compare>::operator=(TournamentTree other)
 {
 	swap(other);
 	return *this;
 }
 
-template <typename T>
-TournamentTree<T>::~TournamentTree()
+template <typename T, typename Compare /*= ft::less<T> */>
+TournamentTree<T, Compare>::~TournamentTree()
 {}
 
-template <typename T>
-bool TournamentTree<T>::operator<(const TournamentTree& other) const
+template <typename T, typename Compare /*= ft::less<T> */>
+void TournamentTree<T, Compare>::merge(std::list<TournamentTree>& src_lst,
+                                       iterator src_pos)
 {
-	return *_winner < *other._winner;
-}
-
-template <typename T>
-void TournamentTree<T>::merge(std::list<TournamentTree>& src_lst,
-                              iterator src_pos)
-{
-	if (*this < *src_pos) {
+	if (_comp(*this->_winner, *src_pos->_winner)) {
 		swap(*src_pos);
 	}
 	_losers.splice(_losers.begin(), src_lst, src_pos);
 	_size += src_pos->size();
 }
 
-template <typename T>
-void TournamentTree<T>::split(std::list<TournamentTree>& dest_lst,
-                              iterator dest_pos)
+template <typename T, typename Compare /*= ft::less<T> */>
+void TournamentTree<T, Compare>::split(std::list<TournamentTree>& dest_lst,
+                                       iterator dest_pos)
 {
 	assert(!_losers.empty());
 
@@ -57,24 +55,33 @@ void TournamentTree<T>::split(std::list<TournamentTree>& dest_lst,
 	_size -= prev_loser->size();
 }
 
-template <typename T>
-void TournamentTree<T>::swap(TournamentTree& other)
+template <typename T, typename Compare /*= ft::less<T> */>
+void TournamentTree<T, Compare>::swap(TournamentTree& other)
 {
-	using std::swap;
-	swap(_losers, other._losers);
-	swap(_winner, other._winner);
-	swap(_size, other._size);
+	// Use ft::swap to prevent ambiguities caused by ADL.
+	ft::swap(_losers, other._losers);
+	ft::swap(_winner, other._winner);
+	ft::swap(_size, other._size);
+	ft::swap(_comp, other._comp);
 }
 
-template <typename T>
-typename TournamentTree<T>::const_reference TournamentTree<T>::top() const
-    throw()
+template <typename T, typename Compare /*= ft::less<T> */>
+typename TournamentTree<T, Compare>::const_reference
+TournamentTree<T, Compare>::top() const throw()
 {
 	return _winner;
 }
 
-template <typename T>
-typename TournamentTree<T>::size_type TournamentTree<T>::size() const throw()
+template <typename T, typename Compare /*= ft::less<T> */>
+typename TournamentTree<T, Compare>::size_type
+TournamentTree<T, Compare>::size() const throw()
 {
 	return _size;
+}
+
+template <typename T, typename Compare /*= ft::less<T> */>
+typename TournamentTree<T, Compare>::value_compare
+TournamentTree<T, Compare>::value_comp() const
+{
+	return _comp;
 }

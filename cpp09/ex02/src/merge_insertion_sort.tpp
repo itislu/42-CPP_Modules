@@ -2,6 +2,7 @@
 
 #include "GroupIterator.hpp"
 #include "libftpp/algorithm.hpp"
+#include "libftpp/functional.hpp"
 #include "libftpp/iterator.hpp"
 #include "libftpp/type_traits.hpp"
 #include "merge_insertion_sort.hpp"
@@ -9,20 +10,25 @@
 #include <iterator>
 
 namespace detail_merge_insertion_sort {
-template <typename C>
+template <typename C, typename Compare>
 static void merge_insertion_sort_recursive(C& cont,
                                            C& buf,
-                                           typename C::size_type group_size);
-template <typename C>
-static void merge_to_pairs(C& cont, typename C::size_type group_size);
-template <typename C>
+                                           typename C::size_type group_size,
+                                           Compare comp);
+template <typename C, typename Compare>
 static void
-split_and_insert_pairs(C& cont, C& buf, typename C::size_type pair_size);
-template <typename It, typename Size>
+merge_to_pairs(C& cont, typename C::size_type group_size, Compare comp);
+template <typename C, typename Compare>
+static void split_and_insert_pairs(C& cont,
+                                   C& buf,
+                                   typename C::size_type pair_size,
+                                   Compare comp);
+template <typename It, typename Size, typename Compare>
 static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
                                           Size insert_amount,
                                           GroupIterator<It> buf_begin,
-                                          GroupIterator<It> buf_end);
+                                          GroupIterator<It> buf_end,
+                                          Compare comp);
 template <typename It>
 static void insert_by_shift_out(GroupIterator<It> group_it,
                                 GroupIterator<It> insert_pos,
@@ -33,31 +39,39 @@ template <typename C>
 REQUIRES(ft::is_bidirectional_iterator<typename C::iterator>::value)
 (void)merge_insertion_sort(C& container)
 {
+	merge_insertion_sort(container, ft::less<typename C::value_type>());
+}
+
+template <typename C, typename Compare>
+REQUIRES(ft::is_bidirectional_iterator<typename C::iterator>::value)
+(void)merge_insertion_sort(C& container, Compare comp)
+{
 	if (container.size() < 2) {
 		return;
 	}
 	C buf(container.size());
 	detail_merge_insertion_sort::merge_insertion_sort_recursive(
-	    container, buf, 1);
+	    container, buf, 1, comp);
 }
 
 namespace detail_merge_insertion_sort {
 
-template <typename C>
+template <typename C, typename Compare>
 static void merge_insertion_sort_recursive(C& cont,
                                            C& buf,
-                                           typename C::size_type group_size)
+                                           typename C::size_type group_size,
+                                           Compare comp)
 {
 	const typename C::size_type pair_size = group_size * 2;
 	if (pair_size > cont.size()) {
 		return;
 	}
-	merge_to_pairs(cont, group_size);
-	merge_insertion_sort_recursive(cont, buf, pair_size);
+	merge_to_pairs(cont, group_size, comp);
+	merge_insertion_sort_recursive(cont, buf, pair_size, comp);
 	if (cont.size() / group_size < 3) {
 		return;
 	}
-	split_and_insert_pairs(cont, buf, pair_size);
+	split_and_insert_pairs(cont, buf, pair_size, comp);
 }
 
 /**
@@ -66,8 +80,9 @@ static void merge_insertion_sort_recursive(C& cont,
  * As a result of this function, a larger group iterator can now count each
  * ordered pair as one group.
  */
-template <typename C>
-static void merge_to_pairs(C& cont, typename C::size_type group_size)
+template <typename C, typename Compare>
+static void
+merge_to_pairs(C& cont, typename C::size_type group_size, Compare comp)
 {
 	typedef GroupIterator<typename C::iterator> GroupIt;
 	const typename C::size_type pair_size = group_size * 2;
@@ -77,7 +92,7 @@ static void merge_to_pairs(C& cont, typename C::size_type group_size)
 	     pairs_end = GroupIt::end(cont.begin(), cont.end(), pair_size);
 	     low != pairs_end;
 	     std::advance(low, 2), std::advance(high, 2)) {
-		if (*high < *low) { //! Comparison here.
+		if (comp(*high, *low)) { //! Comparison here.
 			iter_swap(low, high);
 		}
 	}
@@ -96,9 +111,11 @@ static void merge_to_pairs(C& cont, typename C::size_type group_size)
  *
  * At the very end, copy leftovers and swap the buffer with the main container.
  */
-template <typename C>
-static void
-split_and_insert_pairs(C& cont, C& buf, typename C::size_type pair_size)
+template <typename C, typename Compare>
+static void split_and_insert_pairs(C& cont,
+                                   C& buf,
+                                   typename C::size_type pair_size,
+                                   Compare comp)
 {
 	typedef typename C::iterator It;
 	typedef typename C::size_type Size;
@@ -133,7 +150,8 @@ split_and_insert_pairs(C& cont, C& buf, typename C::size_type pair_size)
 		buf_it = binary_insertion(--GroupIt(pair_it.begin(), group_size),
 		                          insert_amount,
 		                          GroupIt(buf.begin(), group_size),
-		                          GroupIt(buf_it, group_size))
+		                          GroupIt(buf_it, group_size),
+		                          comp)
 		             .begin();
 		search_size += insert_amount;
 	}
@@ -147,11 +165,12 @@ split_and_insert_pairs(C& cont, C& buf, typename C::size_type pair_size)
  * Insertion happens at the upper bound of any duplicates so less elements need
  * to be shifted to the right.
  */
-template <typename It, typename Size>
+template <typename It, typename Size, typename Compare>
 static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
                                           Size insert_amount,
                                           GroupIterator<It> buf_begin,
-                                          GroupIterator<It> buf_end)
+                                          GroupIterator<It> buf_end,
+                                          Compare comp)
 {
 	GroupIterator<It> search_end = buf_end;
 	for (Size _ = 0; _ < insert_amount; ++_) {
@@ -159,7 +178,8 @@ static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
 		    std::upper_bound( //! Comparison here.
 		        buf_begin,
 		        search_end,
-		        *group_it);
+		        *group_it,
+		        comp);
 		if (insert_pos == search_end) {
 			--search_end;
 		}
