@@ -18,8 +18,8 @@ void PmergeMe::sort_logged(C& container,
 	typedef typename C::value_type value_type;
 
 	Stats_ stats;
-	stats.container_type_name = ft::demangle(typeid(C).name());
 	stats.value_type_name = ft::demangle(typeid(value_type).name());
+	stats.container_type_name = ft::demangle(typeid(C).name());
 	stats.sorter_name = sorter_name;
 	stats.container_size = container.size();
 	_print_stats_title(stats);
@@ -31,8 +31,6 @@ void PmergeMe::sort_logged(C& container,
 	_print_sort_ops(stats);
 	_check_is_sorted(container, stats);
 	_print_is_sorted(stats);
-
-	_stats_log.push_back(stats);
 }
 
 template <typename C, typename Sorter>

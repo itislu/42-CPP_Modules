@@ -14,38 +14,6 @@ static std::clock_t median(std::vector<std::clock_t> sort_times);
 
 const char* const PmergeMe::_clear_prev_line = "\033[A\033[2K\r";
 
-PmergeMe::PmergeMe() {}
-
-PmergeMe::PmergeMe(const PmergeMe& other)
-    : _stats_log(other._stats_log)
-{}
-
-PmergeMe& PmergeMe::operator=(PmergeMe other)
-{
-	swap(other);
-	return *this;
-}
-
-PmergeMe::~PmergeMe() {}
-
-void PmergeMe::swap(PmergeMe& other)
-{
-	using std::swap;
-	swap(_stats_log, other._stats_log);
-}
-
-void PmergeMe::print_stats() const
-{
-	// typedef std::vector<Stats_>::const_iterator It;
-
-	// for (It stats = _stats_log.begin(); stats != _stats_log.end(); ++stats) {
-	// 	_print_stats_title(*stats);
-	// 	_print_sort_times(*stats);
-	// 	_print_sort_ops(*stats);
-	// 	_print_is_sorted(*stats);
-	// }
-}
-
 void PmergeMe::_print_stats_title(const Stats_& stats)
 {
 	std::cout << '\n'
@@ -128,5 +96,3 @@ static std::clock_t median(std::vector<std::clock_t> sort_times)
 	}
 	return median;
 }
-
-void swap(PmergeMe& lhs, PmergeMe& rhs) { lhs.swap(rhs); }

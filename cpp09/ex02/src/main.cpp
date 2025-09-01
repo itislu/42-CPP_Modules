@@ -16,18 +16,14 @@ template <typename C, typename T, typename Sorter>
 static void compare_before_after_sort(const std::vector<T>& input,
                                       Sorter sorter);
 template <typename TestType, typename T>
-static void test_containers_and_sorters(PmergeMe& pmerge_me,
-                                        const std::vector<T>& input);
+static void test_containers_and_sorters(const std::vector<T>& input);
 template <typename C, typename T, typename Sorter>
-static void
-pmerge_me_sort(PmergeMe& pmerge_me, const std::vector<T>& input, Sorter sorter);
+static void pmerge_me_sort(const std::vector<T>& input, Sorter sorter);
 template <typename T>
-static void test_expensive_comparison(PmergeMe& pmerge_me,
-                                      const std::vector<T>& input);
+static void test_expensive_comparison(const std::vector<T>& input);
 template <typename T>
-static void test_expensive_copy(PmergeMe& pmerge_me,
-                                const std::vector<T>& input);
-static void test_string(PmergeMe& pmerge_me, int argc, char* argv[]);
+static void test_expensive_copy(const std::vector<T>& input);
+static void test_string(int argc, char* argv[]);
 
 struct MergeInsertionSorter {
 	static std::string name() { return "merge_insertion_sort()"; }
@@ -87,13 +83,12 @@ try {
 		    input, MergeInsertionSorter());
 	}
 
-	PmergeMe pmerge_me;
-	test_containers_and_sorters<InputType>(pmerge_me, input);
+	test_containers_and_sorters<InputType>(input);
 
 	if (more_types) {
-		test_expensive_comparison(pmerge_me, input);
-		test_expensive_copy(pmerge_me, input);
-		test_string(pmerge_me, argc, argv);
+		test_expensive_comparison(input);
+		test_expensive_copy(input);
+		test_string(argc, argv);
 	}
 
 	reset_locale();
@@ -127,31 +122,24 @@ static void compare_before_after_sort(const std::vector<T>& input,
 }
 
 template <typename TestType, typename T>
-static void test_containers_and_sorters(PmergeMe& pmerge_me,
-                                        const std::vector<T>& input)
+static void test_containers_and_sorters(const std::vector<T>& input)
 {
-	pmerge_me_sort<std::vector<TestType> >(
-	    pmerge_me, input, MergeInsertionSorter());
-	pmerge_me_sort<std::list<TestType> >(
-	    pmerge_me, input, MergeInsertionSorter());
-	pmerge_me_sort<std::list<TestType> >(
-	    pmerge_me, input, MergeInsertionListSorter());
-	pmerge_me_sort<std::vector<TestType> >(pmerge_me, input, StandardSorter());
-	pmerge_me_sort<std::list<TestType> >(
-	    pmerge_me, input, StandardListSorter());
+	pmerge_me_sort<std::vector<TestType> >(input, MergeInsertionSorter());
+	pmerge_me_sort<std::list<TestType> >(input, MergeInsertionSorter());
+	pmerge_me_sort<std::list<TestType> >(input, MergeInsertionListSorter());
+	pmerge_me_sort<std::vector<TestType> >(input, StandardSorter());
+	pmerge_me_sort<std::list<TestType> >(input, StandardListSorter());
 }
 
 template <typename C, typename T, typename Sorter>
-static void
-pmerge_me_sort(PmergeMe& pmerge_me, const std::vector<T>& input, Sorter sorter)
+static void pmerge_me_sort(const std::vector<T>& input, Sorter sorter)
 {
 	C container(input.begin(), input.end());
-	pmerge_me.sort_logged(container, sorter, Sorter::name());
+	PmergeMe::sort_logged(container, sorter, Sorter::name());
 }
 
 template <typename T>
-static void test_expensive_comparison(PmergeMe& pmerge_me,
-                                      const std::vector<T>& input)
+static void test_expensive_comparison(const std::vector<T>& input)
 {
 	print_seperator("ExpensiveComparison");
 	std::cout << GRAY(
@@ -159,13 +147,11 @@ static void test_expensive_comparison(PmergeMe& pmerge_me,
 	    "starts to become faster than std::sort.")
 	          << '\n';
 	const unsigned long dummy_ops = 1500;
-	test_containers_and_sorters<ExpensiveComparison<T, dummy_ops> >(pmerge_me,
-	                                                                input);
+	test_containers_and_sorters<ExpensiveComparison<T, dummy_ops> >(input);
 }
 
 template <typename T>
-static void test_expensive_copy(PmergeMe& pmerge_me,
-                                const std::vector<T>& input)
+static void test_expensive_copy(const std::vector<T>& input)
 {
 	print_seperator("ExpensiveCopy");
 	std::cout << GRAY(
@@ -173,10 +159,10 @@ static void test_expensive_copy(PmergeMe& pmerge_me,
 	    "merge_insertion_sort.")
 	          << '\n';
 	const unsigned long dummy_ops = 0;
-	test_containers_and_sorters<ExpensiveCopy<T, dummy_ops> >(pmerge_me, input);
+	test_containers_and_sorters<ExpensiveCopy<T, dummy_ops> >(input);
 }
 
-static void test_string(PmergeMe& pmerge_me, int argc, char* argv[])
+static void test_string(int argc, char* argv[])
 {
 	print_seperator("std::string");
 	std::cout << GRAY(
@@ -184,5 +170,5 @@ static void test_string(PmergeMe& pmerge_me, int argc, char* argv[])
 	    "outweighs the savings of fewer comparisons than std::sort.")
 	          << '\n';
 	test_containers_and_sorters<std::string>(
-	    pmerge_me, parse_args<std::string>(argc, argv));
+	    parse_args<std::string>(argc, argv));
 }
