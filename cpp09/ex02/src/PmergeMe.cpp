@@ -2,6 +2,7 @@
 #include "libftpp/format.hpp"
 #include "libftpp/string.hpp"
 #include <algorithm>
+#include <cmath>
 #include <ctime>
 #include <iomanip>
 #include <iostream>
@@ -11,6 +12,7 @@
 
 static std::string format_duration(std::clock_t duration);
 static std::clock_t median(std::vector<std::clock_t> sort_times);
+static std::size_t calc_max_comp_fj(std::size_t n);
 
 const char* const PmergeMe::_clear_prev_line = "\033[A\033[2K\r";
 
@@ -42,10 +44,18 @@ void PmergeMe::_print_sort_times(const Stats_& stats)
 
 void PmergeMe::_print_sort_ops(const Stats_& stats)
 {
-	std::cout << "Comparisons: "
-	          << (stats.num_comparisons ? ft::to_string(*stats.num_comparisons)
-	                                    : "could not be counted")
-	          << '\n';
+	std::cout << "Comparisons: ";
+	if (stats.num_comparisons) {
+		const std::size_t max_comp = calc_max_comp_fj(stats.container_size);
+		std::cout << (*stats.num_comparisons <= max_comp
+		                  ? GREEN(ft::to_string(*stats.num_comparisons))
+		                  : RED(ft::to_string(*stats.num_comparisons)))
+		          << " / " << max_comp << '\n';
+	}
+	else {
+		std::cout << "could not be counted\n";
+	}
+
 	std::cout << "Copies: "
 	          << (stats.num_copies ? ft::to_string(*stats.num_copies)
 	                               : "could not be counted")
@@ -54,7 +64,8 @@ void PmergeMe::_print_sort_ops(const Stats_& stats)
 
 void PmergeMe::_print_is_sorted(const Stats_& stats)
 {
-	std::cout << "Sorted: " << (stats.is_sorted ? "Yes" : "No") << '\n';
+	std::cout << "Sorted: " << (stats.is_sorted ? GREEN("Yes") : RED("No"))
+	          << '\n';
 }
 
 static std::string format_duration(std::clock_t duration)
@@ -95,4 +106,17 @@ static std::clock_t median(std::vector<std::clock_t> sort_times)
 		median = prev + (median - prev) / 2;
 	}
 	return median;
+}
+
+static std::size_t calc_max_comp_fj(std::size_t n)
+{
+	double max_comp = 0.0;
+	for (std::size_t k = 1; k <= n; ++k) {
+		const double k_d = static_cast<double>(k);
+		const double term_val = (3.0 / 4.0) * k_d;
+		// log2(x) = log(x)/log(2)
+		const double log_val = std::log(term_val) / std::log(2.0);
+		max_comp += std::ceil(log_val);
+	}
+	return static_cast<std::size_t>(max_comp);
 }
