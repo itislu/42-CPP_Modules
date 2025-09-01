@@ -77,7 +77,7 @@ static void merge_to_pairs(C& cont, typename C::size_type group_size)
 	     pairs_end = GroupIt::end(cont.begin(), cont.end(), pair_size);
 	     low != pairs_end;
 	     std::advance(low, 2), std::advance(high, 2)) {
-		if (!(*low <= *high)) { //! Comparison here.
+		if (*high < *low) { //! Comparison here.
 			iter_swap(low, high);
 		}
 	}
