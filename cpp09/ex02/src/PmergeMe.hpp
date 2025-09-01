@@ -47,8 +47,9 @@ private:
 	template <typename C, typename Sorter>
 	static void
 	_count_sort_ops(const C& container, Sorter sorter, Stats_& stats);
-	template <typename C>
-	static void _check_is_sorted(const C& container, Stats_& stats);
+	template <typename C, typename Sorter>
+	static void
+	_check_is_sorted(const C& container, Sorter sorter, Stats_& stats);
 
 	/* Printing stats */
 

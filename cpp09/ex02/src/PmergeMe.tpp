@@ -29,7 +29,7 @@ void PmergeMe::sort_logged(C& container,
 	_print_sort_times(stats);
 	_count_sort_ops(unsorted, sorter, stats);
 	_print_sort_ops(stats);
-	_check_is_sorted(container, stats);
+	_check_is_sorted(container, sorter, stats);
 	_print_is_sorted(stats);
 }
 
@@ -86,11 +86,13 @@ void PmergeMe::_count_sort_ops(const C& container, Sorter sorter, Stats_& stats)
 	std::cerr << _clear_prev_line;
 }
 
-template <typename C>
-void PmergeMe::_check_is_sorted(const C& container, Stats_& stats)
+template <typename C, typename Sorter>
+void
+PmergeMe::_check_is_sorted(const C& container, Sorter sorter, Stats_& stats)
 {
 	std::cerr << "Checking if sorted ...\n";
-	stats.is_sorted = ft::is_sorted(container.begin(), container.end());
+	stats.is_sorted =
+	    ft::is_sorted(container.begin(), container.end(), sorter.value_comp());
 	std::cerr << _clear_prev_line;
 }
 
