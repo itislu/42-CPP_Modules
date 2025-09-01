@@ -6,7 +6,6 @@
 #include "test_types/ExpensiveCopy.hpp"
 #include "utils.hpp"
 #include <algorithm>
-#include <deque>
 #include <exception>
 #include <iostream>
 #include <list>
@@ -114,14 +113,11 @@ static void test_all(PmergeMe& pmerge_me, const std::vector<T>& input)
 {
 	pmerge_me_sort<std::vector<TestType> >(
 	    pmerge_me, input, MergeInsertionSorter());
-	pmerge_me_sort<std::deque<TestType> >(
-	    pmerge_me, input, MergeInsertionSorter());
 	pmerge_me_sort<std::list<TestType> >(
 	    pmerge_me, input, MergeInsertionSorter());
 	pmerge_me_sort<std::list<TestType> >(
 	    pmerge_me, input, MergeInsertionListSorter());
 	pmerge_me_sort<std::vector<TestType> >(pmerge_me, input, StandardSorter());
-	pmerge_me_sort<std::deque<TestType> >(pmerge_me, input, StandardSorter());
 	pmerge_me_sort<std::list<TestType> >(
 	    pmerge_me, input, StandardListSorter());
 }
