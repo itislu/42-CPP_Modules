@@ -23,10 +23,6 @@ public:
 	static const std::string type;
 
 private:
-	static const unsigned int _hp_start = 100;
-	static const unsigned int _ep_start = 100;
-	static const unsigned int _dmg_start = 30;
-
 	std::string _name;
 };
 
