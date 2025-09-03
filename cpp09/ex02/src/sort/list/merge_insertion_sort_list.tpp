@@ -4,7 +4,7 @@
 #include "libftpp/algorithm.hpp"
 #include "libftpp/functional.hpp"
 #include "libftpp/iterator.hpp"
-#include "merge_insertion_sort.hpp"
+#include "sort.hpp"
 #include <list>
 
 namespace detail_merge_insertion_sort_list {

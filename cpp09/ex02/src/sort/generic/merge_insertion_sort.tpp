@@ -5,7 +5,7 @@
 #include "libftpp/functional.hpp"
 #include "libftpp/iterator.hpp"
 #include "libftpp/type_traits.hpp"
-#include "merge_insertion_sort.hpp"
+#include "sort.hpp"
 #include <algorithm>
 #include <iterator>
 

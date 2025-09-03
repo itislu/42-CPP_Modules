@@ -63,4 +63,4 @@ private:
 	static const char* const _clear_prev_line;
 };
 
-#include "PmergeMe.tpp" // IWYU pragma: export
+#include "PmergeMe/PmergeMe.tpp" // IWYU pragma: export
