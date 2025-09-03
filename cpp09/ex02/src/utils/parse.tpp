@@ -5,7 +5,6 @@
 #include "utils.hpp"
 #include <algorithm>
 #include <iostream>
-#include <iterator>
 #include <string>
 #include <vector>
 
@@ -35,13 +34,21 @@ std::vector<T> parse_args(int argc,
 	std::vector<T> input;
 	input.reserve(argc - start_idx);
 	try {
-		std::transform(argv + start_idx,
-		               argv + argc,
-		               std::back_inserter(input),
-		               ft::FromString<T>());
+		std::string arg;
+		std::string::size_type endpos = 0;
+		for (int i = start_idx; i < argc; ++i) {
+			arg = argv[i];
+			input.push_back(ft::from_string<T>(arg, &endpos));
+			if (endpos != arg.length()) {
+				std::cerr << ft::log::error("excess characters: \"" + arg
+				                            + "\"")
+				          << '\n';
+				throw PARSE_ERROR; // NOLINT: Exit code.
+			}
+		}
 	}
 	catch (const ft::FromStringException& e) {
-		std::cerr << ft::log::error(e.what()) << '\n';
+		std::cerr << ft::log::error(e.error()) << '\n';
 		throw PARSE_ERROR; // NOLINT: Exit code.
 	}
 	return input;
