@@ -7,6 +7,22 @@
 #include "sort.hpp"
 #include <list>
 
+/**
+ * There are 3 points of optimization for `std::list` in this implementation:
+ *
+ * - Never copy the value type `T`.
+ *   Instead, sort iterators to each node and in the end arrange the input list
+ *   into the correct order in one iteration.
+ *
+ * - Reuse allocated nodes.
+ *   Always use `splice()` to move nodes between lists.
+ *
+ * - Greatly reduce the amount of iterations over the list.
+ *   This is achieved by building a tree structure out of the list. This trades
+ *   memory consumption for logarithmic-time access to all points of interest
+ *   for the binary insertion part of merge-insertion sort.
+ */
+
 namespace detail_merge_insertion_sort_list {
 template <typename Compare>
 struct CompareTournamentTree;
@@ -43,21 +59,6 @@ void merge_insertion_sort_list(std::list<T>& lst)
 	merge_insertion_sort_list(lst, ft::less<T>());
 }
 
-/**
- * There are 3 points of optimization for `std::list` in this implementation:
- *
- * - Never copy the value type `T`.
- *   Instead, sort iterators to each node and in the end arrange the input list
- *   into the correct order in one iteration.
- *
- * - Reuse allocated nodes.
- *   Always use `splice()` to move nodes between lists.
- *
- * - Greatly reduce the amount of iterations over the list.
- *   This is achieved by building a tree structure out of the list. This trades
- *   memory consumption for logarithmic-time access to all points of interest
- *   for the binary insertion part of merge-insertion sort.
- */
 template <typename T, typename Compare>
 void merge_insertion_sort_list(std::list<T>& lst, Compare comp)
 {
