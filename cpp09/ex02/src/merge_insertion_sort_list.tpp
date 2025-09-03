@@ -161,7 +161,7 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 			max_search_size += same_comp_size; // 3, 7, 15, 31, ...
 
 			// Split lows into pend_stack.
-			bool last_is_high = false;
+			Size search_decrease = 0;
 			while (search_size < max_search_size) {
 				++pair_it, ++search_size;
 
@@ -171,7 +171,7 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 						pair_it = layer_end;
 					}
 					else {
-						last_is_high = true;
+						search_decrease = 1;
 					}
 					break;
 				}
@@ -180,13 +180,10 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 
 			// Binary insertion.
 			const Size insert_amount = pend_stack.size();
-			if (last_is_high) {
-				binary_insertion(
-				    pend_stack, ft::prev(pair_it), search_size - 1, main_chain);
-			}
-			else {
-				binary_insertion(pend_stack, pair_it, search_size, main_chain);
-			}
+			binary_insertion(pend_stack,
+			                 ft::prev(pair_it, search_decrease),
+			                 search_size - search_decrease,
+			                 main_chain);
 			search_size += insert_amount;
 		}
 	}
