@@ -4,6 +4,7 @@
 #include "libftpp/string.hpp"
 #include "utils.hpp"
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,6 +14,8 @@ static inline int parse_options(int argc,
                                 char* argv[],
                                 bool* more_types_out,
                                 bool* no_before_after_out);
+static inline void check_excess(const std::string& arg,
+                                std::string::size_type endpos);
 } // namespace detail_parse
 
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic): argv
@@ -33,27 +36,26 @@ std::vector<T> parse_args(int argc,
 
 	std::vector<T> input;
 	input.reserve(argc - start_idx);
+	std::string arg;
+	std::string::size_type endpos = 0;
 	try {
-		std::string arg;
-		std::string::size_type endpos = 0;
 		for (int i = start_idx; i < argc; ++i) {
 			arg = argv[i];
 			input.push_back(ft::from_string<T>(arg, std::ios::dec, &endpos));
-			if (endpos != arg.length()) {
-				std::cerr << ft::log::error("excess characters: \"" + arg
-				                            + "\"")
-				          << '\n';
-				throw PARSE_ERROR; // NOLINT: Exit code.
-			}
+			detail_parse::check_excess(arg, endpos);
 		}
 	}
 	catch (const ft::FromStringException& e) {
+		// Give excess priority before range error.
+		if (dynamic_cast<const ft::FromStringRangeException*>(&e) != NULL) {
+			detail_parse::check_excess(arg, endpos);
+		}
 		std::cerr << ft::log::error(e.error()) << '\n';
 		throw PARSE_ERROR; // NOLINT: Exit code.
 	}
 	return input;
 }
-// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic): argv
 
 namespace detail_parse {
 
@@ -106,6 +108,16 @@ static inline int parse_options(int argc,
 	}
 	return start_idx;
 }
-// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic): argv
+
+static inline void check_excess(const std::string& arg,
+                                std::string::size_type endpos)
+{
+	if (endpos != arg.length()) {
+		std::cerr << ft::log::error("excess characters: \"" + arg + "\"")
+		          << '\n';
+		throw PARSE_ERROR; // NOLINT: Exit code.
+	}
+}
 
 } // namespace detail_parse
