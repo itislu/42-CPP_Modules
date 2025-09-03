@@ -1,12 +1,10 @@
 #include "PmergeMe.hpp"
 #include "libftpp/format.hpp"
-#include "libftpp/functional.hpp"
 #include "libftpp/utility.hpp"
-#include "merge_insertion_sort.hpp"
+#include "sorters.hpp"
 #include "test_types/ExpensiveComparison.hpp"
 #include "test_types/ExpensiveCopy.hpp"
 #include "utils.hpp"
-#include <algorithm>
 #include <exception>
 #include <iostream>
 #include <list>
@@ -25,66 +23,6 @@ static void test_expensive_comparison(const std::vector<T>& input);
 template <typename T>
 static void test_expensive_copy(const std::vector<T>& input);
 static void test_string(int argc, char* argv[]);
-
-template <typename Compare = ft::less<> >
-struct MergeInsertionSorter {
-	typedef Compare value_compare;
-
-	static std::string name() { return "merge_insertion_sort()"; }
-
-	template <typename C>
-	void operator()(C& container)
-	{
-		merge_insertion_sort(container, value_comp());
-	}
-
-	value_compare value_comp() { return value_compare(); }
-};
-
-template <typename Compare = ft::less<> >
-struct MergeInsertionListSorter {
-	typedef Compare value_compare;
-
-	static std::string name() { return "merge_insertion_sort_list()"; }
-
-	template <typename T>
-	void operator()(std::list<T>& lst)
-	{
-		merge_insertion_sort_list(lst, value_comp());
-	}
-
-	value_compare value_comp() { return value_compare(); }
-};
-
-template <typename Compare = ft::less<> >
-struct StandardSorter {
-	typedef Compare value_compare;
-
-	static std::string name() { return "std::sort()"; }
-
-	template <typename C>
-	void operator()(C& container)
-	{
-		std::sort(container.begin(), container.end(), value_comp());
-	}
-
-	value_compare value_comp() { return value_compare(); }
-};
-
-template <typename Compare = ft::less<> >
-struct StandardListSorter {
-	typedef Compare value_compare;
-
-	static std::string name() { return "std::list::sort()"; }
-
-	template <typename T>
-	void operator()(std::list<T>& lst)
-	{
-		lst.sort(value_comp());
-	}
-
-	value_compare value_comp() { return value_compare(); }
-};
 
 int main(int argc, char* argv[])
 try {
