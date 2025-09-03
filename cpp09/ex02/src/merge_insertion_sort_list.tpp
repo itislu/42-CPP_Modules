@@ -19,6 +19,13 @@ template <typename ListIt, typename Compare>
 static void
 split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain);
 template <typename ListIt, typename Compare>
+static bool move_trailing_low(
+    std::list<TournamentTree<ListIt, Compare> >& main_chain,
+    std::list<TournamentTree<ListIt, Compare> >& pend_stack,
+    typename std::list<TournamentTree<ListIt, Compare> >::iterator& layer_end,
+    typename std::list<TournamentTree<ListIt, Compare> >::size_type
+        expected_low_size);
+template <typename ListIt, typename Compare>
 static void binary_insertion(
     std::list<TournamentTree<ListIt, Compare> >& pend_stack,
     typename std::list<TournamentTree<ListIt, Compare> >::iterator search_end,
@@ -157,13 +164,11 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 			bool last_is_high = false;
 			while (search_size < max_search_size) {
 				++pair_it, ++search_size;
+
 				if (pair_it == layer_end) {
-					// Check for leftover without a paired high.
-					if (pair_it != main_chain.end()
-					    && pair_it->size() == pair_size / 2) {
-						pend_stack.splice(
-						    pend_stack.begin(), main_chain, pair_it++);
-						layer_end = pair_it;
+					if (move_trailing_low(
+					        main_chain, pend_stack, layer_end, pair_size / 2)) {
+						pair_it = layer_end;
 					}
 					else {
 						last_is_high = true;
@@ -185,6 +190,26 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 			search_size += insert_amount;
 		}
 	}
+}
+
+/**
+ * Check for a leftover without paired high in the main chain and move it to the
+ * pending stack.
+ */
+template <typename ListIt, typename Compare>
+static bool move_trailing_low(
+    std::list<TournamentTree<ListIt, Compare> >& main_chain,
+    std::list<TournamentTree<ListIt, Compare> >& pend_stack,
+    typename std::list<TournamentTree<ListIt, Compare> >::iterator& layer_end,
+    typename std::list<TournamentTree<ListIt, Compare> >::size_type
+        expected_low_size)
+{
+	if (layer_end != main_chain.end()
+	    && layer_end->size() == expected_low_size) {
+		pend_stack.splice(pend_stack.begin(), main_chain, layer_end++);
+		return true;
+	}
+	return false;
 }
 
 /**
