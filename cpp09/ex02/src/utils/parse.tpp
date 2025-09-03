@@ -30,7 +30,7 @@ std::vector<T> parse_args(int argc,
 	if (start_idx == argc) {
 		std::cerr
 		    << "Usage: " << argv[0]
-		    << " [-m|--more-types] [-n|--no-before-after] <positive_number...>\n";
+		    << " [-m|--more-types] [-n|--no-before-after] <positive_number> [...]\n";
 		throw NO_ARGS; // NOLINT: Exit code.
 	}
 
