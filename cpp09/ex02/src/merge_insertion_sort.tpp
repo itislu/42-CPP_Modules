@@ -24,13 +24,13 @@ static void split_and_insert_pairs(C& cont,
                                    typename C::size_type pair_size,
                                    Compare comp);
 template <typename It, typename Size, typename Compare>
-static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
+static GroupIterator<It> binary_insertion(GroupIterator<It> low,
                                           Size insert_amount,
                                           GroupIterator<It> buf_begin,
                                           GroupIterator<It> buf_end,
                                           Compare comp);
 template <typename It>
-static void insert_by_shift_out(GroupIterator<It> group_it,
+static void insert_by_shift_out(GroupIterator<It> low,
                                 GroupIterator<It> insert_pos,
                                 GroupIterator<It> buf_end);
 } // namespace detail_merge_insertion_sort
@@ -131,23 +131,24 @@ static void split_and_insert_pairs(C& cont,
 	buf_it = ft::copy_n(cont.begin(), group_size, buf_it);
 	++search_size;
 
-	GroupIt pair_it(ft::next(cont.begin(), group_size), pair_size);
-	const GroupIt pairs_end =
-	    GroupIt::end(pair_it.begin(), cont.end(), pair_size);
-	while (pair_it != pairs_end) {
+	GroupIt high(ft::next(cont.begin(), group_size), pair_size);
+	const GroupIt last_search_end =
+	    GroupIt::end(high.begin(), cont.end(), pair_size);
+	while (high != last_search_end) {
 		same_comp_size *= 2;
 		max_search_size += same_comp_size; // 3, 7, 15, 31, ...
 
 		// Push highs to buf.
 		Size insert_amount = 0;
-		while (search_size < max_search_size && pair_it != pairs_end) {
-			buf_it = std::copy(pair_it.begin(), pair_it.middle(), buf_it);
-			++pair_it, ++search_size;
+		while (search_size < max_search_size && high != last_search_end) {
+			buf_it = std::copy(high.begin(), high.middle(), buf_it);
+			++high, ++search_size;
 			++insert_amount;
 		}
 
 		// Insert lows into buf.
-		buf_it = binary_insertion(--GroupIt(pair_it.begin(), group_size),
+		const GroupIt low = --GroupIt(high.begin(), group_size);
+		buf_it = binary_insertion(low,
 		                          insert_amount,
 		                          GroupIt(buf.begin(), group_size),
 		                          GroupIt(buf_it, group_size),
@@ -156,17 +157,17 @@ static void split_and_insert_pairs(C& cont,
 		search_size += insert_amount;
 	}
 
-	std::copy(pairs_end.begin(), cont.end(), buf_it);
+	std::copy(last_search_end.begin(), cont.end(), buf_it);
 	cont.swap(buf);
 }
 
 /**
- * Inserts every second group in decreasing order.
+ * Inserts every second group (the lows) in decreasing order.
  * Insertion happens at the upper bound of any duplicates so less elements need
  * to be shifted to the right.
  */
 template <typename It, typename Size, typename Compare>
-static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
+static GroupIterator<It> binary_insertion(GroupIterator<It> low,
                                           Size insert_amount,
                                           GroupIterator<It> buf_begin,
                                           GroupIterator<It> buf_end,
@@ -178,13 +179,13 @@ static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
 		    std::upper_bound( //! Comparison here.
 		        buf_begin,
 		        search_end,
-		        *group_it,
+		        *low,
 		        comp);
 		if (insert_pos == search_end) {
 			--search_end;
 		}
-		insert_by_shift_out(group_it, insert_pos, ++buf_end);
-		std::advance(group_it, -2);
+		insert_by_shift_out(low, insert_pos, ++buf_end);
+		std::advance(low, -2);
 	}
 	return buf_end;
 }
@@ -194,12 +195,12 @@ static GroupIterator<It> binary_insertion(GroupIterator<It> group_it,
  * the right. What would get shifted past `buf_end` gets lost.
  */
 template <typename It>
-static void insert_by_shift_out(GroupIterator<It> group_it,
+static void insert_by_shift_out(GroupIterator<It> low,
                                 GroupIterator<It> insert_pos,
                                 GroupIterator<It> buf_end)
 {
-	ft::shift_right(insert_pos.begin(), buf_end.begin(), group_it.size());
-	std::copy(group_it.begin(), group_it.end(), insert_pos.begin());
+	ft::shift_right(insert_pos.begin(), buf_end.begin(), low.size());
+	std::copy(low.begin(), low.end(), insert_pos.begin());
 }
 
 } // namespace detail_merge_insertion_sort

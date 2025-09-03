@@ -111,7 +111,8 @@ static void build_layered_main_chain(
 			main_chain.front().merge(main_chain, next++); //! Comparison here.
 		}
 	}
-	main_chain.reverse(); // Move leftovers to the back in decreasing pair size.
+	// Move leftovers to the back in decreasing pair size.
+	main_chain.reverse();
 }
 
 /**
@@ -156,7 +157,7 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 			while (search_size < max_search_size) {
 				++pair_it, ++search_size;
 				if (pair_it == layer_end) {
-					// Check for leftover without a pair.
+					// Check for leftover without a paired high.
 					if (pair_it != main_chain.end()
 					    && pair_it->size() == pair_size / 2) {
 						pend_stack.splice(
@@ -179,10 +180,10 @@ split_and_insert_pairs(std::list<TournamentTree<ListIt, Compare> >& main_chain)
 /**
  * Search size normally stays constant (max_search_size) due to the partial
  * order achieved by the pairwise sorting in the beginning of the algorithm and
- * because the pend_stack elements get inserted in decreasing order.
- * But if the new element gets inserted after the next pend_stack's higher pair,
- * that higher pair will be two elements apart from the current pend_stack's
- * higher pair.
+ * because the pending elements get inserted in decreasing order.
+ * But if the new element gets inserted after the next pending's higher pair,
+ * that higher pair will be two elements apart from the current pending's higher
+ * pair.
  * Insertion happens at the upper bound of any duplicates to allow for more such
  * search size decreases.
  */
