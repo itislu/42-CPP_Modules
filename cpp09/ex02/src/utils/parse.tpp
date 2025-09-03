@@ -38,7 +38,7 @@ std::vector<T> parse_args(int argc,
 		std::string::size_type endpos = 0;
 		for (int i = start_idx; i < argc; ++i) {
 			arg = argv[i];
-			input.push_back(ft::from_string<T>(arg, &endpos));
+			input.push_back(ft::from_string<T>(arg, std::ios::dec, &endpos));
 			if (endpos != arg.length()) {
 				std::cerr << ft::log::error("excess characters: \"" + arg
 				                            + "\"")
