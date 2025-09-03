@@ -3,11 +3,11 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 # ***************************** CONFIGURATION ******************************** #
 
-NAME				:=	PmergeMe
-MSG_PROGRESS		:=	"🔀"
-COLOR_MAKE			=	$(STY_BLU)
-MSG_USAGE			?=	"Usage: ./$(NAME) [-m|--more-types] [-n|--no-before-after] <positive_number...>"
-LIBS_LOCAL			=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
+NAME			:=	PmergeMe
+MSG_PROGRESS	:=	"🔀"
+COLOR_MAKE		=	$(STY_BLU)
+MSG_USAGE		?=	"Usage: ./$(NAME) [-m|--more-types] [-n|--no-before-after] <positive_number...>"
+LIBS_LOCAL		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 
 
 #	Functions
@@ -32,11 +32,11 @@ endif
 #	ARGS can be used to add options to the program.
 #	Usage: make run-<N> [MODE=...] [ARGS=...]
 
-RUN_NUM				:=	$(patsubst run-%,%,$(MAKECMDGOALS))
+RUN_NUM			:=	$(patsubst run-%,%,$(MAKECMDGOALS))
 ifeq (1, $(call IS_NUMERIC,$(RUN_NUM)))
-.PHONY				:	$(RUN_NUM)
-override ARGS		:=	$(ARGS) $(call GENERATE_RANDOM_NUMBERS,$(RUN_NUM))
-$(MAKECMDGOALS)		:	run
+.PHONY			:	$(RUN_NUM)
+override ARGS	:=	$(ARGS) $(call GENERATE_RANDOM_NUMBERS,$(RUN_NUM))
+$(MAKECMDGOALS)	:	run
 endif
 
 
