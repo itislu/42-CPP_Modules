@@ -23,6 +23,10 @@ public:
 	static const std::string type;
 
 private:
+	static const unsigned int _hp_start = FragTrap::_hp_start;
+	static const unsigned int _ep_start = ScavTrap::_ep_start;
+	static const unsigned int _dmg_start = FragTrap::_dmg_start;
+
 	std::string _name;
 };
 
