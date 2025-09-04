@@ -8,11 +8,11 @@ class RPN {
 public:
 	typedef long double value_type;
 
-	enum Token {
-		PLUS,
-		MINUS,
-		STAR,
-		SLASH
+	enum Operator {
+		ADD = '+',
+		SUB = '-',
+		MUL = '*',
+		DIV = '/'
 	};
 
 	RPN();
@@ -24,7 +24,7 @@ public:
 	ft::Expected<value_type, std::string> result();
 
 private:
-	void _push_operator(Token op);
+	void _push_operator(Operator op);
 	void _push_operand(const std::string& word);
 
 	std::stack<value_type> _stack;

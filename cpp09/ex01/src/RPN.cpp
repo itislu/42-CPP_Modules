@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string>
 
-static ft::Optional<RPN::Token> get_operator_token(const std::string& word);
+static ft::Optional<RPN::Operator> get_operator(const std::string& word);
 
 RPN::RPN() {}
 
@@ -36,11 +36,11 @@ RPN::calculate(const std::string& input)
 	std::size_t operand_count = 0;
 
 	while (word_stream >> word) {
-		const ft::Optional<Token> op_token = get_operator_token(word);
-		if (op_token) {
+		const ft::Optional<Operator> op = get_operator(word);
+		if (op) {
 			++operator_count;
 			try {
-				_push_operator(*op_token);
+				_push_operator(*op);
 			}
 			catch (const ft::Exception& e) {
 				// Keep what was processed so far.
@@ -80,7 +80,7 @@ ft::Expected<RPN::value_type, std::string> RPN::result()
 	return _stack.top();
 }
 
-void RPN::_push_operator(Token op_token)
+void RPN::_push_operator(Operator op)
 {
 	if (_stack.size() < 2) {
 		throw ft::Exception("missing operand");
@@ -92,17 +92,17 @@ void RPN::_push_operator(Token op_token)
 
 	try {
 		value_type result = 0;
-		switch (op_token) {
-		case PLUS:
+		switch (op) {
+		case ADD:
 			result = lhs + rhs;
 			break;
-		case MINUS:
+		case SUB:
 			result = lhs - rhs;
 			break;
-		case STAR:
+		case MUL:
 			result = lhs * rhs;
 			break;
-		case SLASH:
+		case DIV:
 			if (rhs == 0) {
 				throw ft::Exception("division by zero");
 			}
@@ -149,20 +149,17 @@ void RPN::_push_operand(const std::string& word)
 	}
 }
 
-static ft::Optional<RPN::Token> get_operator_token(const std::string& word)
+static ft::Optional<RPN::Operator> get_operator(const std::string& word)
 {
 	if (word.length() != 1) {
 		return ft::nullopt;
 	}
 	switch (word[0]) {
-	case '+':
-		return RPN::PLUS;
-	case '-':
-		return RPN::MINUS;
-	case '*':
-		return RPN::STAR;
-	case '/':
-		return RPN::SLASH;
+	case RPN::ADD:
+	case RPN::SUB:
+	case RPN::MUL:
+	case RPN::DIV:
+		return static_cast<RPN::Operator>(word[0]);
 	default:
 		return ft::nullopt;
 	}
