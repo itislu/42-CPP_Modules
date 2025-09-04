@@ -12,6 +12,8 @@
  *
  * Works interactively and with command line arguments (whitespace separated
  * string and/or separate arguments).
+ * Be aware though that the terminal line buffer has a limit, commonly 4096
+ * bytes on Linux.
  */
 int main(int argc, char* argv[])
 try {
