@@ -6,6 +6,8 @@
 
 class RPN {
 public:
+	typedef long double value_type;
+
 	enum Token {
 		PLUS,
 		MINUS,
@@ -18,12 +20,12 @@ public:
 	RPN& operator=(const RPN& other);
 	~RPN();
 
-	ft::Expected<long double, std::string> calculate(const std::string& input);
-	ft::Expected<long double, std::string> result();
+	ft::Expected<value_type, std::string> calculate(const std::string& input);
+	ft::Expected<value_type, std::string> result();
 
 private:
 	void _push_operator(Token op);
 	void _push_operand(const std::string& word);
 
-	std::stack<long double> _stack;
+	std::stack<value_type> _stack;
 };

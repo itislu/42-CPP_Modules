@@ -33,9 +33,9 @@ try {
 
 	RPN rpn;
 	std::string line;
-	std::cout.precision(std::numeric_limits<long double>::digits10);
+	std::cout.precision(std::numeric_limits<RPN::value_type>::digits10);
 	while (std::getline(*input, line, delim)) {
-		const ft::Expected<long double, std::string> result =
+		const ft::Expected<RPN::value_type, std::string> result =
 		    rpn.calculate(line);
 		if (result) {
 			std::cout << *result << '\n';

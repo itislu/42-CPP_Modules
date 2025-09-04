@@ -27,7 +27,8 @@ RPN& RPN::operator=(const RPN& other)
 
 RPN::~RPN() {}
 
-ft::Expected<long double, std::string> RPN::calculate(const std::string& input)
+ft::Expected<RPN::value_type, std::string>
+RPN::calculate(const std::string& input)
 {
 	std::istringstream word_stream(input);
 	std::string word;
@@ -64,7 +65,7 @@ ft::Expected<long double, std::string> RPN::calculate(const std::string& input)
 	return result();
 }
 
-ft::Expected<long double, std::string> RPN::result()
+ft::Expected<RPN::value_type, std::string> RPN::result()
 {
 	if (_stack.empty()) {
 		return ft::Unexpected<std::string>("empty");
@@ -84,13 +85,13 @@ void RPN::_push_operator(Token op_token)
 	if (_stack.size() < 2) {
 		throw ft::Exception("missing operand");
 	}
-	const long double rhs = _stack.top();
+	const value_type rhs = _stack.top();
 	_stack.pop();
-	const long double lhs = _stack.top();
+	const value_type lhs = _stack.top();
 	_stack.pop();
 
 	try {
-		long double result = 0;
+		value_type result = 0;
 		switch (op_token) {
 		case PLUS:
 			result = lhs + rhs;
@@ -112,7 +113,7 @@ void RPN::_push_operator(Token op_token)
 		switch (fpclassify(result)) {
 		case FP_INFINITE:
 			throw ft::Exception("result out of range for "
-			                    + ft::demangle(typeid(long double).name()));
+			                    + ft::demangle(typeid(value_type).name()));
 		case FP_NAN:
 			throw ft::Exception("result is NaN");
 		case FP_SUBNORMAL:
@@ -131,7 +132,7 @@ void RPN::_push_operator(Token op_token)
 void RPN::_push_operand(const std::string& word)
 {
 	std::string::size_type endpos = 0;
-	const long double operand = ft::from_string<long double>(word, &endpos);
+	const value_type operand = ft::from_string<value_type>(word, &endpos);
 	if (endpos != word.length()) {
 		throw ft::Exception("excess characters: \"" + word + "\"");
 	}
