@@ -5,6 +5,7 @@
 #include "libftpp/numeric.hpp"
 #include "libftpp/string.hpp"
 #include <cstddef>
+#include <ios>
 #include <sstream>
 #include <string>
 
@@ -117,7 +118,7 @@ void RPN::_push_operator(Token op_token)
 void RPN::_push_operand(const std::string& word)
 {
 	std::string::size_type endpos = 0;
-	const long operand = ft::from_string<long>(word, &endpos);
+	const long operand = ft::from_string<long>(word, std::ios::dec, &endpos);
 	if (endpos != word.length()) {
 		throw ft::Exception("excess characters: \"" + word + "\"");
 	}
