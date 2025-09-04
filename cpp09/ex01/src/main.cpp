@@ -1,8 +1,10 @@
 #include "RPN.hpp"
 #include "libftpp/Expected.hpp"
 #include "libftpp/format.hpp"
+#include <algorithm>
 #include <exception>
 #include <iostream>
+#include <iterator>
 #include <limits>
 #include <sstream>
 #include <string>
@@ -22,11 +24,10 @@ try {
 	std::stringstream args;
 
 	if (argc > 1) {
-		// Chain all arguments together
-		for (int i = 1; i < argc; ++i) {
-			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-			args << argv[i] << ' ';
-		}
+		// Chain all arguments together.
+		std::copy(argv + 1,
+		          argv + argc,
+		          std::ostream_iterator<const char*>(args, " "));
 		input = &args;
 		delim = '\0';
 	}
