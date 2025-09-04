@@ -3,6 +3,7 @@
 #include "libftpp/format.hpp"
 #include <exception>
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <string>
 
@@ -30,6 +31,7 @@ try {
 
 	RPN rpn;
 	std::string line;
+	std::cout.precision(std::numeric_limits<long double>::digits10);
 	while (std::getline(*input, line, delim)) {
 		const ft::Expected<long double, std::string> result =
 		    rpn.calculate(line);
