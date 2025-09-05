@@ -77,43 +77,45 @@ static To parse_field(const std::string& str, const std::string& field_name)
 }
 
 /**
- * Checks if a value from a string is not further away from 0 than a given
- * limit.
+ * Returns true if |value| <= |limit|. Uses `value_str` to break ties caused by
+ * rounding.
  */
 template <typename T>
 static bool is_within_limit(const std::string& value_str, T value, T limit)
 {
-	if (std::abs(value) < std::abs(limit)) {
+	const T value_abs = std::abs(value);
+	const T limit_abs = std::abs(limit);
+	if (value_abs < limit_abs) {
 		return true;
 	}
-	if (std::abs(value) > std::abs(limit)) {
+	if (value_abs > limit_abs) {
 		return false;
 	}
-
-	/* Numerically equal, but potentially rounded */
+	// Numerically equal, but potentially rounded from string conversion.
 
 	typedef std::string::size_type size_type;
 	const std::string limit_str = ft::to_string(limit, std::ios::fixed);
 
-	// Skip sign and leading zeros
+	// Skip sign and leading zeros.
 	const size_type limit_start =
 	    std::min(limit_str.find_first_not_of("0+-"), limit_str.length());
 	const size_type value_start =
 	    std::min(value_str.find_first_not_of("0+-"), value_str.length());
 
-	// If no dot, dot would be at length
+	// If no dot, dot would be at end.
 	const size_type limit_dot =
 	    std::min(limit_str.find('.', limit_start), limit_str.length());
 	const size_type value_dot =
 	    std::min(value_str.find('.', value_start), value_str.length());
 
-	// Compare length until dot (skipping zeros): if less than limit_str, it
-	// cannot be larger
+	// Compare length after leading zeros until dot: if less than limit_str,
+	// value is not larger.
 	if (value_dot - value_start < limit_dot - limit_start) {
 		return true;
 	}
 
-	// After sign and zeros, if value_str <= limit_str, it cannot be larger
+	// After sign and zeros, if value_str <= limit_str, value is not larger.
+	// '.' compares as less than any digit.
 	if (value_start < value_str.length() && limit_start < limit_str.length()
 	    && value_str.compare(
 	           value_start, std::string::npos, limit_str, limit_start)
@@ -121,10 +123,8 @@ static bool is_within_limit(const std::string& value_str, T value, T limit)
 		return true;
 	}
 
-	// The part of value_str that is longer than limit_str must only be 0s
-	return value_str.find_first_not_of(
-	           '0',
-	           value_dot
-	               + std::min(limit_str.length() - limit_dot, size_type(1)))
-	       == std::string::npos;
+	// The part of value_str that is longer than limit_str must only be 0s.
+	const size_type value_extra =
+	    value_dot + std::min(limit_str.length() - limit_dot, size_type(1));
+	return value_str.find_first_not_of('0', value_extra) == std::string::npos;
 }
