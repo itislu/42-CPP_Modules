@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 try {
 	if (argc < 2 || argc > 3) {
 		std::cerr << "Usage: " << argv[0]
-		          << " <input_file> [data_file=" DEFAULT_DATA_FILE "]" << '\n';
+		          << " <input_file> [data_file=" DEFAULT_DATA_FILE "]\n";
 		return 1;
 	}
 
@@ -74,9 +74,8 @@ static void fill_exchange(BitcoinExchange& btc, const std::string& data_file)
 				log_line_warning(csv)
 				    << "BitcoinExchange: duplicate entry for " << date_str
 				    << (*prev_rate != rate
-				            ? " - replaced with new exchange rate"
-				            : "")
-				    << '\n';
+				            ? " - replaced with new exchange rate\n"
+				            : "\n");
 			}
 		}
 		catch (const ft::Exception& e) {
@@ -160,10 +159,10 @@ static typename Csv<Columns>::iterator skip_header(Csv<Columns>& csv)
 			// Valid row but not valid fields
 		}
 		std::cout << ft::log::info("skipping header: \"") << (*cur)->line
-		          << "\"" << '\n';
+		          << "\"\n";
 	}
 	else {
-		log_line_warning(csv) << cur->error() << " - invalid header" << '\n';
+		log_line_warning(csv) << cur->error() << " - invalid header\n";
 	}
 
 	return ++cur;
