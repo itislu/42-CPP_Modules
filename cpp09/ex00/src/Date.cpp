@@ -1,7 +1,6 @@
 #include "Date.hpp"
 #include "libftpp/Exception.hpp"
 #include "libftpp/string.hpp"
-#include <cctype>
 #include <cstddef>
 #include <ctime>
 #include <ios>
@@ -10,14 +9,21 @@
 #include <string>
 
 static bool parse_date(const std::string& str,
-                       std::tm* tm,
+                       std::tm& tm,
                        std::string::size_type* endpos_out);
+static std::string::size_type
+parse_year(const std::string& str, std::tm& tm, std::string::size_type& endpos);
+static std::string::size_type parse_month(const std::string& str,
+                                          std::tm& tm,
+                                          std::string::size_type& endpos);
+static std::string::size_type
+parse_day(const std::string& str, std::tm& tm, std::string::size_type& endpos);
 
 std::time_t Date::serialize(const std::string& str,
                             std::string::size_type* endpos_out)
 {
 	std::tm tm = {};
-	if (!parse_date(str, &tm, endpos_out)) {
+	if (!parse_date(str, tm, endpos_out)) {
 		throw ft::Exception("invalid date format: \"" + str + "\"", "Date");
 	}
 
@@ -25,7 +31,7 @@ std::time_t Date::serialize(const std::string& str,
 	const int month = tm.tm_mon;
 	const int day = tm.tm_mday;
 
-	// std::mktime() modifies tm to make it a valid date
+	// std::mktime() modifies `tm` to make it a valid date.
 	const std::time_t time = std::mktime(&tm);
 	if (time == -1 || tm.tm_year != year || tm.tm_mon != month
 	    || tm.tm_mday != day) {
@@ -35,53 +41,69 @@ std::time_t Date::serialize(const std::string& str,
 }
 
 static bool parse_date(const std::string& str,
-                       std::tm* tm,
+                       std::tm& tm,
                        std::string::size_type* endpos_out)
 {
-	// NOLINTNEXTLINE: Let endpos always be a valid reference
+	// NOLINTNEXTLINE: Let endpos always be a valid reference.
 	std::string::size_type _, &endpos = (endpos_out ? *endpos_out : _) = 0;
+	std::string not_parsed(str);
 	std::string::size_type pos = 0;
 
 	try {
-		const int epoch = 1900;
-		std::string str_part(str);
-
-		// endpos needs to always be up-to-date for outparam
-		// NOLINTBEGIN(bugprone-inc-dec-in-conditions)
-		const int year = ft::from_string<int>(str, std::ios::dec, &endpos);
-		if (year < std::numeric_limits<int>::min() + epoch
-		    || str.at(endpos) != '-' || !(bool)std::isdigit(str.at(++endpos))) {
-			return false;
-		}
-
-		const int month = ft::from_string<int>(
-		    str_part.erase(0, endpos), std::ios::dec, &pos);
-		endpos += pos;
-		if (pos > 2 || str.at(endpos) != '-'
-		    || !(bool)std::isdigit(str.at(++endpos))) {
-			return false;
-		}
-		// NOLINTEND(bugprone-inc-dec-in-conditions)
-
-		const int day =
-		    ft::from_string<int>(str_part.erase(0, ++pos), std::ios::dec, &pos);
-		endpos += pos;
-		if (pos > 2) {
-			return false;
-		}
-
-		tm->tm_year = year - epoch;
-		tm->tm_mon = month - 1;
-		tm->tm_mday = day;
+		endpos += parse_year(not_parsed, tm, pos);
+		not_parsed.erase(0, pos);
+		endpos += parse_month(not_parsed, tm, pos);
+		not_parsed.erase(0, pos);
+		endpos += parse_day(not_parsed, tm, pos);
 		return true;
 	}
-	catch (const ft::FromStringException&) {
+	catch (const ft::Exception&) {
 		endpos += pos;
 		return false;
 	}
 	catch (const std::out_of_range&) {
+		endpos += pos;
 		return false;
 	}
+}
+
+static std::string::size_type
+parse_year(const std::string& str, std::tm& tm, std::string::size_type& pos)
+{
+	const int epoch = 1900;
+	const int year = ft::from_string<int>(str, std::ios::dec, &pos);
+
+	if (year < std::numeric_limits<int>::min() + epoch || str.at(pos) != '-') {
+		throw ft::Exception("invalid year");
+	}
+	++pos;
+	tm.tm_year = year - epoch;
+	return pos;
+}
+
+static std::string::size_type
+parse_month(const std::string& str, std::tm& tm, std::string::size_type& pos)
+{
+	const int month = ft::from_string<int>(str, std::ios::dec, &pos);
+
+	if (pos > 2 || str.at(pos) != '-') {
+		throw ft::Exception("invalid month");
+	}
+	++pos;
+	tm.tm_mon = month - 1;
+	return pos;
+}
+
+static std::string::size_type
+parse_day(const std::string& str, std::tm& tm, std::string::size_type& pos)
+{
+	const int day = ft::from_string<int>(str, std::ios::dec, &pos);
+
+	if (pos > 2) {
+		throw ft::Exception("invalid day");
+	}
+	tm.tm_mday = day;
+	return pos;
 }
 
 std::string Date::str(std::time_t time, const char* format)
