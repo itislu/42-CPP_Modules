@@ -9,6 +9,9 @@
 #include <sstream>
 #include <string>
 
+static bool
+get_line(std::istream& input, bool is_interactive, std::string& line_out);
+
 /**
  * RPN Calculator
  *
@@ -20,8 +23,8 @@
 int main(int argc, char* argv[])
 try {
 	std::istream* input = &std::cin;
-	char delim = '\n';
 	std::stringstream args;
+	bool is_interactive = true;
 
 	if (argc > 1) {
 		// Chain all arguments together.
@@ -29,13 +32,12 @@ try {
 		          argv + argc,
 		          std::ostream_iterator<const char*>(args, " "));
 		input = &args;
-		delim = '\0';
+		is_interactive = false;
 	}
 
 	RPN rpn;
-	std::string line;
 	std::cout.precision(std::numeric_limits<RPN::value_type>::digits10);
-	while (std::getline(*input, line, delim)) {
+	for (std::string line; get_line(*input, is_interactive, line);) {
 		const ft::Expected<RPN::value_type, std::string> result =
 		    rpn.calculate(line);
 		if (result) {
@@ -52,4 +54,22 @@ catch (const std::exception& e) {
 	std::cerr << ft::log::error(BOLD("Unexpected exception: ") + e.what())
 	          << '\n';
 	return 1;
+}
+
+static bool
+get_line(std::istream& input, bool is_interactive, std::string& line_out)
+{
+	if (!input.good()) {
+		return false;
+	}
+	char delim = '\0';
+	if (is_interactive) {
+		delim = '\n';
+		std::cout << "> " << std::flush;
+	}
+	if (std::getline(input, line_out, delim).eof() && is_interactive) {
+		std::cout << '\n';
+		return false;
+	}
+	return !input.fail();
 }
