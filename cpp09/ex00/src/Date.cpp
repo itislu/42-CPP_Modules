@@ -76,13 +76,12 @@ static bool parse_date(const std::string& str,
 		return true;
 	}
 	catch (const ft::FromStringException&) {
-		// EMPTY: Shared error handling
+		endpos += pos;
+		return false;
 	}
 	catch (const std::out_of_range&) {
-		// EMPTY: Shared error handling
+		return false;
 	}
-	endpos += pos;
-	return false;
 }
 
 std::string Date::str(std::time_t time, const char* format)
