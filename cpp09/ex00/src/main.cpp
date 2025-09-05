@@ -29,8 +29,7 @@ int main(int argc, char* argv[])
 try {
 	if (argc < 2 || argc > 3) {
 		std::cerr << "Usage: " << argv[0]
-		          << " <input_file> [data_file=" << DEFAULT_DATA_FILE << "]"
-		          << '\n';
+		          << " <input_file> [data_file=" DEFAULT_DATA_FILE "]" << '\n';
 		return 1;
 	}
 
