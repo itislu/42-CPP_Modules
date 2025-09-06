@@ -2,6 +2,7 @@
 
 #include "libftpp/Array.hpp"
 #include "libftpp/Expected.hpp"
+#include "libftpp/assert.hpp"
 #include <cstddef>
 #include <fstream>
 #include <iterator>
@@ -18,6 +19,8 @@
  */
 template <std::size_t Columns>
 class Csv {
+	STATIC_ASSERT(Columns > 0); // Csv<Columns>: Columns must be greater than 0.
+
 public:
 	class iterator;
 	struct Row;
@@ -96,9 +99,6 @@ private:
 	bool _trim_whitespace;
 	bool _is_eof;
 };
-
-template <>
-class Csv<0>;
 
 template <std::size_t Columns>
 void swap(typename Csv<Columns>::iterator& lhs,
