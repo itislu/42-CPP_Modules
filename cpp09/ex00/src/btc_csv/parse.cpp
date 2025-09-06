@@ -1,5 +1,5 @@
 #include "parse.hpp"
-#include "Date.hpp"
+#include "date.hpp"
 #include "libftpp/Exception.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
@@ -67,7 +67,7 @@ static To parse_field(const std::string& str, const std::string& field_name)
 	std::string::size_type endpos = 0;
 
 	if (ft::is_same<To, std::time_t>::value) {
-		result = Date::serialize(str, &endpos);
+		result = date::serialize(str, &endpos);
 	}
 	else {
 		result = ft::from_string<To>(str, std::ios::fixed, &endpos);

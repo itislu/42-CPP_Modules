@@ -1,5 +1,5 @@
 #include "BitcoinExchange.hpp"
-#include "Date.hpp"
+#include "date.hpp"
 #include "libftpp/Exception.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/algorithm.hpp"
@@ -38,18 +38,19 @@ ft::Optional<double> BitcoinExchange::insert(std::time_t date, double rate)
 double BitcoinExchange::find(std::time_t date) const
 {
 	std::map<std::time_t, double>::const_iterator it = _db.lower_bound(date);
-	// Exact match
+	// Exact match.
 	if (it != _db.end() && it->first == date) {
 		return it->second;
 	}
-	// No lower entry
+	// No lower entry.
 	if (it == _db.begin()) {
-		throw ft::Exception(_db.empty() ? "database is empty"
-		                                : "no data before "
-		                                      + Date::str(_db.begin()->first),
+		throw ft::Exception(_db.empty()
+		                        ? "database is empty"
+		                        : "no data before "
+		                              + date::deserialize(_db.begin()->first),
 		                    "BitcoinExchange");
 	}
-	// Closest lower entry
+	// Closest lower entry.
 	return (--it)->second;
 }
 

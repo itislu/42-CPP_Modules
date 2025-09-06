@@ -1,4 +1,4 @@
-#include "Date.hpp"
+#include "date.hpp"
 #include "libftpp/Exception.hpp"
 #include "libftpp/string.hpp"
 #include <cstddef>
@@ -7,6 +7,8 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
+
+namespace date {
 
 static bool parse_date(const std::string& str,
                        std::tm& tm,
@@ -19,8 +21,8 @@ static std::string::size_type parse_month(const std::string& str,
 static std::string::size_type
 parse_day(const std::string& str, std::tm& tm, std::string::size_type& endpos);
 
-std::time_t Date::serialize(const std::string& str,
-                            std::string::size_type* endpos_out)
+std::time_t serialize(const std::string& str,
+                      std::string::size_type* endpos_out /*= NULL*/)
 {
 	std::tm tm = {};
 	if (!parse_date(str, tm, endpos_out)) {
@@ -106,7 +108,7 @@ parse_day(const std::string& str, std::tm& tm, std::string::size_type& pos)
 	return pos;
 }
 
-std::string Date::str(std::time_t time, const char* format)
+std::string deserialize(std::time_t time, const char* format /*= "%Y-%m-%d"*/)
 {
 	const std::tm* const tm_ptr = std::localtime(&time);
 	if (tm_ptr == NULL) {
@@ -120,3 +122,5 @@ std::string Date::str(std::time_t time, const char* format)
 	}
 	return static_cast<char*>(buffer);
 }
+
+} // namespace date
