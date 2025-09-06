@@ -4,6 +4,7 @@
 #include <string>
 
 namespace btc_csv {
+namespace detail {
 
 /**
  * @throws ft::Exception When `str` is in an invalid date format or represents
@@ -24,4 +25,5 @@ double parse_exchange_rate(const std::string& str);
  */
 float parse_query_amount(const std::string& str, float max_query_amount);
 
+} // namespace detail
 } // namespace btc_csv

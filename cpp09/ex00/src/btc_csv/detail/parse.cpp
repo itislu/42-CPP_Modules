@@ -10,6 +10,7 @@
 #include <string>
 
 namespace btc_csv {
+namespace detail {
 
 template <typename To>
 static To parse_field(const std::string& str, const std::string& field_name);
@@ -131,4 +132,5 @@ static bool is_within_limit(const std::string& value_str, T value, T limit)
 	return value_str.find_first_not_of('0', value_extra) == std::string::npos;
 }
 
+} // namespace detail
 } // namespace btc_csv

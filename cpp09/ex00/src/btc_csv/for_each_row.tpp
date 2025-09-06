@@ -18,7 +18,8 @@ bool for_each_row(const std::string& filename,
 	Csv<2> csv(filename, delim);
 	bool has_data = false;
 
-	for (Csv<2>::iterator cur = skip_header(csv), end = csv.end(); cur != end;
+	for (Csv<2>::iterator cur = detail::skip_header(csv), end = csv.end();
+	     cur != end;
 	     ++cur) {
 		try {
 			if (!cur->has_value()) {
@@ -30,8 +31,8 @@ bool for_each_row(const std::string& filename,
 			       (*cur)->fields[1]);
 		}
 		catch (const ft::Exception& e) {
-			log_line_warning(csv) << e.what() << " - skipping line "
-			                      << csv.cur_line_nbr() << '\n';
+			detail::log_line_warning(csv) << e.what() << " - skipping line "
+			                              << csv.cur_line_nbr() << '\n';
 		}
 	}
 

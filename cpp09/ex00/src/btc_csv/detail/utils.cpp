@@ -7,6 +7,7 @@
 #include <ostream>
 
 namespace btc_csv {
+namespace detail {
 
 Csv<2>::iterator skip_header(Csv<2>& csv)
 {
@@ -41,4 +42,5 @@ std::ostream& log_line_warning(const Csv<2>& csv)
 	                 << csv.cur_line_nbr() << ": ";
 }
 
+} // namespace detail
 } // namespace btc_csv
