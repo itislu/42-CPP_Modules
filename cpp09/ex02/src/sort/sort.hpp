@@ -88,6 +88,6 @@ struct StandardListSorter {
 	value_compare value_comp();
 };
 
-#include "sort/generic/merge_insertion_sort.tpp"   // IWYU pragma: export
-#include "sort/list/merge_insertion_sort_list.tpp" // IWYU pragma: export
-#include "sort/sorters.tpp"                        // IWYU pragma: export
+#include "generic/merge_insertion_sort.tpp"   // IWYU pragma: export
+#include "list/merge_insertion_sort_list.tpp" // IWYU pragma: export
+#include "sorters.tpp"                        // IWYU pragma: export

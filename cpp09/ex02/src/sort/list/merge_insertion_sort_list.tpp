@@ -4,7 +4,7 @@
 #include "libftpp/algorithm.hpp"
 #include "libftpp/functional.hpp"
 #include "libftpp/iterator.hpp"
-#include "sort.hpp"
+#include "sort/sort.hpp"
 #include <list>
 
 /**

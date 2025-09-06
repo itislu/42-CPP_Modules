@@ -1,10 +1,10 @@
-#include "PmergeMe.hpp"
+#include "PmergeMe/PmergeMe.hpp"
 #include "libftpp/format.hpp"
 #include "libftpp/utility.hpp"
-#include "sort.hpp"
+#include "sort/sort.hpp"
 #include "test_types/ExpensiveComparison.hpp"
 #include "test_types/ExpensiveCopy.hpp"
-#include "utils.hpp"
+#include "utils/utils.hpp"
 #include <exception>
 #include <iostream>
 #include <list>

@@ -37,5 +37,5 @@ void init_user_locale();
  */
 void reset_locale();
 
-#include "utils/parse.tpp" // IWYU pragma: export
-#include "utils/print.tpp" // IWYU pragma: export
+#include "parse.tpp" // IWYU pragma: export
+#include "print.tpp" // IWYU pragma: export
