@@ -62,7 +62,7 @@ const std::string& Csv<Columns>::filename() const throw()
 }
 
 template <std::size_t Columns>
-std::size_t Csv<Columns>::cur_line_nbr() const throw()
+typename Csv<Columns>::size_type Csv<Columns>::cur_line_nbr() const throw()
 {
 	return _cur_line_nbr;
 }
