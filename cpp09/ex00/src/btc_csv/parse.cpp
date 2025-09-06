@@ -9,6 +9,8 @@
 #include <ios>
 #include <string>
 
+namespace btc_csv {
+
 template <typename To>
 static To parse_field(const std::string& str, const std::string& field_name);
 template <typename T>
@@ -23,7 +25,7 @@ catch (ft::Exception& e) {
 	throw;
 }
 
-double parse_rate(const std::string& str)
+double parse_exchange_rate(const std::string& str)
 try {
 	const double rate = parse_field<double>(str, "exchange rate");
 
@@ -37,7 +39,7 @@ catch (ft::Exception& e) {
 	throw;
 }
 
-float parse_amount(const std::string& str, float max_query_amount)
+float parse_query_amount(const std::string& str, float max_query_amount)
 try {
 	const float amount = parse_field<float>(str, "query amount");
 
@@ -128,3 +130,5 @@ static bool is_within_limit(const std::string& value_str, T value, T limit)
 	    value_dot + std::min(limit_str.length() - limit_dot, size_type(1));
 	return value_str.find_first_not_of('0', value_extra) == std::string::npos;
 }
+
+} // namespace btc_csv
