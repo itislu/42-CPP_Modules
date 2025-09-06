@@ -2,9 +2,9 @@
 
 #include "Csv.hpp"
 #include "btc_csv.hpp"
+#include "detail/utils.hpp"
 #include "libftpp/Exception.hpp"
 #include "libftpp/format.hpp"
-#include "utils.hpp"
 #include <iostream>
 #include <string>
 

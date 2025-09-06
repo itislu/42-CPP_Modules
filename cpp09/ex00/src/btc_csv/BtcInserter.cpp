@@ -1,9 +1,9 @@
 #include "BitcoinExchange.hpp"
 #include "Csv.hpp"
 #include "btc_csv.hpp"
+#include "detail/parse.hpp"
+#include "detail/utils.hpp"
 #include "libftpp/Optional.hpp"
-#include "parse.hpp"
-#include "utils.hpp"
 #include <ctime>
 #include <string>
 
