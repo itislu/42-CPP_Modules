@@ -13,7 +13,7 @@ LIBS_LOCAL		=	$(LIB_ROOT_DIR)/libftpp/libftpp.a
 #	Functions
 
 define IS_NUMERIC
-$(shell echo "$(1)" | grep -q -E '^[0-9]+$$' && echo 1 || echo 0)
+$(shell echo "$(1)" | grep -q -E '^[0-9]+$$' && echo 1)
 endef
 
 ifneq (, $(shell command -v shuf))
@@ -32,11 +32,13 @@ endif
 #	ARGS can be used to add options to the program.
 #	Usage: make run-<N> [MODE=...] [ARGS=...]
 
-RUN_NUM			:=	$(patsubst run-%,%,$(MAKECMDGOALS))
-ifeq (1, $(call IS_NUMERIC,$(RUN_NUM)))
-.PHONY			:	$(RUN_NUM)
-override ARGS	:=	$(ARGS) $(call GENERATE_RANDOM_NUMBERS,$(RUN_NUM))
-$(MAKECMDGOALS)	:	run
+RUN_NUMS		:=	$(patsubst run-%,%,$(filter run-%,$(MAKECMDGOALS)))
+ifneq (, $(foreach num,$(RUN_NUMS),$(call IS_NUMERIC,$(num))))
+RUN_TARGETS		:=	$(addprefix run-,$(RUN_NUMS))
+
+.PHONY			:	$(RUN_TARGETS)
+$(RUN_TARGETS):	run-%:
+					$(MAKE) run ARGS="$(ARGS) $(call GENERATE_RANDOM_NUMBERS,$*)"
 endif
 
 
