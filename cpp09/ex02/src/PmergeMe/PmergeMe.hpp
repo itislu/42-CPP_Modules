@@ -6,8 +6,29 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief Utility class to benchmark and log different sorter, container and
+ * value type combinations
+ */
 class PmergeMe {
 public:
+	/**
+	 * @brief Runs a provided sorter with a provided container and collects and
+	 * prints statistics of that operation
+	 *
+	 * Measures CPU time across multiple runs (`sort_time_measurements`), counts
+	 * comparisons and copies (via `OperationCounter`), verifies sortedness, and
+	 * prints a concise summary.
+	 *
+	 * @tparam C An STL-container
+	 * @tparam Sorter Requirements:
+	 * - Can be invoked with a container of type `C`.
+	 * - Has a member function `value_comp` which returns a comparison function
+	 *   object the sorter uses to compare values.
+	 * @param container A reference to the container to be sorted. Gets mutated
+	 * @param sorter A function object that sorts the container passed to it
+	 * @param sorter_name Name of the sorter that gets printed in the summary
+	 */
 	template <typename C, typename Sorter>
 	static void
 	sort_logged(C& container, Sorter sorter, const std::string& sorter_name);
@@ -38,9 +59,6 @@ private:
 
 	/* Collecting stats */
 
-	/**
-	 * @attention This modifies `container` into a sorted state.
-	 */
 	template <typename C, typename Sorter>
 	static void _measure_sort_times(C& container,
 	                                const C& unsorted,

@@ -33,6 +33,9 @@ void PmergeMe::sort_logged(C& container,
 	_print_is_sorted(stats);
 }
 
+/**
+ * @attention This mutates the original container into a sorted state.
+ */
 template <typename C, typename Sorter>
 void PmergeMe::_measure_sort_times(C& container,
                                    const C& unsorted,
