@@ -34,9 +34,9 @@ std::string PmergeMe::_short_container_type_name(const Stats_& stats)
 
 void PmergeMe::_print_sort_times(const Stats_& stats)
 {
-	std::cout << "Sorting time (median of " << _measurements
+	std::cout << "Sorting time (median of " << sort_time_measurements
 	          << "): " << format_duration(median(stats.sort_times)) << '\n';
-	std::cout << "Sorting time (min. of " << _measurements << "):   "
+	std::cout << "Sorting time (min. of " << sort_time_measurements << "):   "
 	          << format_duration(*std::min_element(stats.sort_times.begin(),
 	                                               stats.sort_times.end()))
 	          << '\n';

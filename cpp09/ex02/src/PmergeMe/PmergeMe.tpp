@@ -40,10 +40,10 @@ void PmergeMe::_measure_sort_times(C& container,
                                    Stats_& stats)
 {
 	std::cerr << '\n';
-	for (unsigned i = 1; i <= _measurements; ++i) {
+	for (unsigned i = 1; i <= sort_time_measurements; ++i) {
 		std::cerr << _clear_prev_line << "Measuring sorting time ... " << i
-		          << "/" << _measurements << '\n';
-		if (i != _measurements) {
+		          << "/" << sort_time_measurements << '\n';
+		if (i != sort_time_measurements) {
 			C tmp(unsorted);
 			_sort_timed(tmp, sorter, stats);
 		}

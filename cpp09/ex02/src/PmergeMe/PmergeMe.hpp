@@ -12,6 +12,8 @@ public:
 	static void
 	sort_logged(C& container, Sorter sorter, const std::string& sorter_name);
 
+	static const unsigned sort_time_measurements = 5;
+
 private:
 	struct Stats_ {
 		std::string value_type_name;
@@ -61,7 +63,6 @@ private:
 	static void _print_sort_ops(const Stats_& stats);
 	static void _print_is_sorted(const Stats_& stats);
 
-	static const unsigned _measurements = 5;
 	static const char* const _clear_prev_line;
 };
 
