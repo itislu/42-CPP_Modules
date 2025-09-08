@@ -27,6 +27,8 @@ private:
 	template <typename C, typename To>
 	struct _rebind_value_type;
 
+	struct _op_counter_tag {};
+
 	PmergeMe();
 	PmergeMe(const PmergeMe& other);
 	PmergeMe& operator=(const PmergeMe& other);

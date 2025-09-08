@@ -4,7 +4,7 @@
 #include <istream>
 #include <ostream>
 
-template <typename T>
+template <typename T, typename UniqueTag = void>
 class OperationCounter {
 public:
 	static std::size_t comparisons() throw();
@@ -37,12 +37,14 @@ private:
 	T _v;
 };
 
-template <typename T>
-void swap(OperationCounter<T>& lhs, OperationCounter<T>& rhs);
+template <typename T, typename UniqueTag>
+void swap(OperationCounter<T, UniqueTag>& lhs,
+          OperationCounter<T, UniqueTag>& rhs);
 
-template <typename T>
-std::istream& operator>>(std::istream& is, OperationCounter<T>& rhs);
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const OperationCounter<T>& rhs);
+template <typename T, typename UniqueTag>
+std::istream& operator>>(std::istream& is, OperationCounter<T, UniqueTag>& rhs);
+template <typename T, typename UniqueTag>
+std::ostream& operator<<(std::ostream& os,
+                         const OperationCounter<T, UniqueTag>& rhs);
 
 #include "OperationCounter.tpp" // IWYU pragma: export

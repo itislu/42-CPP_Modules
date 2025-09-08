@@ -66,10 +66,11 @@ void PmergeMe::_sort_timed(C& container, Sorter sorter, Stats_& stats)
 template <typename C, typename Sorter>
 void PmergeMe::_count_sort_ops(const C& container, Sorter sorter, Stats_& stats)
 {
-	typedef OperationCounter<typename C::value_type> OpCounter;
+	typedef OperationCounter<typename C::value_type, _op_counter_tag> OpCounter;
 	typedef typename _rebind_value_type<C, OpCounter>::type CountedContainer;
 
 	if (ft::is_same<CountedContainer, C>::value) {
+		// Value type could not be replaced.
 		return;
 	}
 
