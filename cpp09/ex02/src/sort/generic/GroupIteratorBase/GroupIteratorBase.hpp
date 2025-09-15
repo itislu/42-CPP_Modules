@@ -35,7 +35,7 @@ public:
 	Derived& operator++();
 	Derived operator++(int);
 
-	/* Range access within the group */
+	/* Range access within the group. */
 	iterator begin() const;
 	iterator middle() const;
 	iterator end() const;
@@ -44,7 +44,7 @@ public:
 	difference_type size() const throw();
 
 protected:
-	/* Data shared by all iterator categories */
+	/* Data shared by all iterator categories. */
 	// NOLINTBEGIN(misc-non-private-member-variables-in-classes)
 	ForwardIt _base;
 	difference_type _size;
