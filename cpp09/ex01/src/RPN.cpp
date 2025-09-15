@@ -72,10 +72,10 @@ ft::Expected<RPN::value_type, std::string> RPN::result()
 	}
 	if (_stack.size() > 1) {
 		// Keep what was processed so far.
-		const std::size_t missing = _stack.size() - 1;
-		return ft::Unexpected<std::string>("missing " + ft::to_string(missing)
-		                                   + " operator"
-		                                   + (missing > 1 ? "s" : ""));
+		const std::size_t missing_ops = _stack.size() - 1;
+		return ft::Unexpected<std::string>(
+		    "missing " + ft::to_string(missing_ops) + " operator"
+		    + (missing_ops > 1 ? "s" : ""));
 	}
 	return _stack.top();
 }
@@ -91,41 +91,47 @@ void RPN::_push_operator(Operator op)
 	_stack.pop();
 
 	try {
-		value_type result = 0;
-		switch (op) {
-		case ADD:
-			result = lhs + rhs;
-			break;
-		case SUB:
-			result = lhs - rhs;
-			break;
-		case MUL:
-			result = lhs * rhs;
-			break;
-		case DIV:
-			if (rhs == 0) {
-				throw ft::Exception("division by zero");
-			}
-			result = lhs / rhs;
-			break;
-		}
-
-		switch (fpclassify(result)) {
-		case FP_INFINITE:
-			throw ft::Exception("result out of range for "
-			                    + ft::demangle(typeid(value_type).name()));
-		case FP_NAN:
-			throw ft::Exception("result is NaN");
-		case FP_SUBNORMAL:
-			throw ft::Exception("floating point underflow");
-		default:
-			_stack.push(result);
-		}
+		const value_type result = _calc_checked(op, lhs, rhs);
+		_stack.push(result);
 	}
 	catch (const ft::Exception&) {
 		_stack.push(lhs);
 		_stack.push(rhs);
 		throw;
+	}
+}
+
+RPN::value_type RPN::_calc_checked(Operator op, value_type lhs, value_type rhs)
+{
+	value_type result = 0;
+	switch (op) {
+	case ADD:
+		result = lhs + rhs;
+		break;
+	case SUB:
+		result = lhs - rhs;
+		break;
+	case MUL:
+		result = lhs * rhs;
+		break;
+	case DIV:
+		if (rhs == 0) {
+			throw ft::Exception("division by zero");
+		}
+		result = lhs / rhs;
+		break;
+	}
+
+	switch (fpclassify(result)) {
+	case FP_INFINITE:
+		throw ft::Exception("result out of range for "
+		                    + ft::demangle(typeid(value_type).name()));
+	case FP_NAN:
+		throw ft::Exception("result is NaN");
+	case FP_SUBNORMAL:
+		throw ft::Exception("floating point underflow");
+	default:
+		return result;
 	}
 }
 

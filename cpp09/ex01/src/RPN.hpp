@@ -24,6 +24,9 @@ public:
 	ft::Expected<value_type, std::string> result();
 
 private:
+	static value_type
+	_calc_checked(Operator op, value_type lhs, value_type rhs);
+
 	void _push_operator(Operator op);
 	void _push_operand(const std::string& word);
 
