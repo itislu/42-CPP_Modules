@@ -3,8 +3,6 @@
 #include "libftpp/Exception.hpp"
 #include "libftpp/Optional.hpp"
 #include "libftpp/algorithm.hpp"
-#include <ctime>
-#include <map>
 #include <utility>
 
 BitcoinExchange::BitcoinExchange() {}
@@ -21,23 +19,25 @@ BitcoinExchange& BitcoinExchange::operator=(BitcoinExchange other)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-ft::Optional<double> BitcoinExchange::insert(std::time_t date, double rate)
+ft::Optional<BitcoinExchange::mapped_type>
+BitcoinExchange::insert(key_type date, mapped_type rate)
 {
-	const std::pair<std::map<std::time_t, double>::iterator, bool> result =
+	const std::pair<DateRateMap_::iterator, bool> result =
 	    _db.insert(std::make_pair(date, rate));
 	const bool is_inserted = result.second;
+
 	if (!is_inserted) {
-		const std::map<std::time_t, double>::iterator& entry = result.first;
-		const double prev_rate = entry->second;
+		const DateRateMap_::iterator& entry = result.first;
+		const mapped_type prev_rate = entry->second;
 		entry->second = rate;
 		return prev_rate;
 	}
 	return ft::nullopt;
 }
 
-double BitcoinExchange::find(std::time_t date) const
+BitcoinExchange::mapped_type BitcoinExchange::find(key_type date) const
 {
-	std::map<std::time_t, double>::const_iterator it = _db.lower_bound(date);
+	DateRateMap_::const_iterator it = _db.lower_bound(date);
 	// Exact match.
 	if (it != _db.end() && it->first == date) {
 		return it->second;

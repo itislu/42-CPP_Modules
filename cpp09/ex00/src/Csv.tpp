@@ -83,7 +83,7 @@ bool Csv<Columns>::_process_next_line()
 		if (col > 0) {
 			cur_pos += _delim.length();
 		}
-		std::string::size_type next_pos = line.find(_delim, cur_pos);
+		const std::string::size_type next_pos = line.find(_delim, cur_pos);
 		_cur_row->fields[col] = line.substr(cur_pos, next_pos - cur_pos);
 		if (_trim_whitespace) {
 			ft::trim(_cur_row->fields[col]);
