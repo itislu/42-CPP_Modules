@@ -80,13 +80,13 @@ ExpensiveCopy<T, DummyOperations>::operator>=(const ExpensiveCopy& other) const
 }
 
 template <typename T, unsigned long DummyOperations>
-T& ExpensiveCopy<T, DummyOperations>::value()
+T& ExpensiveCopy<T, DummyOperations>::value() throw()
 {
 	return _v;
 }
 
 template <typename T, unsigned long DummyOperations>
-const T& ExpensiveCopy<T, DummyOperations>::value() const
+const T& ExpensiveCopy<T, DummyOperations>::value() const throw()
 {
 	return _v;
 }

@@ -21,8 +21,8 @@ public:
 	bool operator<=(const ExpensiveCopy& other) const;
 	bool operator>=(const ExpensiveCopy& other) const;
 
-	T& value();
-	const T& value() const;
+	T& value() throw();
+	const T& value() const throw();
 
 private:
 	T _v;

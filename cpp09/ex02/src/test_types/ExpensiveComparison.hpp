@@ -4,7 +4,7 @@
 #include <ostream>
 
 /**
- * Is POD.
+ * Trivially copyable (i.e., `memcpy`-able).
  */
 template <typename T, unsigned long DummyOperations>
 struct ExpensiveComparison {
@@ -13,34 +13,19 @@ struct ExpensiveComparison {
 	// NOLINTNEXTLINE(google-explicit-constructor)
 	ExpensiveComparison(const T& value);
 
-    // Thin POD type.
-    // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-	T v;
+	bool operator==(const ExpensiveComparison& other) const;
+	bool operator!=(const ExpensiveComparison& other) const;
+	bool operator<(const ExpensiveComparison& other) const;
+	bool operator>(const ExpensiveComparison& other) const;
+	bool operator<=(const ExpensiveComparison& other) const;
+	bool operator>=(const ExpensiveComparison& other) const;
+
+	T& value() throw();
+	const T& value() const throw();
+
+private:
+	T _v;
 };
-
-template <typename T, unsigned long DummyOperations>
-bool operator==(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs);
-
-template <typename T, unsigned long DummyOperations>
-bool operator!=(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs);
-
-template <typename T, unsigned long DummyOperations>
-bool operator<(const ExpensiveComparison<T, DummyOperations>& lhs,
-               const ExpensiveComparison<T, DummyOperations>& rhs);
-
-template <typename T, unsigned long DummyOperations>
-bool operator>(const ExpensiveComparison<T, DummyOperations>& lhs,
-               const ExpensiveComparison<T, DummyOperations>& rhs);
-
-template <typename T, unsigned long DummyOperations>
-bool operator<=(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs);
-
-template <typename T, unsigned long DummyOperations>
-bool operator>=(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs);
 
 template <typename T, unsigned long DummyOperations>
 std::istream& operator>>(std::istream& is,

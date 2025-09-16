@@ -11,62 +11,74 @@ ExpensiveComparison<T, DummyOperations>::ExpensiveComparison()
 
 template <typename T, unsigned long DummyOperations>
 ExpensiveComparison<T, DummyOperations>::ExpensiveComparison(const T& value)
-    : v(value)
+    : _v(value)
 {}
 
 template <typename T, unsigned long DummyOperations>
-bool operator==(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs)
+bool ExpensiveComparison<T, DummyOperations>::operator==(
+    const ExpensiveComparison& other) const
 {
 	busy_wait<DummyOperations>();
-	return lhs.v == rhs.v;
+	return _v == other._v;
 }
 
 template <typename T, unsigned long DummyOperations>
-bool operator!=(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs)
+bool ExpensiveComparison<T, DummyOperations>::operator!=(
+    const ExpensiveComparison& other) const
 {
 	busy_wait<DummyOperations>();
-	return lhs.v != rhs.v;
+	return _v != other._v;
 }
 
 template <typename T, unsigned long DummyOperations>
-bool operator<(const ExpensiveComparison<T, DummyOperations>& lhs,
-               const ExpensiveComparison<T, DummyOperations>& rhs)
+bool ExpensiveComparison<T, DummyOperations>::operator<(
+    const ExpensiveComparison& other) const
 {
 	busy_wait<DummyOperations>();
-	return lhs.v < rhs.v;
+	return _v < other._v;
 }
 
 template <typename T, unsigned long DummyOperations>
-bool operator>(const ExpensiveComparison<T, DummyOperations>& lhs,
-               const ExpensiveComparison<T, DummyOperations>& rhs)
+bool ExpensiveComparison<T, DummyOperations>::operator>(
+    const ExpensiveComparison& other) const
 {
 	busy_wait<DummyOperations>();
-	return lhs.v > rhs.v;
+	return _v > other._v;
 }
 
 template <typename T, unsigned long DummyOperations>
-bool operator<=(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs)
+bool ExpensiveComparison<T, DummyOperations>::operator<=(
+    const ExpensiveComparison& other) const
 {
 	busy_wait<DummyOperations>();
-	return lhs.v <= rhs.v;
+	return _v <= other._v;
 }
 
 template <typename T, unsigned long DummyOperations>
-bool operator>=(const ExpensiveComparison<T, DummyOperations>& lhs,
-                const ExpensiveComparison<T, DummyOperations>& rhs)
+bool ExpensiveComparison<T, DummyOperations>::operator>=(
+    const ExpensiveComparison& other) const
 {
 	busy_wait<DummyOperations>();
-	return lhs.v >= rhs.v;
+	return _v >= other._v;
+}
+
+template <typename T, unsigned long DummyOperations>
+T& ExpensiveComparison<T, DummyOperations>::value() throw()
+{
+	return _v;
+}
+
+template <typename T, unsigned long DummyOperations>
+const T& ExpensiveComparison<T, DummyOperations>::value() const throw()
+{
+	return _v;
 }
 
 template <typename T, unsigned long DummyOperations>
 std::istream& operator>>(std::istream& is,
                          ExpensiveComparison<T, DummyOperations>& rhs)
 {
-	is >> rhs.v;
+	is >> rhs.value();
 	return is;
 }
 
@@ -74,6 +86,6 @@ template <typename T, unsigned long DummyOperations>
 std::ostream& operator<<(std::ostream& os,
                          const ExpensiveComparison<T, DummyOperations>& rhs)
 {
-	os << rhs.v;
+	os << rhs.value();
 	return os;
 }
