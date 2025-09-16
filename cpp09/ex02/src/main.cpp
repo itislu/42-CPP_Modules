@@ -30,21 +30,20 @@ try {
 
 	init_user_locale();
 
-	bool more_types = false;
-	bool no_before_after = false;
+	Options options = {};
 	const std::vector<InputType> input =
-	    parse_args<InputType>(argc, argv, &more_types, &no_before_after);
+	    parse_args<InputType>(argc, argv, &options);
 
 	print_seperator(ft::demangle(typeid(InputType).name()));
 
-	if (!no_before_after) {
+	if (!options.no_before_after) {
 		compare_before_after_sort<std::vector<InputType> >(
 		    input, MergeInsertionSorter<>());
 	}
 
 	test_containers_and_sorters<InputType>(input);
 
-	if (more_types) {
+	if (options.more_types) {
 		test_expensive_comparison(input);
 		test_expensive_copy(input);
 		test_string(argc, argv);

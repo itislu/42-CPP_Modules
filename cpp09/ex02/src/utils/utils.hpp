@@ -11,13 +11,15 @@ enum Error {
 	PARSE_ERROR = 2
 };
 
+struct Options {
+	bool more_types;
+	bool no_before_after;
+};
+
 /* Parsing */
 
 template <typename T>
-std::vector<T> parse_args(int argc,
-                          char* argv[],
-                          bool* more_types_out = NULL,
-                          bool* no_before_after_out = NULL);
+std::vector<T> parse_args(int argc, char* argv[], Options* options_out = NULL);
 
 /* Printing */
 
