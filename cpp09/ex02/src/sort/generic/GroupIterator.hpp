@@ -18,6 +18,9 @@
  *
  * @tparam ForwardIt The underlying iterator type. Must be a forward iterator or
  * stronger
+ *
+ * Inspiration:
+ * https://github.com/Morwenn/cpp-sort/blob/1.x.y-stable/include/cpp-sort/detail/merge_insertion_sort.h
  */
 template <typename ForwardIt>
 class GroupIterator
